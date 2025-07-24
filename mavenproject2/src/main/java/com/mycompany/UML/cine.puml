@@ -1,0 +1,135 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+
+interface IAsiento {
+  + obtenerNumero(): String
+  + obtenerEstado(): boolean
+  + reservar(): void
+  + liberar(): void
+}
+
+interface IPelicula {
+  + obtenerTitulo(): String
+  + obtenerGenero(): String
+  + obtenerDuracion(): int
+  + obtenerRestriccionEdad(): int
+}
+
+interface ISala {
+  + obtenerId(): String
+  + contarAsientosDisponibles(): int
+}
+
+class Pelicula implements IPelicula {
+  - id: String
+  - titulo: String
+  - genero: String
+  - duracion: int
+  - restriccionEdad: int
+
+  + Pelicula(id: String, titulo: String, genero: String, duracion: int, restriccionEdad: int)
+  + obtenerTitulo(): String
+  + obtenerGenero(): String
+  + obtenerDuracion(): int
+  + obtenerRestriccionEdad(): int
+}
+
+class Sala implements ISala {
+  - id: String
+  - nombre: String
+  - capacidad: int
+
+  + Sala(id: String, nombre: String, capacidad: int)
+  + obtenerId(): String
+  + contarAsientosDisponibles(): int
+}
+
+abstract class Asiento implements IAsiento {
+  - numero: String
+  - estado: boolean
+
+  + Asiento(numero: String, estado: boolean)
+  + obtenerNumero(): String
+  + obtenerEstado(): boolean
+  + reservar(): void
+  + liberar(): void
+  + obtenerPrecio(base: double): double
+
+}
+
+class AsientoEstandar extends Asiento {
+  + obtenerPrecio(base: double): double
+}
+
+class AsientoVIP extends Asiento {
+  - espacioExtraPiernas: boolean
+  - reclinable: boolean
+  - estrategiaPrecio: IEstrategiaPrecio
+
+  + AsientoVIP(numero: String, espacioExtraPiernas: boolean, reclinable: boolean, estrategiaPrecio: IEstrategiaPrecio)
+  + obtenerPrecio(base: double): double
+}
+
+class Funcion {
+  - id: String
+  - pelicula: IPelicula
+  - sala: ISala
+  - fechaHora: DateTime
+
+  + Funcion(id: String, pelicula: IPelicula, sala: ISala, fechaHora: DateTime)
+  + obtenerAsientosDisponibles(): List<IAsiento>
+  + estaDisponible(): boolean
+}
+
+enum RestriccionesEdad{
+- AA
+- A
+- B
+- B-15
+-C
+}
+class Reserva {
+  - id: String
+  - funcion: Funcion
+  - asientos: List<IAsiento>
+  - precioTotal: double
+  - estadoPago: boolean
+
+  + Reserva(id: String, funcion: Funcion, asientos: List<IAsiento>)
+}
+
+class Pago implements CalculadoraPrecio{
+  - id: String
+  - reserva: Reserva
+  - monto: double
+  - estado: boolean
+
+  + calcularPrecio(): double
+  + isVIP(): boolean
+}
+
+class EntradaReservada{
+
+  - isPagoProcesado: boolean
+  + generarPase(): void
+
+}
+interface CalculadoraPrecio{
+    + calcularPrecio(): double
+    + isVIP(): boolean
+}
+
+
+
+IPelicula "1" -- "1..*" Funcion
+ISala "1" -- "1..*" Funcion
+Sala "1" -- "1..*" Asiento
+Funcion "1" o-- "1..*" Asiento
+Funcion "1" -- "0..*" EntradaReservada
+EntradaReservada "1" -- "1" Pago
+EntradaReservada "1" -- "1..*" Asiento
+Reserva -- EntradaReservada
+RestriccionesEdad -- Pelicula
+@enduml
