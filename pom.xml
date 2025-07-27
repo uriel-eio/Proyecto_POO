@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.metro.cine</groupId>
+  <artifactId>Proyecto_POO</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>Proyecto_POO</name>
+  <description>Aplicación de escritorio en Java para gestión de cine</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source> <!-- Cambia a 1.8 si es Java 8 -->
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory> <!-- Usa tu estructura actual -->
+    
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.png</include>
+          <include>**/*.jpg</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- Plugin para compilar código -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+
+      <!-- Plugin para ejecutar la app -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>View.Principal</mainClass> <!-- Cambia esto si tu clase principal es otra -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
