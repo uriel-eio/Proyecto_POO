@@ -46,7 +46,43 @@ public class pruebasArchivos {
         System.out.println("Ahora se encontraron " + carteleraActualizada.size() + " películas en cartelera:");
         for (Pelicula p : carteleraActualizada) {
             System.out.println("  -> Título: " + p.obtenerTitulo());
-        }    
+        }
+                // 1. Creamos una instancia de nuestro repositorio de salas
+        RepositorioSalas repositorioSalas = new RepositorioSalas();
+
+        System.out.println("--- PRUEBA 1: INICIALIZACIÓN DE SALAS PREDETERMINADAS ---");
+        // 2. Llamamos al método que crea el archivo con las salas predeterminadas
+        repositorioSalas.crearSala();
+
+        System.out.println("\n--- PRUEBA 2: LECTURA DE SALAS INICIALES ---");
+        // 3. Obtenemos la lista de salas desde el archivo
+        ArrayList<Sala> salas = repositorioSalas.getSala();
+
+        // 4. Imprimimos los resultados para verificar la lectura
+        System.out.println("Se encontraron " + salas.size() + " salas registradas:");
+        for (Sala sala : salas) {
+            System.out.println("  -> ID: " + sala.obtenerId() + 
+                    ", Nombre: " + sala.getNombre() + 
+                    ", Capacidad: " + sala.contarAsientosDisponibles());
+        }
+
+        System.out.println("\n--- PRUEBA 3: GUARDAR UNA NUEVA SALA ---");
+        // 5. Creamos una nueva sala y la guardamos
+        Sala nuevaSala = new Sala("sDelta", "Sala Delta", 50);
+        System.out.println("Guardando nueva sala: " + nuevaSala.getNombre());
+        repositorioSalas.saveSala(nuevaSala);
+
+        System.out.println("\n--- PRUEBA 4: LECTURA DE SALAS ACTUALIZADAS ---");
+        // 6. Volvemos a leer las salas para verificar la actualización
+        ArrayList<Sala> salasActualizadas = repositorioSalas.getSala();
+        System.out.println("Ahora se encontraron " + salasActualizadas.size() + " salas registradas:");
+        for (Sala sala : salasActualizadas) {
+            System.out.println("  -> ID: " + sala.obtenerId() + 
+                    ", Nombre: " + sala.getNombre() + 
+                    ", Capacidad: " + sala.contarAsientosDisponibles());
+        }
     }
-    
-}
+   }
+
+
+
