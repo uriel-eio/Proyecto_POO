@@ -1,4 +1,4 @@
-package com.mycompany.proyectoprograii.Model;
+package Model;
 
 public enum RestriccionesEdad {
     A("Apto para todo público."),

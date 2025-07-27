@@ -1,4 +1,4 @@
-package com.mycompany.proyectoprograii.Model;
+package Model;
 
 import com.mycompany.proyectoprograii.view.Carrito;
 

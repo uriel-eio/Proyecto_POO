@@ -1,4 +1,4 @@
-package com.mycompany.proyectoprograii.Model;
+package Model;
 
 public class AsientoEstandar extends Asiento {
 

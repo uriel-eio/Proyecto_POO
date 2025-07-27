@@ -1,24 +1,17 @@
-package com.mycompany.proyectoprograii.view;
+package View;
 
-//import controller.Controlador;
-import com.mycompany.Controller.ProyectoII;
-//import static controller.Controlador.sucursales;
-//import com.mycompany.org.netbeans.lib.awtextra;
+import Controller.*;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import com.mycompany.proyectoprograii.Model.*;
-//import model.Sucursal;
-//import model.Ticket2D;
-//import model.Ticket3D;
-//import model.Ticket4DX;
+import Model.*;
 
 public class Principal extends javax.swing.JFrame {
-    ProyectoII controlador;
+    Controlador controlador;
 
-    public Principal(ProyectoII controlador) {
+    public Principal(Controlador controlador) {
         this.controlador = controlador;
         UIManager.put("TabbedPane.selected", new Color(57,62,70));
         initComponents();

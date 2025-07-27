@@ -1,4 +1,4 @@
-package com.mycompany.proyectoprograii.Model;
+package Model;
 
 public class Pelicula implements IPelicula {
     // Hacemos los atributos 'final' para garantizar la inmutabilidad

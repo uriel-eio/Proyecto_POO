@@ -1,6 +1,6 @@
-package com.mycompany.proyectoprograii.view;
+package View;
 
-import controller.Controlador;
+import Controller.*;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;

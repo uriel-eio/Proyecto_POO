@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.Controller;
+package Controller;
 
-import com.mycompany.proyectoprograii.Model.*;
+import Model.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -28,10 +28,9 @@ import structures.ArbolBB;
 import structures.ListaDoble;
 import structures.NodoDoble;
 import view.*;*/
-import com.mycompany.proyectoprograii.view.*;
-import com.mycompany.proyectoprograii.view.Principal;
+import View.*;
 
-public class ProyectoII {
+public class Controlador {
     
     // Al inicio de la clase ProyectoII
     private ArrayList<Cliente> clientes = new ArrayList<>();

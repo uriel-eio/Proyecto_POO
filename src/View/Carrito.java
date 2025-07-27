@@ -1,6 +1,7 @@
-package com.mycompany.proyectoprograii.view;
+package View;
 
-import com.mycompany.Controller.ProyectoII;
+import Controller.*;
+import Model.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

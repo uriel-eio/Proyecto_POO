@@ -1,5 +1,5 @@
 // Archivo: Funcion.java
-package com.mycompany.proyectoprograii.Model;
+package Model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

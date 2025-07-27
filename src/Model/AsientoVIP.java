@@ -1,4 +1,4 @@
-package com.mycompany.proyectoprograii.Model;
+package Model;
 
 public class AsientoVIP extends Asiento {
     private boolean espacioExtraPiernas;

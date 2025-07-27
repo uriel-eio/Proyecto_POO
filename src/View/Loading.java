@@ -1,4 +1,4 @@
-package com.mycompany.proyectoprograii.view;
+package View;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
