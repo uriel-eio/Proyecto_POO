@@ -27,8 +27,8 @@ public class Carrito extends javax.swing.JFrame {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
         for (OrdenCompra orden : ordenes) {
-            // Creamos la fila extrayendo datos del objeto OrdenCompra y su Funcion asociada
             Object[] fila = new Object[]{
+                //@TODO: explicar mas sobre como funciona esta parte con comentarios
                 orden.getNumOrden(),
                 orden.getCantidadAsientos(),
                 orden.getFuncion().getSala().getNombre(),

@@ -35,7 +35,6 @@ public class Sala implements ISala {
         this.pelicula = pelicula;
     }
     public String toCSV() {
-        // Devuelve id, nombre y capacidad, que son los datos que el repositorio lee y escribe.
         return this.id + "," + this.nombre + "," + this.capacidad;
     }
 }
