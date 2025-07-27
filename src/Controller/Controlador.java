@@ -12,83 +12,88 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-//import model.Cliente;
-import javax.swing.table.TableRowSorter;
-/*import model.OrdenCompra;
-import model.Pelicula;
-import model.Sala;
-import model.Sala2D;
-import model.Sala3D;
-import model.Sala4DX;
-import model.Sucursal;
-import model.Ticket;
-import model.Ticket2D;
-import model.Ticket3D;
-import model.Ticket4DX;
-import structures.ArbolBB;
-import structures.ListaDoble;
-import structures.NodoDoble;
-import view.*;*/
 import View.*;
 
 public class Controlador {
-    
-    // Al inicio de la clase ProyectoII
-    private ArrayList<Cliente> clientes = new ArrayList<>();
-    private ArrayList<Pelicula> peliculas = new ArrayList<>();
-    private ArrayList<Sala> salas = new ArrayList<>();
+    // #### Variables con los datos principales ####
+    private RepositorioClientes repoClientes;
+    private RepositorioPeliculas repoPeliculas;
+    private RepositorioSalas repoSalas; // Suponiendo que exista
 
-/*nosotros no sabemos arboles binarios    
-// Creación de los 2 árboles principales del proyecto
-    public static ArbolBB sucursales = new ArbolBB();
-    public static ArbolBB clientes = new ArbolBB();
-    public static ListaDoble<Pelicula> peliculas = new ListaDoble<>();
-    //Esta estructura es solo para poder filtrar las tables :D
-    List<RowFilter<Object,Object>> filtros = new ArrayList<RowFilter<Object,Object>>(2);
- */ 
+    // #### VARIABLES DE MANEJO DE ESTADO ####
+    private Cliente clienteActivo;
+    private Carrito vistaCarritoActiva; // Debe ser de tipo 'Carrito' (la Vista/JFrame)
+
+    public Controlador() {
+        this.repoPeliculas = new RepositorioPeliculas();
+        this.repoSalas = new RepositorioSalas();
+        this.repoClientes = new RepositorioClientes();
+        //Creamos los archivos .txt con datos si no existen
+        repoPeliculas.creacionPeliculasPredeterminadas(); 
+        repoSalas.inicializarDatosPredeterminados();
+        repoClientes.inicializarDatosPredeterminados();
+    }
+
+    public void iniciarPrograma() {
+        // 1. El Controlador pide todos los datos iniciales a los repositorios
+        ArrayList<Pelicula> peliculas = repoPeliculas.obtenerCartelera();
+        ArrayList<Sala> salas = repoSalas.obtenerTodasLasSalas();
+        ArrayList<Cliente> clientes = repoClientes.obtenerTodosLosClientes();
+        
+        // Crea la vista principal
+        Principal vistaPrincipal = new Principal(this);
+
+        // @TODO: Le entrega los datos a la vista para que los muestre
+        //    (Asumiendo que la clase Principal tiene estos métodos)
+        vistaPrincipal.actualizarTablaPeliculas(peliculas);
+        vistaPrincipal.actualizarTablaSalas(salas);
+        vistaPrincipal.actualizarTablaClientes(clientes);
+        
+        vistaPrincipal.setVisible(true);
+    }
     public void abrirCarrito(Principal principal) {
+        // Validamos que se haya seleccionado un cliente en la tabla principal
         if (principal.tableClientes.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(principal, 
-            "Seleccione un Cliente para abrir el Carrito", 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
+                    "Seleccione un Cliente para abrir el Carrito", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
-    
-        // Obtener la cédula del cliente seleccionado
+
+        // Obtenemos la cédula de la fila seleccionada en la Vista
         long cedula = Long.parseLong(String.valueOf(
-            principal.tableClientes.getValueAt(principal.tableClientes.getSelectedRow(), 1)
+                principal.tableClientes.getValueAt(principal.tableClientes.getSelectedRow(), 1)
         ));
-    
-        // Buscar el cliente en el ArrayList
-        Cliente cliente = null;
-        for (Cliente c : clientes) {
-            if (c.getCedula() == cedula) {
-                cliente = c;
-                break;
-            }
-        }
-    
-        if (cliente == null) {
+
+        // Buscamos el cliente dentro del archivo
+        Cliente clienteEncontrado = repoClientes.buscarPorCedula(cedula);
+
+        if (clienteEncontrado == null) {
             JOptionPane.showMessageDialog(principal,
-                "No se encontró el cliente",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
+                    "No se encontró el cliente con la cédula: " + cedula,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Configurar y mostrar el carrito
-        cliente.getCarrito().setPrincipal(principal);
-        cliente.getCarrito().setControlador(this);
-        cliente.getCarrito().iniciarCarrito();
+        // Si encontramos al cliente creamos una instancia de la vista
+        this.clienteActivo = clienteEncontrado;
+        this.vistaCarritoActiva = new Carrito(); 
 
-        // Limpiar la tabla del carrito
-        ((DefaultTableModel)cliente.getCarrito().tableCarrito.getModel()).setRowCount(0);
+        vistaCarritoActiva.setControlador(this);
+        vistaCarritoActiva.setPrincipal(principal);
 
-        // Limpiar selección y cambiar visibilidad
-        principal.tableClientes.clearSelection();
-        cliente.getCarrito().setVisible(true);
+        vistaCarritoActiva.labelNombre.setText(clienteActivo.getNombre());
+        vistaCarritoActiva.labelCedula.setText(String.valueOf(clienteActivo.getCedula()));
+
+
+        ArrayList<OrdenCompra> ordenes = clienteActivo.getCarritoModel().getOrdenesEnCarrito();
+
+        vistaCarritoActiva.actualizarTabla(ordenes);
+
         principal.setVisible(false);
+        vistaCarritoActiva.setVisible(true);
     }
     
     public void abrirPrincipal(){
@@ -164,7 +169,7 @@ public class Controlador {
         aux = Integer.parseInt(String.valueOf( ((DefaultTableModel)principal.tableSucursales.getModel()).getValueAt(principal.tableSucursales.getSelectedRow(), 0) ) );
         principal.tableSucursales.setValueAt(sucursales.buscarSucursal(sucursales.getRoot(), aux).getUbicacion(), principal.tableSucursales.getSelectedRow(), 1);        
     }*/
-    
+    }
     public void agregarAlCarrito(Principal principal){
         // Validamos que se haya elegido un Cliente, Sucursal, Sala y una cantidad de Tickets
         if(String.valueOf(principal.comboClientesV.getSelectedItem()).equals("Clientes")){
@@ -1167,8 +1172,44 @@ public class Controlador {
         carrito.tableCarrito.setValueAt("Si",carrito.tableCarrito.getSelectedRow(), 8);
         carrito.tableCarrito.setValueAt(orden.getPrecioTotal(),carrito.tableCarrito.getSelectedRow(), 7);
     }*/
+
+    public void pagarOrden(int numOrden) {
+        // Validar que tenemos un cliente activo
+        if (this.clienteActivo == null) {
+            JOptionPane.showMessageDialog(null, "No existe un cliente"
+                    , "Error de Sesión", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener el modelo del carrito del cliente activo
+        CarritoModelo carritoDelCliente = clienteActivo.getCarritoModel(); 
+
+        // Buscar la orden en el Modelo
+        OrdenCompra ordenAPagar = carritoDelCliente.buscarOrden(numOrden);
+
+        // Si la orden existe, la marcamos como pagada
+        if (ordenAPagar != null) {
+            if (ordenAPagar.isPagada()) {
+                JOptionPane.showMessageDialog(null, "Esta orden ya ha sido pagada"
+                        , "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            ordenAPagar.setPagada(true); 
+
+            this.vistaCarritoActiva.actualizarTabla(carritoDelCliente.getOrdenesEnCarrito());
+
+            JOptionPane.showMessageDialog(null, "Disfrute su película!"
+                    , "Pagado", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                    "La orden no existe",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
-}
+ }
+
 
 
 

@@ -11,17 +11,34 @@ import javax.swing.table.DefaultTableModel;
 //import structures.Cola;
 
 public class Carrito extends javax.swing.JFrame {
-    private Cola<OrdenCompra> ordenes;
     private Principal principal;
     private Controlador controlador;
     
 
     public Carrito() {
-        this.ordenes = new Cola<>();
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("../images/icono.png")).getImage());
         this.setSize(720, 350);
         this.setLocationRelativeTo(null);
+    }
+    
+    public void actualizarTabla(ArrayList<OrdenCompra> ordenes) {
+    // Obtenemos el modelo de la tabla para poder manipularlo
+    DefaultTableModel model = (DefaultTableModel) tableCarrito.getModel();
+    // Limpiamos cualquier fila que ya exista
+    model.setRowCount(0);
+
+    // Recorremos la lista de órdenes y añadimos cada una como una nueva fila
+    for (OrdenCompra orden : ordenes) {
+        Object[] fila = new Object[]{
+            orden.getNumOrden(),
+            orden.getCantidad(),
+            // ...otros atributos de la orden que van en la tabla...
+            orden.getPrecio(),
+            orden.isPagada() ? "Sí" : "No"
+        };
+        model.addRow(fila);
+        }
     }
     
     public void iniciarCarrito(){
@@ -34,10 +51,6 @@ public class Carrito extends javax.swing.JFrame {
 
     public void setPrincipal(Principal principal) {
         this.principal = principal;
-    }
-
-    public Cola<OrdenCompra> getOrdenes() {
-        return ordenes;
     }
 
     public void setControlador(Controlador controlador) {
@@ -184,7 +197,8 @@ public class Carrito extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegresarActionPerformed
 
     private void botonPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPagarActionPerformed
-        // Buscamos qué orden está seleccionada
+    /*    
+    // Buscamos qué orden está seleccionada
         if(tableCarrito.getSelectedRow() != -1){
             if(String.valueOf( ((DefaultTableModel)tableCarrito.getModel()).getValueAt(tableCarrito.getSelectedRow(), 8) ).equals("Si")){
                 JOptionPane.showMessageDialog(this, "Esa orden de compra ya está pagada", "Error", JOptionPane.ERROR_MESSAGE);
@@ -197,6 +211,9 @@ public class Carrito extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione la orden de compra que quiere pagar", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        */
+        int numOrden = Integer.parseInt(String.valueOf(tableCarrito.getModel().getValueAt(tableCarrito.getSelectedRow(), 0) ));
+        controlador.pagarOrden(numOrden);
     }//GEN-LAST:event_botonPagarActionPerformed
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
