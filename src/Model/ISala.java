@@ -1,6 +1,7 @@
 package Model;
 
-public interface ISala{
+public interface ISala {
     String obtenerId();
     int contarAsientosDisponibles();
+    String getNombre(); // <-- AÑADE ESTA LÍNEA
 }

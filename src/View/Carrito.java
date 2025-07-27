@@ -1,15 +1,13 @@
 package View;
-
-import Model.Cliente;
 import Controller.*;
 import Model.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.time.format.DateTimeFormatter;
 //import model.Cliente;
 //import model.OrdenCompra;
-//import structures.Cola;
-
+import java.util.*;
 public class Carrito extends javax.swing.JFrame {
     private Principal principal;
     private Controlador controlador;
@@ -23,30 +21,24 @@ public class Carrito extends javax.swing.JFrame {
     }
     
     public void actualizarTabla(ArrayList<OrdenCompra> ordenes) {
-    // Obtenemos el modelo de la tabla para poder manipularlo
-    DefaultTableModel model = (DefaultTableModel) tableCarrito.getModel();
-    // Limpiamos cualquier fila que ya exista
-    model.setRowCount(0);
+        DefaultTableModel model = (DefaultTableModel) tableCarrito.getModel();
+        model.setRowCount(0); // Limpia la tabla
 
-    // Recorremos la lista de órdenes y añadimos cada una como una nueva fila
-    for (OrdenCompra orden : ordenes) {
-        Object[] fila = new Object[]{
-            orden.getNumOrden(),
-            orden.getCantidad(),
-            // ...otros atributos de la orden que van en la tabla...
-            orden.getPrecio(),
-            orden.isPagada() ? "Sí" : "No"
-        };
-        model.addRow(fila);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        for (OrdenCompra orden : ordenes) {
+            // Creamos la fila extrayendo datos del objeto OrdenCompra y su Funcion asociada
+            Object[] fila = new Object[]{
+                orden.getNumOrden(),
+                orden.getCantidadAsientos(),
+                orden.getFuncion().getSala().getNombre(),
+                orden.getFuncion().getPelicula().obtenerTitulo(),
+                orden.getFuncion().getFechaHora().format(formatter),
+                orden.getPrecioTotal(),
+                orden.isPagada() ? "Sí" : "No"
+            };
+            model.addRow(fila);
         }
-    }
-    
-    public void iniciarCarrito(){
-        Cliente cliente = controlador.clientes.buscarCliente(controlador.clientes.getRoot(), Long.parseLong(String.valueOf(principal.tableClientes.getValueAt(principal.tableClientes.getSelectedRow(), 1))));
-        labelNombre.setText(cliente.getNombre());
-        labelCedula.setText(String.valueOf(cliente.getCedula()));
-        
-        controlador.iniciarTablaCarrito(this);
     }
 
     public void setPrincipal(Principal principal) {
@@ -197,23 +189,16 @@ public class Carrito extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegresarActionPerformed
 
     private void botonPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPagarActionPerformed
-    /*    
-    // Buscamos qué orden está seleccionada
-        if(tableCarrito.getSelectedRow() != -1){
-            if(String.valueOf( ((DefaultTableModel)tableCarrito.getModel()).getValueAt(tableCarrito.getSelectedRow(), 8) ).equals("Si")){
-                JOptionPane.showMessageDialog(this, "Esa orden de compra ya está pagada", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            int numOrden = Integer.parseInt(String.valueOf( ((DefaultTableModel)tableCarrito.getModel()).getValueAt(tableCarrito.getSelectedRow(), 0) ) );
-            
-            controlador.pagarOrden(ordenes.buscarOrden(numOrden), this);
-            JOptionPane.showMessageDialog(this, "¡Orden de Compra pagada exitosamente!", "Pagado", JOptionPane.INFORMATION_MESSAGE);
-        }else{
+        if (tableCarrito.getSelectedRow() != -1) {
+            // Obtenemos solo el ID de la orden desde la tabla
+            int numOrden = (int) tableCarrito.getModel().getValueAt(tableCarrito.getSelectedRow(), 0);
+
+            // Le pasamos únicamente el ID al controlador
+            controlador.pagarOrden(numOrden);
+        } else {
+            // Mensaje de error si no hay nada seleccionado
             JOptionPane.showMessageDialog(this, "Seleccione la orden de compra que quiere pagar", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        */
-        int numOrden = Integer.parseInt(String.valueOf(tableCarrito.getModel().getValueAt(tableCarrito.getSelectedRow(), 0) ));
-        controlador.pagarOrden(numOrden);
     }//GEN-LAST:event_botonPagarActionPerformed
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked

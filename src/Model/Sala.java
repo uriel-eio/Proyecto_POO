@@ -26,12 +26,16 @@ public class Sala implements ISala {
     public int contarAsientosDisponibles() {
         return this.capacidad;
     }
-
+    @Override 
     public String getNombre() {
         return this.nombre;
     }
 
     public void setPelicula(Pelicula pelicula) {
         this.pelicula = pelicula;
+    }
+    public String toCSV() {
+        // Devuelve id, nombre y capacidad, que son los datos que el repositorio lee y escribe.
+        return this.id + "," + this.nombre + "," + this.capacidad;
     }
 }

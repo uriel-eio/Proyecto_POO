@@ -25,7 +25,7 @@ public class RepositorioSalas {
     public void saveSala(Sala sala){
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALAS, true))){
             //Escribe en formato CSV
-            bw.write(salaToCSV(sala));
+            bw.write(sala.toCSV());
             bw.newLine();
         } catch (IOException e){
             System.out.println("Error al guardar la sala en el archivo." + e.getMessage());
