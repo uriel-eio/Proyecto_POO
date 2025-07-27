@@ -4,6 +4,7 @@
 
 package Controller;
 
+import Model.Cliente;
 import Model.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +107,9 @@ public class Controlador {
                 this.crearSucursal(sucursal2, principal);
             Sucursal sucursal3 = new Sucursal("La Lagunita");
                 this.crearSucursal(sucursal3, principal);*/
-                
+        
+        // ######### ESTO VA DE LEY EN MODELO ################
+        /*        
          //Creacion de las Películas iniciales
             Pelicula pelicula1 = new Pelicula("001", "Matrix", "Acción", 136, RestriccionesEdad.A);
                 peliculas.addLast(pelicula1);
@@ -141,6 +144,8 @@ public class Controlador {
                 this.mostrarClienteEnTablaClientes(cliente4, principal);
             Cliente cliente5 = new Cliente(19532106, "Alfom Brita", "04245281496");
                 this.mostrarClienteEnTablaClientes(cliente5, principal);
+                
+            */    
             /*    
             // Seteamos los precios iniciales de los Tickets
             Ticket2D.setPrecio(10);

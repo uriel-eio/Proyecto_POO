@@ -1666,6 +1666,7 @@ public class Principal extends javax.swing.JFrame {
             "Error",
             JOptionPane.ERROR_MESSAGE);
     }
+    
     }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
     private void textFieldCedulaCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldCedulaCActionPerformed
     }//GEN-LAST:event_textFieldCedulaCActionPerformed

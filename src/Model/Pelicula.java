@@ -6,7 +6,7 @@ public class Pelicula implements IPelicula {
     private final String titulo;
     private final String genero;
     private final int duracion;
-    private final RestriccionesEdad restriccionEdad; // <-- CAMBIO CLAVE
+    private final RestriccionesEdad restriccionEdad; 
 
     public Pelicula(String id, String titulo, String genero, int duracion, RestriccionesEdad restriccionEdad) {
         this.id = id;
@@ -16,7 +16,7 @@ public class Pelicula implements IPelicula {
         this.restriccionEdad = restriccionEdad;
     }
 
-    // Sugerencia: Añadir un getter para el ID
+    
     public String getId() {
         return id;
     }
@@ -40,4 +40,15 @@ public class Pelicula implements IPelicula {
     public RestriccionesEdad obtenerRestriccionEdad() { // <-- CAMBIO CLAVE
         return restriccionEdad;
     }
+    
+    
+    // Creado para el manejo de archivos, se separa en comas para simular un archivo csv
+    public String toCSV() {
+    return this.id + "," +
+           this.titulo + "," +
+           this.genero + "," +
+           this.duracion + "," +
+           this.restriccionEdad.name(); // .name() convierte el enum a String
+    }
 }
+

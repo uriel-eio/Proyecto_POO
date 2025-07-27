@@ -1,4 +1,3 @@
-// Archivo: Funcion.java
 package Model;
 
 import java.time.LocalDateTime;

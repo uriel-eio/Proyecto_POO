@@ -1,5 +1,6 @@
 package Model;
 
+import View.Carrito;
 import com.mycompany.proyectoprograii.view.Carrito;
 
 public class Cliente {

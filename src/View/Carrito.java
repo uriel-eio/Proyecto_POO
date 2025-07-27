@@ -1,5 +1,6 @@
 package View;
 
+import Model.Cliente;
 import Controller.*;
 import Model.*;
 import javax.swing.ImageIcon;
