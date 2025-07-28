@@ -63,5 +63,12 @@
       </plugin>
     </plugins>
   </build>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE90</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>

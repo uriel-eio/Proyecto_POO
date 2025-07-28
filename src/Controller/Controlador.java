@@ -13,16 +13,37 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import View.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.awt.Color;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class Controlador {
     // #### Variables con los datos principales ####
     private RepositorioClientes repoClientes;
     private RepositorioPeliculas repoPeliculas;
     private RepositorioSalas repoSalas; // Suponiendo que exista
+    private SelecAsientos vista;
+    private Sala sala;
 
     // #### VARIABLES DE MANEJO DE ESTADO ####
     private Cliente clienteActivo;
     private Carrito vistaCarritoActiva; // Debe ser de tipo 'Carrito' (la Vista/JFrame)
+    
+    public Controlador(Sala sala) {
+        this.repoPeliculas = new RepositorioPeliculas();
+        this.repoSalas = new RepositorioSalas();
+        this.repoClientes = new RepositorioClientes();
+        //Creamos los archivos .txt con datos si no existen
+        repoPeliculas.creacionPeliculasPredeterminadas(); 
+        repoSalas.inicializarDatosPredeterminados();
+        repoClientes.inicializarDatosPredeterminados();
+        this.sala = sala;
+        this.vista = new SelecAsientos(); // Crea la vista sin pasarle la sala
+        agregarBotonesAsientos();
+    }
 
     public Controlador() {
         this.repoPeliculas = new RepositorioPeliculas();
@@ -353,10 +374,7 @@ public class Controlador {
     
     public void botonCambiarPeliculasSalas(Principal principal){
         // Se verifica en que sucursal está
-        if(String.valueOf(principal.comboSucursalesSalas.getSelectedItem()).equals("Sucursal")){
-            JOptionPane.showMessageDialog(principal, "No se encuentra en ninguna Sucursal.\n             Seleccione una.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }else if(principal.tableSalas.getSelectedRow() == -1){
+        if(principal.tableSalas.getSelectedRow() == -1){
             JOptionPane.showMessageDialog(principal, "No seleccionó ninguna Sala.\n           Seleccione una.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }else if(String.valueOf(principal.comboPeliculasSa1.getSelectedItem()).equals("Películas") ){
@@ -397,27 +415,41 @@ public class Controlador {
     }
     
     public void buscarClienteVentas(Principal principal){
-        // Se verifica si se ingresó alguna cédula
-        if(principal.textFieldClienteV.getText().equals("Ingrese Cédula")){
+        // Verifica si se ingresó alguna cédula
+        String cedulaTexto = principal.textFieldClienteV.getText();
+        if (cedulaTexto.equals("Ingrese Cédula") || cedulaTexto.trim().isEmpty()) {
             JOptionPane.showMessageDialog(principal, "Ingrese la cédula del Cliente que desee buscar", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        /*// Se verifica si la cédula ingresada pertenece al de algun Cliente
-        long cedulaBuscar = Long.parseLong(String.valueOf(principal.textFieldClienteV.getText()));
-        if(clientes.buscarCliente(clientes.getRoot(), cedulaBuscar) == null){
-            JOptionPane.showMessageDialog(principal, "La Cédula que ingresó no pertenece a la de ningún Cliente", "Error", JOptionPane.ERROR_MESSAGE);
+
+        long cedulaBuscar;
+        try {
+            cedulaBuscar = Long.parseLong(cedulaTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(principal, "Ingrese una cédula válida (solo números)", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        RepositorioClientes repo = new RepositorioClientes();
+        ArrayList<Cliente> clientes = repo.obtenerCliente();
+
+        Cliente clienteEncontrado = null;
+        for (Cliente c : clientes) {
+            if (c.getCedula() == cedulaBuscar) {
+                clienteEncontrado = c;
+                break;
+            }
+        }
+
+        if (clienteEncontrado == null) {
+            JOptionPane.showMessageDialog(principal, "La cédula ingresada no pertenece a ningún cliente", "Error", JOptionPane.ERROR_MESSAGE);
             principal.textFieldClienteV.setText("Ingrese Cédula");
             return;
         }
-        
-        for (int i = 0; i < principal.comboClientesV.getItemCount(); i++) {
-            if(String.valueOf(principal.comboClientesV.getItemAt(i)).equals(String.valueOf(cedulaBuscar)) ){
-                principal.comboClientesV.setSelectedIndex(i);
-            }
-        }
-        
-        principal.textFieldClienteV.setText("Ingrese Cédula");*/
+
+        // Si lo encuentras, aquí puedes hacer lo que necesites (mostrar datos, llenar campos, etc.)
+        JOptionPane.showMessageDialog(principal, "¡Cliente encontrado!\nNombre: " + clienteEncontrado.getNombre());
+        principal.textFieldClienteV.setText("Ingrese Cédula");
         
     }
     
@@ -580,121 +612,6 @@ public class Controlador {
         principal.comboPeliculasSa1.addItem(pelicula.obtenerTitulo());
     }
     
-    /*public void crearSala(Principal principal){
-        // Si es una sala 2D
-        if(principal.radioBoton2D.isSelected()){
-            if(principal.tableSucursales.getSelectedRow() != -1){
-                principal.grupoBotones.clearSelection();
-                // Guardamos en una variable entera el código de la sucursal seleccionada en la tabla
-                int numSucursal = Integer.parseInt(String.valueOf( ((DefaultTableModel)principal.tableSucursales.getModel()).getValueAt(principal.tableSucursales.getSelectedRow(), 0) ) );
-                principal.tableSucursales.clearSelection();
-                
-                // Si ya hay alguna sucursal
-                if(!sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().isEmpty()){
-                    // Se crea la sala
-                    Sala2D sala = new Sala2D(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().size(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot()) + 1 );      
-                    // Se inserta en el árbol
-                    sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().insertarSala(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot(), sala);
-                    JOptionPane.showMessageDialog(principal, "Sala número " + sala.getNumero() + " creada con éxito", "Sala creada", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.showMessageDialog(principal, "Recuerde indicar la película que se verá en la Sala.\n                  Vaya a la pestaña Salas");
-                }else{
-                    // Lo mismo que arriba
-                    Sala2D sala = new Sala2D(1);
-                    sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().insertarSala(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot(), sala);
-                    JOptionPane.showMessageDialog(principal, "Sala número " + sala.getNumero() + " creada con éxito", "Sala creada", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.showMessageDialog(principal, "Recuerde indicar la película que se verá en la Sala.\n                  Vaya a la pestaña Salas");
-                }        
-            }else{
-                JOptionPane.showMessageDialog(principal, "Seleccione a que sucursal va a pertenecer la sala", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-        
-        // Si es una sala 3D
-        else if(principal.radioBoton3D.isSelected()){
-            if(principal.tableSucursales.getSelectedRow() != -1){
-                principal.grupoBotones.clearSelection();
-                // Guardamos en una variable entera el código de la sucursal seleccionada en la tabla
-                int numSucursal = Integer.parseInt(String.valueOf( ((DefaultTableModel)principal.tableSucursales.getModel()).getValueAt(principal.tableSucursales.getSelectedRow(), 0) ) );
-                principal.tableSucursales.clearSelection();
-                
-                // Si ya hay alguna sucursal
-                if(!sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().isEmpty()){
-                    // Se crea la sala
-                    Sala3D sala = new Sala3D(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().size(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot()) + 1 );      
-                    // Se inserta en el árbol
-                    sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().insertarSala(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot(), sala);
-                    JOptionPane.showMessageDialog(principal, "Sala número " + sala.getNumero() + " creada con éxito", "Sala creada", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.showMessageDialog(principal, "Recuerde indicar la película que se verá en la Sala.\n                  Vaya a la pestaña Salas");
-                }else{
-                    // Lo mismo que arriba
-                    Sala3D sala = new Sala3D(1);
-                    sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().insertarSala(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot(), sala);
-                    JOptionPane.showMessageDialog(principal, "Sala número " + sala.getNumero() + " creada con éxito", "Sala creada", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.showMessageDialog(principal, "Recuerde indicar la película que se verá en la Sala.\n                  Vaya a la pestaña Salas");
-                }
-                
-            }else{
-                JOptionPane.showMessageDialog(principal, "Seleccione a que sucursal va a pertenecer la sala", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        
-        // Si es una sala 4DX
-        else if(principal.radioBoton4DX.isSelected()){
-            if(principal.tableSucursales.getSelectedRow() != -1){
-                principal.grupoBotones.clearSelection();
-                // Guardamos en una variable entera el código de la sucursal seleccionada en la tabla
-                int numSucursal = Integer.parseInt(String.valueOf( ((DefaultTableModel)principal.tableSucursales.getModel()).getValueAt(principal.tableSucursales.getSelectedRow(), 0) ) );
-                principal.tableSucursales.clearSelection();
-                
-                // Si ya hay alguna sucursal
-                if(!sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().isEmpty()){
-                    // Se crea la sala
-                    Sala4DX sala = new Sala4DX(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().size(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot()) + 1 );      
-                    // Se inserta en el árbol
-                    sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().insertarSala(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot(), sala);
-                    JOptionPane.showMessageDialog(principal, "Sala número " + sala.getNumero() + " creada con éxito", "Sala creada", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.showMessageDialog(principal, "Recuerde indicar la película que se verá en la Sala.\n                  Vaya a la pestaña Salas");
-                }else{
-                    // Lo mismo que arriba
-                    Sala4DX sala = new Sala4DX(1);
-                    sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().insertarSala(sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).getSalas().getRoot(), sala);
-                    JOptionPane.showMessageDialog(principal, "Sala número " + sala.getNumero() + " creada con éxito", "Sala creada", JOptionPane.INFORMATION_MESSAGE);
-                    JOptionPane.showMessageDialog(principal, "Recuerde indicar la película que se verá en la Sala.\n                  Vaya a la pestaña Salas");
-                }
-                
-            }else{
-                JOptionPane.showMessageDialog(principal, "Seleccione a que sucursal va a pertenecer la sala", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-        
-        // Si no se seleccionó ningún tipo de Sala
-        else{
-            JOptionPane.showMessageDialog(principal, "Seleccione el tipo de sala que desee crear", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-    }*/
-    
-    
-    // Método que solo se utiliza para crear las salas que vienen desde el inicio del programa
-    /*private void crearSalaInicio(Sala sala, Principal principal){
-        // Se inserta la Sala en el árbol respectivo
-        //sucursal.getSalas().insertarSala(sucursal.getSalas().getRoot(), sala);
-        // Se muestra las Salas en la tabla
-        this.mostrarSalasEnTablaSalas(principal, sucursal.getCodigo(), true);
-    }*/
-    
-    /*public void crearSucursal(Sucursal sucursal, Principal principal){
-        // Crea una nueva sucursal y se inserta en el arbol "salas"
-        
-        // Inserto la nueva sucursal en el árbol y lo añado al comboBox de ventas
-        sucursales.insertarSucursal(sucursales.getRoot(), sucursal);
-        principal.comboSucursalesV.addItem(String.valueOf(sucursal.getCodigo()));
-        principal.comboSucursalesSalas.addItem(String.valueOf(sucursal.getCodigo()));
-        // Agrego la nueva sucursal a la tabla
-        this.agregarATablaSucursales(sucursal, (DefaultTableModel)principal.tableSucursales.getModel());
-    }*/
     
     public void iniciarPrograma(){
         // Inicia el sistema
@@ -702,53 +619,7 @@ public class Controlador {
         // CAMBIAR Principal POR Inicio
         Principal inicio = new Principal(this);
         inicio.setVisible(true);
-        
-        /*// SOLO ESTA ACA TEMPORALMENTE, EN REALIDAD VA EN ABRIR PRINCIPAL
-            // Creación de las Sucursales iniciales
-            Sucursal sucursal1 = new Sucursal("Country Club");
-                this.crearSucursal(sucursal1, inicio);
-            Sucursal sucursal2 = new Sucursal("Altamira Hills");
-                this.crearSucursal(sucursal2, inicio);
-            Sucursal sucursal3 = new Sucursal("La Lagunita");
-                this.crearSucursal(sucursal3, inicio);*/
-                
-        // Creacion de las Películas iniciales
-            Pelicula pelicula1 = new Pelicula("001", "Matrix", "Acción", 136, RestriccionesEdad.A);
-                peliculas.addLast(pelicula1);
-                this.crearPelicula(pelicula1, inicio);
-            
-            Cliente cliente1 = new Cliente(26476344, "Carlos Fontes", "04122569675");
-                this.mostrarClienteEnTablaClientes(cliente1, inicio);
-            Cliente cliente2 = new Cliente(21688326, "Rafael Quintero", "04243659125");
-                this.mostrarClienteEnTablaClientes(cliente2, inicio);
-            Cliente cliente3 = new Cliente(12561795, "Armando Paredes", "04269517596");
-                this.mostrarClienteEnTablaClientes(cliente3, inicio);
-            Cliente cliente4 = new Cliente(2916256, "Pedro Picapiedra", "04164206969");
-                this.mostrarClienteEnTablaClientes(cliente4, inicio);
-            Cliente cliente5 = new Cliente(19532106, "Alfom Brita", "04245281496");
-                this.mostrarClienteEnTablaClientes(cliente5, inicio);
-                
-                
-            /*// Seteamos los precios iniciales de los Tickets
-            Ticket2D.setPrecio(10);
-                inicio.textFieldPrecio2DT.setText("10");
-            Ticket3D.setPrecio(15);
-                inicio.textFieldPrecio3DT.setText("15");
-            Ticket4DX.setPrecio(25);
-                inicio.textFieldPrecio4DT.setText("25");*/
-    }
-    
-    public void iniciarRadioButons(Principal principal){
-            principal.jRadioButton1.setEnabled(false);
-            principal.jRadioButton2.setEnabled(false);
-            principal.jRadioButton3.setEnabled(false);
-            principal.jRadioButton4.setEnabled(false);
-            principal.jRadioButton1.setSelected(false);
-            principal.jRadioButton2.setSelected(false);
-            principal.jRadioButton3.setSelected(false);
-            principal.jRadioButton4.setSelected(true);
-    }
-    
+
     public void iniciarSesion(Inicio inicio){
         // Validacion de usuario para acceder al sistema
         
@@ -930,17 +801,38 @@ public class Controlador {
         }
     }*/
     
-    /*public void modificarTelefonoCliente(Principal principal, String nuevoTelefono, long cedula){
-        // Modificamos el teléfono en el árbol de CLientes
-        clientes.buscarCliente(clientes.getRoot(), cedula).setTelefono(nuevoTelefono);
-        
-        // Modificamos la tabla de CLientes
+    public void modificarTelefonoCliente(Principal principal, String nuevoTelefono, long cedula) {
+        // desde el archivo obetengo la lita y la transformo en un array
+        RepositorioClientes repo = new RepositorioClientes();
+        ArrayList<Cliente> clientes = repo.obtenerCliente();
+
+        // busca el cliente y modificar su fono
+        boolean encontrado = false;
+        for (Cliente c : clientes) {
+            if (c.getCedula() == cedula) {
+                c.setTelefono(nuevoTelefono);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (encontrado) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("clientes.txt"))) {
+                for (Cliente c : clientes) {
+                    bw.write(c.toCSV());
+                    bw.newLine();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(principal, "Error al guardar el cliente modificado", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
         for (int i = 0; i < principal.tableClientes.getRowCount(); i++) {
-            if(cedula == Long.parseLong(String.valueOf(principal.tableClientes.getValueAt(i, 1)))){
+            if (cedula == Long.parseLong(String.valueOf(principal.tableClientes.getValueAt(i, 1)))) {
                 principal.tableClientes.setValueAt(nuevoTelefono, i, 2);
             }
         }
-    }*/
+    }
     
     /*public void modificarUbicacionSucursal(Principal principal, String nuevaUbicacion, int numSucursal){
         sucursales.buscarSucursal(sucursales.getRoot(), numSucursal).setUbicacion(nuevaUbicacion);
@@ -1172,6 +1064,46 @@ public class Controlador {
         carrito.tableCarrito.setValueAt("Si",carrito.tableCarrito.getSelectedRow(), 8);
         carrito.tableCarrito.setValueAt(orden.getPrecioTotal(),carrito.tableCarrito.getSelectedRow(), 7);
     }*/
+    
+    private void agregarBotonesAsientos() {
+        
+        //obtiene el panel donde se vam a generar las salas
+        JPanel panel = vista.getPanelAsientos();
+        panel.removeAll(); // cada que se actualiza la sala se remueve todo
+        panel.setLayout(new GridLayout(0, 5, 5, 5)); // 10 columnas, espacio 5 px
+
+        ArrayList<Asiento> listaAsientos = sala.getAsientos();
+
+        for (Asiento asiento : listaAsientos) {
+            //Obtiene el numero de asientos
+            JButton boton = new JButton(asiento.obtenerNumero());
+            
+            //Obtiene si esta reservado, es vip o esta libre
+            if (asiento.obtenerEstado()) {
+                boton.setBackground(Color.RED);
+                boton.setEnabled(false);
+            } else {
+                boton.setBackground(Color.GREEN);
+                boton.setEnabled(true);
+            }
+
+            boton.addActionListener(e -> {
+                if (!asiento.obtenerEstado()) {
+                    asiento.reservar();
+                    boton.setBackground(Color.RED);
+                    boton.setEnabled(false);
+                    JOptionPane.showMessageDialog(vista, "Asiento " + asiento.obtenerNumero() + " reservado.");
+                } else {
+                    JOptionPane.showMessageDialog(vista, "El asiento ya está reservado.");
+                }
+            });
+
+            panel.add(boton);
+        }
+        //Se valida y se modifica el color
+        panel.revalidate();
+        panel.repaint();
+    }
 
     public void pagarOrden(int numOrden) {
         // Validar que tenemos un cliente activo

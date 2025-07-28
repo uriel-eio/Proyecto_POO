@@ -4,7 +4,7 @@ import Controller.*;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
+//import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class Inicio extends javax.swing.JFrame {
     Controlador controlador;
     
@@ -180,7 +180,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelCerrarMouseClicked
 
     private void jLabelMinimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelMinimizarMouseClicked
-        this.setState(com.mycompany.proyectoprograii.view.Inicio.ICONIFIED);
+        this.setState(Inicio.ICONIFIED);
     }//GEN-LAST:event_jLabelMinimizarMouseClicked
 
     private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
@@ -222,7 +222,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelQuestionMouseClicked
 
     private void jLabelAcercaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAcercaMouseClicked
-        JOptionPane.showMessageDialog(this, "Carlos Fontes & Rafael Quintero\n\t                      UNIMET\n             Ing. de Sistemas");
+        JOptionPane.showMessageDialog(this, "Grupo 03 Dueñas/Carrasco/Fernádez/Palma/Merimo/Verdezoto");
     }//GEN-LAST:event_jLabelAcercaMouseClicked
 
     private void jPasswordFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldKeyTyped
