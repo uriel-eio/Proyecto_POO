@@ -274,15 +274,7 @@ public class Controlador {
         //principal.spinnerTicketsV.setEnabled(false);
 
     }
-    
-    /*private void agregarATablaSucursales(Sucursal sucursal, DefaultTableModel model){
-        // Agrega la sala creada en la tabla
-        
-        model.addRow(new Object[]{
-            sucursal.getCodigo(), sucursal.getUbicacion()
-        });
-    }*/
-    
+       
     public void botonAgregarPelicula(Principal principal){
         try {
             // 1. Pedir y validar el título

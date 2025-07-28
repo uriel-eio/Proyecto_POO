@@ -47,6 +47,13 @@ public class RepositorioClientes {
         return clientes;
     }
     
+    public Cliente buscarClientePorCedula(long cedula) {
+        for (Cliente c : obtenerCliente()) {
+            if (c.getCedula() == cedula) return c;
+        }
+        return null;
+    }
+    
     public boolean actualizarCliente(long cedula, String nuevoTelefono) {
         // Guardamos los clientes del archivo en nuevo arreglo
         ArrayList<Cliente> clientes = this.obtenerCliente(); 

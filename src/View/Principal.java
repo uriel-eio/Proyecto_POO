@@ -23,9 +23,11 @@ import javax.swing.JTextField;
 
 public class Principal extends javax.swing.JFrame {
     Controlador controlador;
-
-    public Principal(Controlador controlador) {
+    ClienteController controladorCliente;
+    
+    public Principal(Controlador controlador, ClienteController controladorCliente) {
         this.controlador = controlador;
+        this.controladorCliente = controladorCliente;
         UIManager.put("TabbedPane.selected", new Color(57,62,70));
         initComponents();
         jTabbedPane2.setForeground(Color.WHITE);
@@ -38,12 +40,11 @@ public class Principal extends javax.swing.JFrame {
         //----------Inicializamos las tablas----------
         this.controlador.iniciarTablaSucursales(this);
         this.controlador.iniciarTablaSalas(this);
-        this.controlador.iniciarTablaAdministrar(this);
-        this.controlador.iniciarTablaClientes(this);
+        //this.controlador.iniciarTablaAdministrar(this);
+        this.controladorCliente.iniciarTablaClientes(this);
         this.controlador.iniciarTablaPeliculas(this);
-        this.controlador.iniciarTablaTickets(this);
-        
-        this.controlador.iniciarRadioButons(this);
+        //this.controlador.iniciarTablaTickets(this);
+        //this.controlador.iniciarRadioButons(this);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -55,6 +56,33 @@ public class Principal extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         botonesFecha = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
+        panelPeliculas = new javax.swing.JPanel();
+        botonAgregarPeliculaP = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePeli = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        panelClientes = new javax.swing.JPanel();
+        botonCarritoC = new javax.swing.JButton();
+        botonModificar = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableClientes = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        botonRegistrarC1 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        panelSalas = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableSalas = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        comboPeliculasSa1 = new javax.swing.JComboBox<>();
+        botonCambiarPeliculaSa1 = new javax.swing.JButton();
         panelVentas = new javax.swing.JPanel();
         label$1T2 = new javax.swing.JLabel();
         comboClientesV = new javax.swing.JComboBox<>();
@@ -85,33 +113,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        panelPeliculas = new javax.swing.JPanel();
-        botonAgregarPeliculaP = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablePeli = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        panelClientes = new javax.swing.JPanel();
-        botonCarritoC = new javax.swing.JButton();
-        botonModificar = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tableClientes = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
-        botonRegistrarC1 = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        panelSalas = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tableSalas = new javax.swing.JTable();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        comboPeliculasSa1 = new javax.swing.JComboBox<>();
-        botonCambiarPeliculaSa1 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -123,6 +124,261 @@ public class Principal extends javax.swing.JFrame {
         jTabbedPane2.setForeground(new java.awt.Color(0, 0, 0));
         jTabbedPane2.setFocusable(false);
         jTabbedPane2.setPreferredSize(new java.awt.Dimension(700, 900));
+
+        panelPeliculas.setBackground(new java.awt.Color(153, 153, 153));
+        panelPeliculas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        botonAgregarPeliculaP.setBackground(new java.awt.Color(102, 102, 102));
+        botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarPeliculaP.setForeground(new java.awt.Color(255, 255, 255));
+        botonAgregarPeliculaP.setText("Agregar Película");
+        botonAgregarPeliculaP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonAgregarPeliculaP.setFocusPainted(false);
+        botonAgregarPeliculaP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAgregarPeliculaPActionPerformed(evt);
+            }
+        });
+        panelPeliculas.add(botonAgregarPeliculaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, 130, 30));
+
+        tablePeli = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
+        tablePeli.setBackground(new java.awt.Color(204, 204, 204));
+        tablePeli.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Género", "Idioma"
+            }
+        ));
+        tablePeli.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tablePeli.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tablePeli.setFocusable(false);
+        jScrollPane1.setViewportView(tablePeli);
+
+        panelPeliculas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 70, 540, 250));
+
+        jLabel4.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/peliculas.png"))); // NOI18N
+        panelPeliculas.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 7, -1, -1));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
+        panelPeliculas.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel12MouseClicked(evt);
+            }
+        });
+        panelPeliculas.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
+
+        jButton3.setBackground(new java.awt.Color(153, 153, 153));
+        jButton3.setText("jButton3");
+        jButton3.setBorder(null);
+        jButton3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jButton3FocusGained(evt);
+            }
+        });
+        panelPeliculas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
+
+        jTabbedPane2.addTab("Peliculas", panelPeliculas);
+
+        panelClientes.setBackground(new java.awt.Color(153, 153, 153));
+        panelClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        botonCarritoC.setBackground(new java.awt.Color(102, 102, 102));
+        botonCarritoC.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
+        botonCarritoC.setText("Carrito");
+        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCarritoC.setFocusPainted(false);
+        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCarritoCActionPerformed(evt);
+            }
+        });
+        panelClientes.add(botonCarritoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 320, 90, 30));
+
+        botonModificar.setBackground(new java.awt.Color(102, 102, 102));
+        botonModificar.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonModificar.setForeground(new java.awt.Color(255, 255, 255));
+        botonModificar.setText("Modificar");
+        botonModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonModificar.setFocusPainted(false);
+        botonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarActionPerformed(evt);
+            }
+        });
+        panelClientes.add(botonModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 90, 30));
+
+        tableClientes = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
+        tableClientes.setBackground(new java.awt.Color(204, 204, 204));
+        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Cédula", "Teléfono"
+            }
+        ));
+        tableClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tableClientes.setFocusable(false);
+        jScrollPane4.setViewportView(tableClientes);
+
+        panelClientes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 550, 210));
+
+        jLabel5.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
+        panelClientes.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        botonRegistrarC1.setBackground(new java.awt.Color(102, 102, 102));
+        botonRegistrarC1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonRegistrarC1.setForeground(new java.awt.Color(255, 255, 255));
+        botonRegistrarC1.setText("Registrar");
+        botonRegistrarC1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonRegistrarC1.setFocusPainted(false);
+        botonRegistrarC1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegistrarC1ActionPerformed(evt);
+            }
+        });
+        panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 90, 30));
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel13MouseClicked(evt);
+            }
+        });
+        panelClientes.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+        panelClientes.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
+
+        jButton2.setForeground(new java.awt.Color(153, 153, 153));
+        jButton2.setBorder(null);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        panelClientes.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
+
+        jTabbedPane2.addTab("Clientes", panelClientes);
+
+        panelSalas.setBackground(new java.awt.Color(153, 153, 153));
+        panelSalas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tableSalas = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
+        tableSalas.setBackground(new java.awt.Color(204, 204, 204));
+        tableSalas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Número", "Tipo", "Película"
+            }
+        ));
+        tableSalas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableSalas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tableSalas.setFocusable(false);
+        jScrollPane2.setViewportView(tableSalas);
+
+        panelSalas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 540, 180));
+
+        jLabel6.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salas.png"))); // NOI18N
+        panelSalas.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+        });
+        panelSalas.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
+
+        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+        });
+        panelSalas.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
+
+        jPanel12.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        comboPeliculasSa1.setBackground(new java.awt.Color(153, 153, 153));
+        comboPeliculasSa1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        comboPeliculasSa1.setForeground(new java.awt.Color(255, 255, 255));
+        comboPeliculasSa1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Películas" }));
+
+        botonCambiarPeliculaSa1.setBackground(new java.awt.Color(153, 153, 153));
+        botonCambiarPeliculaSa1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonCambiarPeliculaSa1.setForeground(new java.awt.Color(255, 255, 255));
+        botonCambiarPeliculaSa1.setText("Cambiar Película");
+        botonCambiarPeliculaSa1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCambiarPeliculaSa1.setFocusPainted(false);
+        botonCambiarPeliculaSa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCambiarPeliculaSa1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(comboPeliculasSa1, 0, 136, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        panelSalas.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 320, 60));
+
+        jTabbedPane2.addTab("Salas", panelSalas);
 
         panelVentas.setBackground(new java.awt.Color(153, 153, 153));
         panelVentas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -483,261 +739,6 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Ventas", panelVentas);
 
-        panelPeliculas.setBackground(new java.awt.Color(153, 153, 153));
-        panelPeliculas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        botonAgregarPeliculaP.setBackground(new java.awt.Color(102, 102, 102));
-        botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonAgregarPeliculaP.setForeground(new java.awt.Color(255, 255, 255));
-        botonAgregarPeliculaP.setText("Agregar Película");
-        botonAgregarPeliculaP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonAgregarPeliculaP.setFocusPainted(false);
-        botonAgregarPeliculaP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAgregarPeliculaPActionPerformed(evt);
-            }
-        });
-        panelPeliculas.add(botonAgregarPeliculaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, 130, 30));
-
-        tablePeli = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tablePeli.setBackground(new java.awt.Color(204, 204, 204));
-        tablePeli.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Género", "Idioma"
-            }
-        ));
-        tablePeli.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tablePeli.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tablePeli.setFocusable(false);
-        jScrollPane1.setViewportView(tablePeli);
-
-        panelPeliculas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 70, 540, 250));
-
-        jLabel4.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/peliculas.png"))); // NOI18N
-        panelPeliculas.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 7, -1, -1));
-
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel11MouseClicked(evt);
-            }
-        });
-        panelPeliculas.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
-            }
-        });
-        panelPeliculas.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
-
-        jButton3.setBackground(new java.awt.Color(153, 153, 153));
-        jButton3.setText("jButton3");
-        jButton3.setBorder(null);
-        jButton3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jButton3FocusGained(evt);
-            }
-        });
-        panelPeliculas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
-        jTabbedPane2.addTab("Peliculas", panelPeliculas);
-
-        panelClientes.setBackground(new java.awt.Color(153, 153, 153));
-        panelClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        botonCarritoC.setBackground(new java.awt.Color(102, 102, 102));
-        botonCarritoC.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
-        botonCarritoC.setText("Carrito");
-        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonCarritoC.setFocusPainted(false);
-        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCarritoCActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonCarritoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 320, 90, 30));
-
-        botonModificar.setBackground(new java.awt.Color(102, 102, 102));
-        botonModificar.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonModificar.setForeground(new java.awt.Color(255, 255, 255));
-        botonModificar.setText("Modificar");
-        botonModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonModificar.setFocusPainted(false);
-        botonModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonModificarActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 90, 30));
-
-        tableClientes = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tableClientes.setBackground(new java.awt.Color(204, 204, 204));
-        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Cédula", "Teléfono"
-            }
-        ));
-        tableClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tableClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tableClientes.setFocusable(false);
-        jScrollPane4.setViewportView(tableClientes);
-
-        panelClientes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 550, 210));
-
-        jLabel5.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
-        panelClientes.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        botonRegistrarC1.setBackground(new java.awt.Color(102, 102, 102));
-        botonRegistrarC1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonRegistrarC1.setForeground(new java.awt.Color(255, 255, 255));
-        botonRegistrarC1.setText("Registrar");
-        botonRegistrarC1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonRegistrarC1.setFocusPainted(false);
-        botonRegistrarC1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRegistrarC1ActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 90, 30));
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel13MouseClicked(evt);
-            }
-        });
-        panelClientes.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel14MouseClicked(evt);
-            }
-        });
-        panelClientes.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
-
-        jButton2.setForeground(new java.awt.Color(153, 153, 153));
-        jButton2.setBorder(null);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        panelClientes.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
-
-        jTabbedPane2.addTab("Clientes", panelClientes);
-
-        panelSalas.setBackground(new java.awt.Color(153, 153, 153));
-        panelSalas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        tableSalas = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tableSalas.setBackground(new java.awt.Color(204, 204, 204));
-        tableSalas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Número", "Tipo", "Película"
-            }
-        ));
-        tableSalas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tableSalas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tableSalas.setFocusable(false);
-        jScrollPane2.setViewportView(tableSalas);
-
-        panelSalas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 540, 180));
-
-        jLabel6.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salas.png"))); // NOI18N
-        panelSalas.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel17MouseClicked(evt);
-            }
-        });
-        panelSalas.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel18MouseClicked(evt);
-            }
-        });
-        panelSalas.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
-
-        jPanel12.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-        comboPeliculasSa1.setBackground(new java.awt.Color(153, 153, 153));
-        comboPeliculasSa1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        comboPeliculasSa1.setForeground(new java.awt.Color(255, 255, 255));
-        comboPeliculasSa1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Películas" }));
-
-        botonCambiarPeliculaSa1.setBackground(new java.awt.Color(153, 153, 153));
-        botonCambiarPeliculaSa1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonCambiarPeliculaSa1.setForeground(new java.awt.Color(255, 255, 255));
-        botonCambiarPeliculaSa1.setText("Cambiar Película");
-        botonCambiarPeliculaSa1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonCambiarPeliculaSa1.setFocusPainted(false);
-        botonCambiarPeliculaSa1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCambiarPeliculaSa1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(comboPeliculasSa1, 0, 136, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
-
-        panelSalas.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 320, 60));
-
-        jTabbedPane2.addTab("Salas", panelSalas);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -755,7 +756,7 @@ public class Principal extends javax.swing.JFrame {
     private void textFieldClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldClienteVActionPerformed
     }//GEN-LAST:event_textFieldClienteVActionPerformed
     private void botonBuscarClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarClienteVActionPerformed
-        controlador.buscarClienteVentas(this);
+        controladorCliente.buscarClienteVentas(this);
     }//GEN-LAST:event_botonBuscarClienteVActionPerformed
 
     private void textFieldClienteVFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusGained
@@ -855,13 +856,21 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegistrarC1ActionPerformed
 
     private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
+        
+        this.controladorCliente = new ClienteController();
+        
         if(String.valueOf(comboClientesV.getSelectedItem()).equals("Clientes")){
             labelNombreCliente.setText("Nombre Cliente");
             return;
-        }
+        }long cedula = Long.parseLong(String.valueOf(comboClientesV.getSelectedItem()));
         
-        long cedula = Long.parseLong(String.valueOf(comboClientesV.getSelectedItem()));
-        labelNombreCliente.setText(controlador.clientes.buscarCliente(controlador.clientes.getRoot(), cedula).getNombre());
+        Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
+        
+        if (cliente != null){
+            labelNombreCliente.setText(cliente.getNombre());
+        }else{
+            labelNombreCliente.setText("Cliente no encontrado");
+        }
     }//GEN-LAST:event_comboClientesVActionPerformed
 
     private void textFieldClienteVKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldClienteVKeyTyped
@@ -878,7 +887,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCarritoCActionPerformed
 
     private void spinnerTicketsVStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerTicketsVStateChanged
-        controlador.calcularPrecioVentas(this);
+        //controlador.calcularPrecioVentas(this);
     }//GEN-LAST:event_spinnerTicketsVStateChanged
 
     private void fecha3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecha3ActionPerformed
@@ -894,7 +903,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_fecha5ActionPerformed
 
     private void jButton3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jButton3FocusGained
-        controlador.mostrarPeliculasEnTablaPeliculas(this);
+        //controlador.mostrarPeliculasEnTablaPeliculas(this);
     }//GEN-LAST:event_jButton3FocusGained
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
@@ -1056,7 +1065,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel panelVentas;
     public javax.swing.JSpinner spinnerTicketsV;
     public javax.swing.JTable tableClientes;
-    private javax.swing.JTable tablePeli;
+    public javax.swing.JTable tablePeli;
     public javax.swing.JTable tableSalas;
     public javax.swing.JTextField textFieldClienteV;
     public javax.swing.JTextField textFieldPrecioV;
