@@ -1,6 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
@@ -15,24 +15,22 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source> <!-- Cambia a 1.8 si es Java 8 -->
+    <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <build>
-    <sourceDirectory>src</sourceDirectory> <!-- Usa tu estructura actual -->
-    
+    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>src</directory>
         <includes>
-          <include>**/*.properties</include>
-          <include>**/*.png</include>
-          <include>**/*.jpg</include>
+          <include>*/.properties</include>
+          <include>*/.png</include>
+          <include>*/.jpg</include>
         </includes>
       </resource>
     </resources>
-
     <plugins>
       <!-- Plugin para compilar código -->
       <plugin>
@@ -44,7 +42,6 @@
           <target>${maven.compiler.target}</target>
         </configuration>
       </plugin>
-
       <!-- Plugin para ejecutar la app -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -58,17 +55,23 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>View.Principal</mainClass> <!-- Cambia esto si tu clase principal es otra -->
+          <mainClass>View.Principal</mainClass>
         </configuration>
       </plugin>
     </plugins>
   </build>
-    <dependencies>
-        <dependency>
-            <groupId>org.netbeans.external</groupId>
-            <artifactId>AbsoluteLayout</artifactId>
-            <version>RELEASE90</version>
-            <type>jar</type>
-        </dependency>
-    </dependencies>
+
+  <dependencies>
+    <!--
+      Para AbsoluteLayout, la mejor práctica en Maven es instalar el JAR en el repositorio local de cada desarrollador usando:
+      mvn install:install-file -Dfile=lib/AbsoluteLayout-RELEASE90.jar -DgroupId=org.netbeans.external -DartifactId=AbsoluteLayout -Dversion=RELEASE90 -Dpackaging=jar
+      Luego todos podrán usar esta dependencia normalmente:
+    -->
+    <dependency>
+      <groupId>org.netbeans.external</groupId>
+      <artifactId>AbsoluteLayout</artifactId>
+      <version>RELEASE90</version>
+    </dependency>
+    <!-- Otras dependencias estándar aquí -->
+  </dependencies>
 </project>

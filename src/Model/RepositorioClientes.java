@@ -47,4 +47,37 @@ public class RepositorioClientes {
         return clientes;
     }
     
+    public boolean actualizarCliente(long cedula, String nuevoTelefono) {
+        // Guardamos los clientes del archivo en nuevo arreglo
+        ArrayList<Cliente> clientes = this.obtenerCliente(); 
+        boolean encontrado = false;
+
+        // busca la cedula del cliente para poder modificar el telefono que es lo unico que cambiaria
+        for (Cliente c : clientes) {
+            if (c.getCedula() == cedula) {
+                // Sobre escribimos solo el telefono
+                c.setTelefono(nuevoTelefono);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (encontrado) {
+            // abrimos el archivo en modo sobre escritura
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES))) {
+                for (Cliente c : clientes) {
+                    // re escribimos toda la linea del cliente, pero como solo hubo
+                    //cambios en el telefono solo se sobre escribirá ese dato
+                    bw.write(c.toCSV());
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                System.err.println("Error, no se pudo sobre escribir el número del cliente " + e.getMessage());
+                return false; 
+            }
+        }
+        
+        return encontrado; 
+    }    
+    
 }
