@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import Model.*;
+import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 public class Principal extends javax.swing.JFrame {
     Controlador controlador;
     ClienteController controladorCliente;
+    SalasController controladorSalas;
     
     public Principal(Controlador controlador, ClienteController controladorCliente) {
         this.controlador = controlador;
@@ -803,6 +805,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void botonCambiarPeliculaSa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarPeliculaSa1ActionPerformed
         controlador.botonCambiarPeliculasSalas(this);
+        controladorSalas.asignarPeliculaASala();
     }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
 
     private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
@@ -1005,6 +1008,37 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
 
+    public void actualizarTablaSalas(ArrayList<Sala> salas) {
+        DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
+        model.setRowCount(0); // Limpia la tabla
+        
+        //Busca la sala
+        for (Sala sala : salas) {
+            String tituloPelicula = (sala.getPelicula() != null) 
+                        ? sala.getPelicula().obtenerTitulo() 
+                        : "Sin asignar";
+            
+            //obtiene los datos de la sala
+            Object[] fila = new Object[]{
+                sala.getNombre(),
+                sala.getCapacidad(),
+                tituloPelicula
+            };
+            
+            //Agrega al modelo 
+            model.addRow(fila);
+        }
+    }
+    
+    public void actualizarComboPeliculas(ArrayList<Pelicula> peliculas) {
+        //Remueve cualquier iten de las peliculas
+        comboPeliculasSa1.removeAllItems();
+        comboPeliculasSa1.addItem("Seleccione una película");
+        //Busca la pelicula por el titulo
+        for (Pelicula pelicula : peliculas) {
+            comboPeliculasSa1.addItem(pelicula.obtenerTitulo());
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarCarritoV;
     private javax.swing.JButton botonAgregarPeliculaP;
