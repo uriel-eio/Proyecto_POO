@@ -6,15 +6,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 //import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class Inicio extends javax.swing.JFrame {
-    Controlador controlador;
+    private AuthController authController;
     
-    public Inicio(Controlador controlador) {
-        this.controlador = controlador;
+    public Inicio(AuthController authController) {
+        this.authController = authController;
         initComponents();
         this.setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass().getResource("../images/icono.png")).getImage());
         
     }
+    public void setControlador(AuthController authController) {
+        this.authController = authController;
+    }   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -214,7 +217,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordFieldFocusLost
 
     private void jButtonInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInicioSesionActionPerformed
-        this.controlador.iniciarSesion(this);
+        this.authController.intentarLogin();
     }//GEN-LAST:event_jButtonInicioSesionActionPerformed
 
     private void jLabelQuestionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelQuestionMouseClicked

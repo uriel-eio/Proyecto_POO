@@ -36,14 +36,14 @@ import javax.swing.JOptionPane;
                JOptionPane.showMessageDialog(
                    null, // Sin ventana padre (centrado en pantalla)
                    "Asiento " + this.numero + " reservado correctamente.",
-                   "✅ Reserva exitosa",  // Título del diálogo
+                   "Reserva exitosa",  // Título del diálogo
                    JOptionPane.INFORMATION_MESSAGE // Icono de información
                );
            } else {
                JOptionPane.showMessageDialog(
                    null,
                    "Error: El asiento " + this.numero + " ya está reservado.",
-                   "⚠️ Error en reserva",
+                   "Error en reserva",
                    JOptionPane.WARNING_MESSAGE // Icono de advertencia
                );
            }
@@ -61,14 +61,14 @@ import javax.swing.JOptionPane;
                JOptionPane.showMessageDialog(
                    null,
                    "Asiento " + this.numero + " liberado correctamente.",
-                   "✅ Liberación exitosa",
+                   "Liberación exitosa",
                    JOptionPane.INFORMATION_MESSAGE
                );
            } else {
                JOptionPane.showMessageDialog(
                    null,
                    "Info: El asiento " + this.numero + " ya estaba libre.",
-                   "ℹ️ Información",
+                   " Información",
                    JOptionPane.INFORMATION_MESSAGE
                );
            }

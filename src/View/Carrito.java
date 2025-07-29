@@ -10,8 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class Carrito extends javax.swing.JFrame {
     private Principal principal;
-    private Controlador controlador;
-    
+    private VentasController controlador;
 
     public Carrito() {
         initComponents();
@@ -45,7 +44,7 @@ public class Carrito extends javax.swing.JFrame {
         this.principal = principal;
     }
 
-    public void setControlador(Controlador controlador) {
+    public void setControlador(VentasController controlador) {
         this.controlador = controlador;
     }
     
@@ -185,14 +184,19 @@ public class Carrito extends javax.swing.JFrame {
             // Mensaje de error si no hay nada seleccionado
             JOptionPane.showMessageDialog(this, "Seleccione la orden de compra que quiere pagar", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_botonPagarActionPerformed
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        controlador.cerrarCarrito(this);
+        //controlador.cerrarCarrito(this);
+        //TODO: metodo que supongo va a minimizar el carrito
+        
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        controlador.minimizarCarrito(this);
+        //this.setState(JFrame.ICONIFIED); 
+        
+        //TODO: metodo que me imagino que va a hacer que vuelvas al menu principal
     }//GEN-LAST:event_jLabel12MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

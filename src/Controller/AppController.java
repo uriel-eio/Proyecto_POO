@@ -12,7 +12,7 @@ public class AppController {
     //instancia de todos los controladores especialistas
     private AuthController authController;
     private ClienteController controladorCliente;
-    private PeliculasController peliculasController;
+    //private PeliculasController peliculasController;
     private SalasController salasController;
     private VentasController ventasController;
     
@@ -44,8 +44,15 @@ public class AppController {
         this.authController = new AuthController(this, vistaInicio);
         
         //se pasa el controlador creado a la vista de inicio
-        this.vistaInicio.setControlador(this.authController);
+        this.vistaInicio.setControlador(this.authController); 
         this.vistaInicio.setVisible(true);
+    }//Añadir al constructor peliculas
+    public void setControllers(ClienteController cliente, 
+            SalasController salas, VentasController ventas) {
+        this.controladorCliente = cliente;
+        //this.peliculasController = peliculas;
+        this.salasController = salas;
+        this.ventasController = ventas;
     }
     
     //se oculta el login y construye la ventana principal con los controladores
@@ -53,7 +60,7 @@ public class AppController {
         this.vistaInicio.dispose(); //se oculta la ventana del login
         
         //se crea la vista principal
-        this.vistaPrincipal = new Principal(null);
+        this.vistaPrincipal = new Principal();
         
         //se crean los controladores especialistas
         /*this.controladorCliente = new ClienteController(repClientes, vistaPrincipal);
@@ -67,7 +74,7 @@ public class AppController {
         
         //carga los datos en las tablas de la vista
         this.controladorCliente.cargarClientesEnVista();
-        this.peliculasController.cargarPeliculasEnVista();
+        //this.peliculasController.cargarPeliculasEnVista();
         this.salasController.cargarDatosDeSalas();
         
         //se muestra la ventana principal

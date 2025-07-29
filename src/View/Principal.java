@@ -23,12 +23,19 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Principal extends javax.swing.JFrame {
-    Controlador controlador;
+    //Por añadir ...
+    private ClienteController clientesController;
+   //private PeliculasController peliculasController;
+    private SalasController salasController;
+    private VentasController ventasController;
     ClienteController controladorCliente;
     SalasController controladorSalas;
     RepositorioSalas salasRepositorio;
     
     public Principal(Controlador controlador, ClienteController controladorCliente) {
+        
+        //TODO: sugiere que eliminemos todo lo de aca y pongamos solo init components()
+        // pero antes de hacer cualquier cosa tenemos que corregir todo lo que lleve controlador
         this.controlador = controlador;
         this.controladorCliente = controladorCliente;
         UIManager.put("TabbedPane.selected", new Color(57,62,70));

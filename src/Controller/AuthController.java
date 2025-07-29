@@ -28,7 +28,7 @@ public class AuthController {
     }
     
     //metodo que se ejecuta cuando el usuario hace clic en el boton "acceder"
-    private void intentarLogin(){
+    public void intentarLogin(){
         //se obtienen los datos de los componentes de la vista
         String usuario = vistaInicio.jTextFieldUsuario.getText().trim();
         String password = new String(vistaInicio.jPasswordField.getPassword());

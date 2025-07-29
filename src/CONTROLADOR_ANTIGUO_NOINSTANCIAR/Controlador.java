@@ -1,8 +1,8 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
-package Controller;
+/*
+package CONTROLADOR_ANTIGUO_NOINSTANCIAR;
 
 import Model.Cliente;
 import Model.*;
@@ -125,7 +125,7 @@ public class Controlador {
         
         Principal principal = new Principal(this);
         principal.setVisible(true);
-        
+       */ 
         /*// Creación de las Sucursales iniciales
             Sucursal sucursal1 = new Sucursal("Country Club");
                 this.crearSucursal(sucursal1, principal);
@@ -190,6 +190,7 @@ public class Controlador {
         aux = Integer.parseInt(String.valueOf( ((DefaultTableModel)principal.tableSucursales.getModel()).getValueAt(principal.tableSucursales.getSelectedRow(), 0) ) );
         principal.tableSucursales.setValueAt(sucursales.buscarSucursal(sucursales.getRoot(), aux).getUbicacion(), principal.tableSucursales.getSelectedRow(), 1);        
     }*/
+/*
     }
     public void agregarAlCarrito(Principal principal){
         // Validamos que se haya elegido un Cliente, Sucursal, Sala y una cantidad de Tickets
@@ -237,7 +238,7 @@ public class Controlador {
         //Sucursal sucursal = sucursales.buscarSucursal(sucursales.getRoot(), Integer.parseInt(String.valueOf(principal.comboSucursalesV.getSelectedItem())) );
         //Sala sala = Sala.getSalas().buscarSala(sucursal.getSalas().getRoot(), Integer.parseInt(String.valueOf(principal.comboSalasV.getSelectedItem())) );
         //int cantidad = Integer.parseInt(String.valueOf(principal.spinnerTicketsV.getValue()));
-        
+        */
         /*// Se crean los tickets
         ListaDoble tickets = new ListaDoble();
         
@@ -273,7 +274,7 @@ public class Controlador {
         //this.cambiarSalaVentas(principal);
         //principal.spinnerTicketsV.setEnabled(false);
 
-    }
+/*    }
        
     public void botonAgregarPelicula(Principal principal){
         try {
@@ -503,7 +504,7 @@ public class Controlador {
         }
     }*/
     
-    public void cerrar(Principal principal){
+/*    public void cerrar(Principal principal){
         // Metodo para cerrar el sistema
         
         try {
@@ -793,7 +794,7 @@ public class Controlador {
         }
     }*/
     
-    public void modificarTelefonoCliente(Principal principal, String nuevoTelefono, long cedula) {
+/*    public void modificarTelefonoCliente(Principal principal, String nuevoTelefono, long cedula) {
         // desde el archivo obetengo la lita y la transformo en un array
         RepositorioClientes repo = new RepositorioClientes();
         ArrayList<Cliente> clientes = repo.obtenerCliente();
@@ -871,7 +872,7 @@ public class Controlador {
         });
     }*/
     
-    public void mostrarPeliculasEnComboPeliculas(Principal principal){
+/*    public void mostrarPeliculasEnComboPeliculas(Principal principal){
         // Valida todo lo necesario para mostar las salas y peliculas
         principal.comboSalasV.removeAllItems();
         principal.comboSalasV.addItem("Sala");
@@ -891,7 +892,7 @@ public class Controlador {
             /*for (int i = 0; i < sucursal.getSalas().size(sucursal.getSalas().getRoot()); i++) {
                 principal.comboSalasV.addItem(String.valueOf(i+1));
             }*/
-        }
+/*        }
     }
     
     /*public void mostrarPeliculasEnTablaPeliculas(Principal principal){
@@ -929,7 +930,7 @@ public class Controlador {
         filtros.clear();
     }*/
     
-    private void mostrarPeliculasEnTablaPeliculas(Pelicula pelicula, DefaultTableModel modelo){
+/*    private void mostrarPeliculasEnTablaPeliculas(Pelicula pelicula, DefaultTableModel modelo){
         modelo.addRow(new Object[]{
             pelicula.obtenerTitulo(), pelicula.obtenerGenero(), pelicula.obtenerRestriccionEdad()
         });
@@ -1057,11 +1058,11 @@ public class Controlador {
         carrito.tableCarrito.setValueAt(orden.getPrecioTotal(),carrito.tableCarrito.getSelectedRow(), 7);
     }*/
     
-    private void agregarBotonesAsientos() {
+/*    private void agregarBotonesAsientos() {
         
         //obtiene el panel donde se vam a generar las salas
         JPanel panel = vista.getPanelAsientos();
-        panel.removeAll(); // cada que se actualiza la sala se remueve todo
+/*        panel.removeAll(); // cada que se actualiza la sala se remueve todo
         panel.setLayout(new GridLayout(0, 5, 5, 5)); // 10 columnas, espacio 5 px
 
         ArrayList<Asiento> listaAsientos = sala.getAsientos();
@@ -1133,7 +1134,7 @@ public class Controlador {
     }
     
  }
-
+*/
 
 
 

@@ -27,8 +27,9 @@ public class VentasController {
      * Orquesta la apertura de la ventana del carrito para un cliente específico.
      * @param cedula La cédula del cliente cuyo carrito se va a abrir.
      */
+    
     public void abrirCarrito(long cedula) {
-        // Usa el método correcto del repositorio de clientes
+        // Buscamos al cliente
         Cliente clienteEncontrado = repoClientes.buscarClientePorCedula(cedula);
         if (clienteEncontrado == null) {
             JOptionPane.showMessageDialog(vistaPrincipal, "No se encontró el cliente.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -38,11 +39,13 @@ public class VentasController {
         this.clienteActivo = clienteEncontrado;
         this.vistaCarritoActiva = new Carrito();
         // Configura las relaciones entre los componentes
-        //vistaCarritoActiva.setControlador(this);
+        vistaCarritoActiva.setControlador(this);
         vistaCarritoActiva.setPrincipal(vistaPrincipal);
         // "Pinta" la Vista con los datos del Modelo
         vistaCarritoActiva.labelNombre.setText(clienteActivo.getNombre());
+        //De donde es esto? lo comento por si acaso
         //vistaCarritoActiva.labelCedula.setText(String.valueOf(clienteActivo.getCedula()));
+        
         ArrayList<OrdenCompra> ordenes = clienteActivo.getCarritoModel().getOrdenesEnCarrito();
         vistaCarritoActiva.actualizarTabla(ordenes);
         // Gestiona la visibilidad de las ventanas
@@ -59,6 +62,7 @@ public class VentasController {
             JOptionPane.showMessageDialog(vistaCarritoActiva, "Error: No hay un cliente activo.", "Error de Sesión", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        // TODO COMENTEN
         CarritoModelo carritoDelCliente = clienteActivo.getCarritoModel();
         OrdenCompra ordenAPagar = carritoDelCliente.buscarOrden(numOrden);
         if (ordenAPagar != null) {
