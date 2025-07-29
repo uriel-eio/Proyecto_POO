@@ -6,8 +6,7 @@ public class Sala implements ISala {
     private final String id;
     private final String nombre;
     private final int capacidad;
-    private Pelicula pelicula; 
-    
+    private Pelicula pelicula;
     private ArrayList<Asiento> asientos;
 
     public Sala(String id, String nombre, int capacidad) {
@@ -16,18 +15,22 @@ public class Sala implements ISala {
         this.capacidad = capacidad;
         this.pelicula = null;
         this.asientos = new ArrayList<>();
+        generarAsientos();
     }
     
-    private void generarAsientos(){
+    private void generarAsientos() {
         for (int i = 1; i <= capacidad; i++) {
             String numero = String.format("%03d", i);
-            if (i % 10 == 0) { // cada 10 asientos es VIP
+            if (i % 10 == 0) {
                 asientos.add(new AsientoVIP("VIP-" + numero, true, true));
             } else {
                 asientos.add(new AsientoEstandar("E-" + numero));
             }
         }
     }
+
+
+
 
     public ArrayList<Asiento> getAsientos() {
         return asientos;
@@ -36,7 +39,7 @@ public class Sala implements ISala {
     public int getCapacidad() {
         return capacidad;
     }
-    
+        
 
     public Pelicula getPelicula() {
         return pelicula;

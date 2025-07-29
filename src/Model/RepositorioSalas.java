@@ -72,6 +72,16 @@ public class RepositorioSalas {
         }
         return salas;
     }
+    
+    //Metodo para buscar salas 
+    public Sala buscarSalaPorNombre(String nombre) {
+        for (Sala sala : this.getSala()) { 
+            if (sala.getNombre().equalsIgnoreCase(nombre)) {
+                return sala;
+            }
+        }
+        return null; // Si no encuentra la sala
+    }
 
     private String salaToCSV(Sala sala){
         return sala.obtenerId() + "," + sala.getNombre() + "," + sala.contarAsientosDisponibles();

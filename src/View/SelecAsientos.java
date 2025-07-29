@@ -4,14 +4,8 @@
  */
 package View;
 
-import Model.Asiento;
+import Controller.AsientosController;
 import Model.Sala;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 
 
@@ -22,13 +16,18 @@ import javax.swing.JPanel;
 public class SelecAsientos extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SelecAsientos.class.getName());
-
+    private final Sala sala;
+    private final boolean isVip;
     /**
      * Creates new form Asientos
      */
-    public SelecAsientos() {
-        initComponents();
-        setLocationRelativeTo(null);
+
+    public SelecAsientos(Sala sala, boolean isVip) {
+        this.sala = sala;
+        this.isVip = isVip;
+        initComponents(); // Inicializa los componentes Swing
+        setLocationRelativeTo(null); // Centra la ventana
+        new AsientosController(sala, this, isVip); // Inicia el controlador // Pasar isVip al controlador
     }
 
     /**
