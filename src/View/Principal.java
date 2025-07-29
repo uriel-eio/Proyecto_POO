@@ -26,6 +26,7 @@ public class Principal extends javax.swing.JFrame {
     Controlador controlador;
     ClienteController controladorCliente;
     SalasController controladorSalas;
+    RepositorioSalas salasRepositorio;
     
     public Principal(Controlador controlador, ClienteController controladorCliente) {
         this.controlador = controlador;
@@ -533,7 +534,7 @@ public class Principal extends javax.swing.JFrame {
         comboSalasV.setBackground(new java.awt.Color(153, 153, 153));
         comboSalasV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         comboSalasV.setForeground(new java.awt.Color(255, 255, 255));
-        comboSalasV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sala" }));
+        comboSalasV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sala", "VIP", "Estandar" }));
         comboSalasV.setFocusable(false);
         comboSalasV.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -810,6 +811,25 @@ public class Principal extends javax.swing.JFrame {
 
     private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
         this.spinnerTicketsV.setValue(0);
+        
+        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
+        this.spinnerTicketsV.setValue(0); // Resetear spinner
+
+        // Obtener la sala seleccionada (ej: desde una tabla)
+        int filaSeleccionada = tableSalas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
+            return;
+        }
+
+        String nombreSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+        Sala sala = salasRepositorio.buscarSalaPorNombre(nombreSala);
+
+        if (sala != null) {
+            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
+            ventanaAsientos.setVisible(true);
+        }
+        
     }//GEN-LAST:event_comboSalasVActionPerformed
 
     private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
