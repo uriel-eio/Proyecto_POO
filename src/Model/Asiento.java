@@ -1,49 +1,83 @@
-package Model;
+    package Model;
+
+import javax.swing.JOptionPane;
 
 
-public abstract class Asiento implements IAsiento {
-    private String numero;
-    private boolean estado; // false = libre, true = reservado
+    public abstract class Asiento implements IAsiento {
+        private String numero;
+        private boolean estado; // false = libre, true = reservado
 
-    public Asiento(String numero) {
-        this.numero = numero;
-        //Se dejará por defecto que el asiento está libre
-        this.estado = false; 
-    }
-
-    @Override
-    public String obtenerNumero() {
-        return this.numero;
-    }
-
-    @Override
-    public boolean obtenerEstado() {
-        return this.estado;
-    }
-
-    @Override
-    public void reservar() {
-        if (!this.estado) {
-            this.estado = true;
-            System.out.println("Asiento " + this.numero + " reservado correctamente.");
-        } else {
-            System.out.println("Error: El asiento " + this.numero + " ya se encuentra reservado.");
+        public Asiento(String numero) {
+            this.numero = numero;
+            //Se dejará por defecto que el asiento está libre
+            this.estado = false; 
+            //guardarEnArchivo();
         }
-    }
 
-    @Override
-    public void liberar() {
-        if (this.estado) {
-            this.estado = false;
-            System.out.println("Asiento " + this.numero + " liberado correctamente.");
-        } else {
-            System.out.println("Info: El asiento " + this.numero + " ya se encontraba libre.");
+        @Override
+        public String obtenerNumero() {
+            return this.numero;
         }
-    } 
-    //@TODO: debemos marcar un precio base y programarlo
-    @Override
-    public abstract double obtenerPrecio(double precioBase);
 
-    @Override
-    public abstract boolean isVIP();
-}
+        @Override
+        public boolean obtenerEstado() {
+            return this.estado;
+        }
+
+        /**
+        * Método para reservar el asiento.
+        * - Si está libre, lo marca como reservado y muestra confirmación.
+        * - Si ya está reservado, muestra un mensaje de error.
+        */
+       @Override
+       public void reservar() {
+           if (!this.estado) {
+               this.estado = true; // Cambia el estado a "reservado"
+               JOptionPane.showMessageDialog(
+                   null, // Sin ventana padre (centrado en pantalla)
+                   "Asiento " + this.numero + " reservado correctamente.",
+                   "✅ Reserva exitosa",  // Título del diálogo
+                   JOptionPane.INFORMATION_MESSAGE // Icono de información
+               );
+           } else {
+               JOptionPane.showMessageDialog(
+                   null,
+                   "Error: El asiento " + this.numero + " ya está reservado.",
+                   "⚠️ Error en reserva",
+                   JOptionPane.WARNING_MESSAGE // Icono de advertencia
+               );
+           }
+       }
+
+       /**
+        * Método para liberar el asiento.
+        * - Si estaba reservado, lo marca como libre y muestra confirmación.
+        * - Si ya estaba libre, muestra un mensaje informativo.
+        */
+       @Override
+       public void liberar() {
+           if (this.estado) {
+               this.estado = false; // Cambia el estado a "libre"
+               JOptionPane.showMessageDialog(
+                   null,
+                   "Asiento " + this.numero + " liberado correctamente.",
+                   "✅ Liberación exitosa",
+                   JOptionPane.INFORMATION_MESSAGE
+               );
+           } else {
+               JOptionPane.showMessageDialog(
+                   null,
+                   "Info: El asiento " + this.numero + " ya estaba libre.",
+                   "ℹ️ Información",
+                   JOptionPane.INFORMATION_MESSAGE
+               );
+           }
+       }
+       
+        //@TODO: debemos marcar un precio base y programarlo
+        @Override
+        public abstract double obtenerPrecio(double precioBase);
+
+        @Override
+        public abstract boolean isVIP();
+    }

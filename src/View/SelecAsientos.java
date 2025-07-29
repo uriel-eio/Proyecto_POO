@@ -4,14 +4,8 @@
  */
 package View;
 
-import Model.Asiento;
+import Controller.AsientosController;
 import Model.Sala;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 
 
@@ -22,13 +16,18 @@ import javax.swing.JPanel;
 public class SelecAsientos extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SelecAsientos.class.getName());
-
+    private final Sala sala;
+    private final boolean isVip;
     /**
      * Creates new form Asientos
      */
-    public SelecAsientos() {
-        initComponents();
-        setLocationRelativeTo(null);
+
+    public SelecAsientos(Sala sala, boolean isVip) {
+        this.sala = sala;
+        this.isVip = isVip;
+        initComponents(); // Inicializa los componentes Swing
+        setLocationRelativeTo(null); // Centra la ventana
+        new AsientosController(sala, this, isVip); // Inicia el controlador // Pasar isVip al controlador
     }
 
     /**
@@ -62,7 +61,7 @@ public class SelecAsientos extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 522, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -70,9 +69,9 @@ public class SelecAsientos extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(190, Short.MAX_VALUE)
+                .addContainerGap(244, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(188, 188, 188))
+                .addGap(236, 236, 236))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -81,11 +80,11 @@ public class SelecAsientos extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
