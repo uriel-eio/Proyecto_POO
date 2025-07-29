@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
 import Model.*;
 import View.*;
 
-/**
- *
- * @author USER
- */
 public class AppController {
     
     //instancia de todos los repositorios
@@ -19,7 +11,7 @@ public class AppController {
     
     //instancia de todos los controladores especialistas
     private AuthController authController;
-    private ClientesController clientesController;
+    private ClienteController controladorCliente;
     private PeliculasController peliculasController;
     private SalasController salasController;
     private VentasController ventasController;
@@ -35,13 +27,15 @@ public class AppController {
         this.repSalas = new RepositorioSalas();
         this.repClientes = new RepositorioClientes();
         
-        //se llama a los metodos de inicializacion de cada uno
-        repPeliculas.creacionPeliculasPredeterminadas();
-        repSalas.crearSala();
-        repClientes.obtenerCliente();
         
+        iniciarDatos();       
     }
     
+    public void iniciarDatos(){
+        repPeliculas.creacionPeliculasPredeterminadas();
+        repSalas.crearSala();
+        repClientes.crearCliente();
+    }
     //crea el flujo de autenticacion mostrando la ventana del login
     public void iniciarAplicacion(){
         this.vistaInicio = new Inicio(null);
@@ -62,20 +56,17 @@ public class AppController {
         this.vistaPrincipal = new Principal(null);
         
         //se crean los controladores especialistas
-        this.clientesController = new ClientesController(repClientes, vistaPrincipal);
+        /*this.controladorCliente = new ClienteController(repClientes, vistaPrincipal);
         this.peliculasController = new PeliculasController(repPeliculas, vistaPrincipal);
-        this.salasController = new SalasController(repoSalas, repPeliculas, vistaPrincipal);
-        this.ventasController = new VentasController(repClientes, vistaPrincipal);
+        this.salasController = new SalasController(repSalas, repPeliculas, vistaPrincipal);
+        this.ventasController = new VentasController(repClientes, vistaPrincipal);*/
         
         //instancias de los controladores a la vista previa
         //para que los botones funcionen
-        vistaPrincipal.setControllers(clientesController,
-                                    peliculasController,
-                                    salasController,
-                                    ventasController);
+        vistaPrincipal.setControllers(controladorCliente, peliculasController, salasController, ventasController);
         
         //carga los datos en las tablas de la vista
-        this.clientesController.cargarClientesEnVista();
+        this.controladorCliente.cargarClientesEnVista();
         this.peliculasController.cargarPeliculasEnVista();
         this.salasController.cargarDatosDeSalas();
         

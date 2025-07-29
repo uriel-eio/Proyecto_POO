@@ -7,15 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
-/**
- *
- * @author usuario
- */
 public class RepositorioPeliculas {
     
     private static final String ARCHIVO_PELICULAS = "peliculas.txt";
@@ -89,5 +81,15 @@ public class RepositorioPeliculas {
         }
         return peliculas;
     }
+       
+        //es un buscasdor por titulo, lo voy a  usar en el Controlador de la Sala
+    public Pelicula buscarPeliculaPorTitulo(String tituloPelicula) { //metodo a partir de pelicula
+            //voy a buscar en el Array
+        for (Pelicula c : obtenerCartelera()) { //metodo del array 
+            if (c.obtenerTitulo() == tituloPelicula) return c; //validacion
+        }
+        return null;
+    }
+
     
 }

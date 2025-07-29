@@ -11,7 +11,12 @@ public class SalasController {
     private final RepositorioPeliculas repoPeliculas;
     private final Principal vistaPrincipal;
 
-
+    /*private VentasController ventasController;
+    
+    public void setVentasController(VentasController ventasController) {
+        this.ventasController = ventasController;
+    }*/
+    
     public SalasController(RepositorioSalas repoSalas, RepositorioPeliculas repoPeliculas, Principal vista) {
         this.repoSalas = repoSalas;
         this.repoPeliculas = repoPeliculas;
@@ -28,7 +33,7 @@ public class SalasController {
         vistaPrincipal.actualizarComboPeliculas(peliculas);
     }
 
-    public void asignarPeliculaASala() {
+    public void asignarPeliculaASala(int salaID, Pelicula pelicula) {
         int filaSeleccionada = vistaPrincipal.getTableSalas().getSelectedRow();
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(vistaPrincipal, "Por favor, seleccione una sala de la tabla.");

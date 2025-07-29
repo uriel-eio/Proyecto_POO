@@ -1,6 +1,8 @@
 package Model;
+import static Model.RepositorioSalas.ARCHIVO_SALAS;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,7 +24,28 @@ public class RepositorioClientes {
             e.printStackTrace();
         }
     
-}
+    }
+    
+    //<-----------------AQUI---------------------------------------------------<<MIRAME
+    //HOLA MI AMOR COMO ESTAS??
+    public void crearCliente(){
+        File archivo = new File(ARCHIVO_CLIENTES    );
+        //Verificar la existencia del archivo.
+        if(archivo.exists()){
+            return;
+        }
+        
+        //Uso de ArrayList para añadir salas predeterminadas.
+        ArrayList<Cliente> clienteNuevo = new ArrayList<>();
+        Cliente Ana = new Cliente(002, "Ana", "34");
+        Cliente Carlos = new Cliente(003, "Carlos", "56");
+        clienteNuevo.add(Ana);
+        clienteNuevo.add(Carlos);
+        //Guarda salas en el archivo.
+        for(Cliente cliente : clienteNuevo){
+            guardarCliente(cliente);
+        }
+    }
  
     //metodo para extraer la informacion de los clientes
     public ArrayList<Cliente> obtenerCliente(){
@@ -33,7 +56,7 @@ public class RepositorioClientes {
             while ((line = br.readLine()) != null){
                 String[] data = line.split(",");
                 
-                if (data.length == 5) {
+                if (data.length == 3) {
                     clientes.add(new Cliente(
                             Long.parseLong(String.valueOf(data[0])),
                             data[1],

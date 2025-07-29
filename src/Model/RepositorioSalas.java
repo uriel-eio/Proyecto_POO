@@ -72,7 +72,16 @@ public class RepositorioSalas {
         }
         return salas;
     }
-
+    
+    //es un metodo para bucar, lo use en el controlador de Sala
+    public Sala buscarSalaPorNombre(String nombreSala) { //es el parametro que voy a buscar
+        // voy a buscar en el array
+        for (Sala c : getSala()) { //este es el metodo del metodo de esta clase, ArrayList para obtener las salas
+            if (c.getNombre() == nombreSala) return c; //este es el geter de la clase Sala
+        }
+        return null;
+    }
+    
     private String salaToCSV(Sala sala){
         return sala.obtenerId() + "," + sala.getNombre() + "," + sala.contarAsientosDisponibles();
     }
