@@ -12,7 +12,7 @@ public class AppController {
     //instancia de todos los controladores especialistas
     private AuthController authController;
     private ClienteController controladorCliente;
-    //private PeliculasController peliculasController;
+    private PeliculasController peliculasController;
     private SalasController salasController;
     private VentasController ventasController;
     
@@ -63,10 +63,10 @@ public class AppController {
         this.vistaPrincipal = new Principal();
         
         //se crean los controladores especialistas
-        /*this.controladorCliente = new ClienteController(repClientes, vistaPrincipal);
+        this.controladorCliente = new ClienteController(repClientes, vistaPrincipal);
         this.peliculasController = new PeliculasController(repPeliculas, vistaPrincipal);
         this.salasController = new SalasController(repSalas, repPeliculas, vistaPrincipal);
-        this.ventasController = new VentasController(repClientes, vistaPrincipal);*/
+        this.ventasController = new VentasController(repClientes, vistaPrincipal);
         
         //instancias de los controladores a la vista previa
         //para que los botones funcionen
@@ -74,7 +74,7 @@ public class AppController {
         
         //carga los datos en las tablas de la vista
         this.controladorCliente.cargarClientesEnVista();
-        //this.peliculasController.cargarPeliculasEnVista();
+        this.peliculasController.cargarPeliculasEnVista();
         this.salasController.cargarDatosDeSalas();
         
         //se muestra la ventana principal
