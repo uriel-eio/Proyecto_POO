@@ -56,7 +56,7 @@ public class RepositorioClientes {
             while ((line = br.readLine()) != null){
                 String[] data = line.split(",");
                 
-                if (data.length == 3) {
+                if (data.length == 4) {
                     clientes.add(new Cliente(
                             Long.parseLong(String.valueOf(data[0])),
                             data[1],
