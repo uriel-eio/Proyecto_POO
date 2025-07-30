@@ -65,6 +65,10 @@ public class SalasController {
             JOptionPane.showMessageDialog(vistaPrincipal, "Error: No se encontraron la sala o la película en los repositorios.", "Error de Datos", JOptionPane.ERROR_MESSAGE);
         }
     }
+     
+     public void iniciarDatosDeSalaEnVista() {
+        cargarDatosDeSalas();
+    }
 
 
 }

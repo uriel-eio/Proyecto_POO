@@ -14,6 +14,7 @@ public class ClienteController {
     // #### Variables con los datos principales ####
     private RepositorioClientes repoClientes;
     //private Cliente clienteActivo;
+    private Principal vista;
 
     // #### VARIABLES DE MANEJO DE ESTADO ####
     //private Cliente clienteActivo;
@@ -27,8 +28,9 @@ public class ClienteController {
         //agregarBotonesAsientos();
     }
 
-    public ClienteController() {
+    public ClienteController(RepositorioClientes repoClientes, Principal vista) {
         this.repoClientes = new RepositorioClientes();
+        this.vista = vista;
         //Creamos los archivos .txt con datos si no existen
         //repoClientes.inicializarDatosPredeterminados();
     }
@@ -209,22 +211,22 @@ public class ClienteController {
         }
     }
     
-    private void mostrarClienteEnTablaClientes(Cliente cliente, Principal principal){
-        
-        RepositorioClientes repo = new RepositorioClientes();
-        ArrayList<Cliente> clientes = repo.obtenerCliente();             
-        
-        repoClientes.guardarCliente(cliente);
-        //clientes.insertarCliente(clientes.getRoot(), cliente);
-        
-        // Se agrega el cliente al comboBox de Ventas
-        principal.comboClientesV.addItem(String.valueOf(cliente.getCedula()));
-        
-        DefaultTableModel modelo = (DefaultTableModel)principal.tableClientes.getModel();
-        
-        modelo.addRow(new Object[]{
-            cliente.getNombre(), cliente.getCedula(), cliente.getTelefono()
-        });
+    public void cargarClientesEnVista() {
+        DefaultTableModel modelo = (DefaultTableModel) vista.tableClientes.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla primero
+
+        ArrayList<Cliente> clientes = repoClientes.obtenerCliente(); // Obtener todos los clientes
+
+        for (Cliente cliente : clientes) {
+            modelo.addRow(new Object[]{
+                cliente.getNombre(),
+                cliente.getCedula(),
+                cliente.getTelefono()
+            });
+
+            // También puedes llenar el comboBox de clientes si lo necesitas
+            principal.comboClientesV.addItem(String.valueOf(cliente.getCedula()));
+        }
     }
     
 }

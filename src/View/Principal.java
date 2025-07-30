@@ -31,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
     ClienteController controladorCliente;
     SalasController controladorSalas;
     RepositorioSalas salasRepositorio;
+    private PeliculasController peliculasController;
     
     public Principal(Controlador controlador, ClienteController controladorCliente) {
         
@@ -55,6 +56,10 @@ public class Principal extends javax.swing.JFrame {
         this.controlador.iniciarTablaPeliculas(this);
         //this.controlador.iniciarTablaTickets(this);
         //this.controlador.iniciarRadioButons(this);
+    }
+
+    public Principal() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1643,4 +1648,13 @@ public class Principal extends javax.swing.JFrame {
     public void setTextFieldPrecioV(JTextField textFieldPrecioV) {
         this.textFieldPrecioV = textFieldPrecioV;
     }
+
+    public void setControllers(ClienteController controladorCliente, PeliculasController peliculasController,
+                            SalasController salasController, VentasController ventasController) {
+        this.clientesController = controladorCliente;
+        this.peliculasController = peliculasController;
+        this.salasController = salasController;
+        this.ventasController = ventasController;
+    }
+
 }

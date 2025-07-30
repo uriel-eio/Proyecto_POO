@@ -48,9 +48,9 @@ public class AppController {
         this.vistaInicio.setVisible(true);
     }//Añadir al constructor peliculas
     public void setControllers(ClienteController cliente, 
-            SalasController salas, VentasController ventas) {
+            SalasController salas, PeliculasController peliculas, VentasController ventas) {
         this.controladorCliente = cliente;
-        //this.peliculasController = peliculas;
+        this.peliculasController = peliculas;
         this.salasController = salas;
         this.ventasController = ventas;
     }
@@ -74,8 +74,8 @@ public class AppController {
         
         //carga los datos en las tablas de la vista
         this.controladorCliente.cargarClientesEnVista();
-        this.peliculasController.cargarPeliculasEnVista();
-        this.salasController.cargarDatosDeSalas();
+        this.peliculasController.obtenerCartelera();
+        this.salasController.iniciarDatosDeSalaEnVista();
         
         //se muestra la ventana principal
         vistaPrincipal.setVisible(true);
