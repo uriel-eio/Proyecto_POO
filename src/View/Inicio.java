@@ -160,7 +160,7 @@ public class Inicio extends javax.swing.JFrame {
         jPanel1.add(jLabelAcerca, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 210, 50));
 
         jLabelImagen1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BannerInicio.png"))); // NOI18N
-        jPanel1.add(jLabelImagen1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 3, 1000, -1));
+        jPanel1.add(jLabelImagen1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1000, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 344));
 

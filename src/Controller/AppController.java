@@ -72,7 +72,7 @@ public class AppController {
         this.controladorPeliculas = new PeliculasController(repPeliculas, principal);
         this.controladorSalas = new SalasController(repSalas, repPeliculas, principal);
         this.controladorVentas = new VentasController(repClientes, principal);
-        
+
         //instancias de los controladores a la vista previa
         //para que los botones funcionen
         principal.setControllers(controladorCliente, controladorPeliculas, controladorSalas, controladorVentas);
@@ -81,7 +81,8 @@ public class AppController {
         this.controladorCliente.cargarClientesEnVista();
         this.controladorPeliculas.obtenerCartelera();
         this.controladorSalas.iniciarDatosDeSalaEnVista();
-        
+        this.controladorPeliculas.cargarPeliculasEnVista();
+
         //se muestra la ventana principal
         principal.setVisible(true);
     }

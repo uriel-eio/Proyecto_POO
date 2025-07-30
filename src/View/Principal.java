@@ -32,32 +32,28 @@ public class Principal extends javax.swing.JFrame {
     private AppController controladorApp;
 
     
-    public Principal(AppController controladorApp, ClienteController controladorCliente, PeliculasController controladorPeliculas, SalasController controladorSalas, VentasController controladorVentas) {
-        
-        //TODO: sugiere que eliminemos todo lo de aca y pongamos solo init components()
-        // pero antes de hacer cualquier cosa tenemos que corregir todo lo que lleve controlador
-        this.controladorCliente = controladorCliente;
-        this.controladorPeliculas = controladorPeliculas;
-        this.controladorSalas = controladorSalas;
-        this.controladorVentas = controladorVentas;
-        this.controladorApp = controladorApp;
-        
-        UIManager.put("TabbedPane.selected", new Color(57,62,70));
+    public Principal() {
         initComponents();
-        jTabbedPane2.setForeground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("../images/icono.png")).getImage());
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);      
-        this.setSize(600, 430);
-        this.setBackground(new Color(0,0,0,0));
         
-        this.controladorApp.iniciarAplicacion();
-        this.controladorApp.iniciarDatos();
+        // Aquí va toda la configuración puramente visual
+        UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
+        jTabbedPane2.setForeground(Color.WHITE);
+        setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setSize(600, 430);
+        this.setBackground(new Color(0, 0, 0, 0));
     }
 
-    public Principal() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setControllers(AppController app, ClienteController clientes, PeliculasController peliculas, SalasController salas, VentasController ventas) {
+      this.controladorApp = app;
+      this.controladorCliente = clientes;
+      this.controladorPeliculas = peliculas;
+      this.controladorSalas = salas;
+      this.controladorVentas = ventas;
     }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

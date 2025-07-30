@@ -4,7 +4,11 @@ import Model.Pelicula;
 import Model.RepositorioPeliculas;
 import Model.RestriccionesEdad;
 import View.Principal;
-
+import Model.*;
+import View.Principal;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -27,7 +31,20 @@ public class PeliculasController {
     public ArrayList<Pelicula> obtenerCartelera() {
         return repoPeliculas.obtenerCartelera();
     }
+    public void cargarPeliculasEnVista() {
+        DefaultTableModel modelo = (DefaultTableModel) vistaPrincipal.getTablePeli().getModel();
+        modelo.setRowCount(0); // Limpia la tabla para evitar duplicados
 
+        ArrayList<Pelicula> peliculas = repoPeliculas.obtenerCartelera();
+        for (Pelicula pelicula : peliculas) {
+            modelo.addRow(new Object[]{
+                pelicula.obtenerTitulo(),
+                pelicula.obtenerGenero(),
+                pelicula.obtenerRestriccionEdad().name() // .name() convierte el enum a texto (A, B, C)
+
+            });
+        }
+    }
     /**
      * Agrega una nueva película a la cartelera.
      */
@@ -65,5 +82,8 @@ public class PeliculasController {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(vistaPrincipal, "La duración debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
+
+        
     }
 }
