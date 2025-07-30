@@ -30,6 +30,7 @@ public class Principal extends javax.swing.JFrame {
     private SalasController controladorSalas;
     private RepositorioSalas salasRepositorio;
     private AppController controladorApp;
+
     
     public Principal(AppController controladorApp, ClienteController controladorCliente, PeliculasController controladorPeliculas, SalasController controladorSalas, VentasController controladorVentas) {
         
@@ -52,6 +53,10 @@ public class Principal extends javax.swing.JFrame {
         
         this.controladorApp.iniciarAplicacion();
         this.controladorApp.iniciarDatos();
+    }
+
+    public Principal() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -764,8 +769,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
         
-        this.controladorCliente = new ClienteController();
-        
         if(String.valueOf(comboClientesV.getSelectedItem()).equals("Clientes")){
             labelNombreCliente.setText("Nombre Cliente");
             return;
@@ -1315,4 +1318,13 @@ public class Principal extends javax.swing.JFrame {
     public void setTextFieldPrecioV(JTextField textFieldPrecioV) {
         this.textFieldPrecioV = textFieldPrecioV;
     }
+
+    /*public void setControllers(ClienteController controladorCliente, PeliculasController peliculasController,
+                            SalasController salasController, VentasController ventasController) {
+        this.clientesController = controladorCliente;
+        this.peliculasController = peliculasController;
+        this.salasController = salasController;
+        this.ventasController = ventasController;
+    }*/
+
 }
