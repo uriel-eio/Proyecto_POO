@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 public class Carrito extends javax.swing.JFrame {
     private Principal principal;
-    private VentasController controlador;
+    private VentasController controladorVentas;
 
     public Carrito() {
         initComponents();
@@ -44,8 +44,8 @@ public class Carrito extends javax.swing.JFrame {
         this.principal = principal;
     }
 
-    public void setControlador(VentasController controlador) {
-        this.controlador = controlador;
+    public void setControladorVentas(VentasController controladorVentas) {
+        this.controladorVentas = controladorVentas;
     }
     
     
@@ -60,8 +60,6 @@ public class Carrito extends javax.swing.JFrame {
         labelNombre = new javax.swing.JLabel();
         botonPagar = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
 
         setUndecorated(true);
         setResizable(false);
@@ -90,7 +88,7 @@ public class Carrito extends javax.swing.JFrame {
         tableCarrito.setFocusable(false);
         jScrollPane1.setViewportView(tableCarrito);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 610, 190));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 610, 190));
 
         botonRegresar.setBackground(new java.awt.Color(153, 153, 153));
         botonRegresar.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -138,27 +136,11 @@ public class Carrito extends javax.swing.JFrame {
 
         jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 240, 50));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Equis.png"))); // NOI18N
-        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel11MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, -1, -1));
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Minimizar.png"))); // NOI18N
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, -1, -1));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,8 +160,8 @@ public class Carrito extends javax.swing.JFrame {
             // Obtenemos solo el ID de la orden desde la tabla
             int numOrden = (int) tableCarrito.getModel().getValueAt(tableCarrito.getSelectedRow(), 0);
 
-            // Le pasamos únicamente el ID al controlador
-            controlador.pagarOrden(numOrden);
+            // Le pasamos únicamente el ID al controladorVentas
+            controladorVentas.pagarOrden(numOrden);
         } else {
             // Mensaje de error si no hay nada seleccionado
             JOptionPane.showMessageDialog(this, "Seleccione la orden de compra que quiere pagar", "Error", JOptionPane.ERROR_MESSAGE);
@@ -187,23 +169,9 @@ public class Carrito extends javax.swing.JFrame {
         
     }//GEN-LAST:event_botonPagarActionPerformed
 
-    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        //controlador.cerrarCarrito(this);
-        //TODO: metodo que supongo va a minimizar el carrito
-        
-    }//GEN-LAST:event_jLabel11MouseClicked
-
-    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        //this.setState(JFrame.ICONIFIED); 
-        
-        //TODO: metodo que me imagino que va a hacer que vuelvas al menu principal
-    }//GEN-LAST:event_jLabel12MouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonPagar;
     private javax.swing.JButton botonRegresar;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel7;

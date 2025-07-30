@@ -23,21 +23,24 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Principal extends javax.swing.JFrame {
-    //Por añadir ...
-    private ClienteController clientesController;
-   //private PeliculasController peliculasController;
-    private SalasController salasController;
-    private VentasController ventasController;
-    ClienteController controladorCliente;
-    SalasController controladorSalas;
-    RepositorioSalas salasRepositorio;
+
+    private PeliculasController controladorPeliculas;
+    private VentasController controladorVentas;
+    private ClienteController controladorCliente;
+    private SalasController controladorSalas;
+    private RepositorioSalas salasRepositorio;
+    private AppController controladorApp;
     
-    public Principal(Controlador controlador, ClienteController controladorCliente) {
+    public Principal(AppController controladorApp, ClienteController controladorCliente, PeliculasController controladorPeliculas, SalasController controladorSalas, VentasController controladorVentas) {
         
         //TODO: sugiere que eliminemos todo lo de aca y pongamos solo init components()
         // pero antes de hacer cualquier cosa tenemos que corregir todo lo que lleve controlador
-        this.controlador = controlador;
         this.controladorCliente = controladorCliente;
+        this.controladorPeliculas = controladorPeliculas;
+        this.controladorSalas = controladorSalas;
+        this.controladorVentas = controladorVentas;
+        this.controladorApp = controladorApp;
+        
         UIManager.put("TabbedPane.selected", new Color(57,62,70));
         initComponents();
         jTabbedPane2.setForeground(Color.WHITE);
@@ -47,14 +50,8 @@ public class Principal extends javax.swing.JFrame {
         this.setSize(600, 430);
         this.setBackground(new Color(0,0,0,0));
         
-        //----------Inicializamos las tablas----------
-        this.controlador.iniciarTablaSucursales(this);
-        this.controlador.iniciarTablaSalas(this);
-        //this.controlador.iniciarTablaAdministrar(this);
-        this.controladorCliente.iniciarTablaClientes(this);
-        this.controlador.iniciarTablaPeliculas(this);
-        //this.controlador.iniciarTablaTickets(this);
-        //this.controlador.iniciarRadioButons(this);
+        this.controladorApp.iniciarAplicacion();
+        this.controladorApp.iniciarDatos();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -71,9 +68,6 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablePeli = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         panelClientes = new javax.swing.JPanel();
         botonCarritoC = new javax.swing.JButton();
         botonModificar = new javax.swing.JButton();
@@ -81,15 +75,10 @@ public class Principal extends javax.swing.JFrame {
         tableClientes = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         botonRegistrarC1 = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         panelSalas = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableSalas = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         comboPeliculasSa1 = new javax.swing.JComboBox<>();
         botonCambiarPeliculaSa1 = new javax.swing.JButton();
@@ -120,9 +109,6 @@ public class Principal extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         labelCantidadTicketsV = new javax.swing.JLabel();
         spinnerTicketsV = new javax.swing.JSpinner();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -176,32 +162,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/peliculas.png"))); // NOI18N
         panelPeliculas.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 7, -1, -1));
-
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel11MouseClicked(evt);
-            }
-        });
-        panelPeliculas.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
-            }
-        });
-        panelPeliculas.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
-
-        jButton3.setBackground(new java.awt.Color(153, 153, 153));
-        jButton3.setText("jButton3");
-        jButton3.setBorder(null);
-        jButton3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jButton3FocusGained(evt);
-            }
-        });
-        panelPeliculas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
 
         jTabbedPane2.addTab("Peliculas", panelPeliculas);
 
@@ -273,31 +233,6 @@ public class Principal extends javax.swing.JFrame {
         });
         panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 90, 30));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel13MouseClicked(evt);
-            }
-        });
-        panelClientes.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel14MouseClicked(evt);
-            }
-        });
-        panelClientes.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
-
-        jButton2.setForeground(new java.awt.Color(153, 153, 153));
-        jButton2.setBorder(null);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        panelClientes.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
-
         jTabbedPane2.addTab("Clientes", panelClientes);
 
         panelSalas.setBackground(new java.awt.Color(153, 153, 153));
@@ -328,22 +263,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salas.png"))); // NOI18N
         panelSalas.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel17MouseClicked(evt);
-            }
-        });
-        panelSalas.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel18MouseClicked(evt);
-            }
-        });
-        panelSalas.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
 
         jPanel12.setBackground(new java.awt.Color(102, 102, 102));
         jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -727,26 +646,6 @@ public class Principal extends javax.swing.JFrame {
 
         panelVentas.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 230, 170, 50));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/EquisBlanca.png"))); // NOI18N
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-        panelVentas.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, -1, -1));
-
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MinimizarBlanca.png"))); // NOI18N
-        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel10MouseClicked(evt);
-            }
-        });
-        panelVentas.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
-
-        jButton1.setBackground(new java.awt.Color(153, 153, 153));
-        jButton1.setText("jButton1");
-        panelVentas.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 0, 0));
-
         jTabbedPane2.addTab("Ventas", panelVentas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -781,38 +680,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_textFieldClienteVFocusLost
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        controlador.cerrar(this);
-    }//GEN-LAST:event_jLabel3MouseClicked
-    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        controlador.cerrar(this);
-    }//GEN-LAST:event_jLabel13MouseClicked
-    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
-        controlador.cerrar(this);
-    }//GEN-LAST:event_jLabel17MouseClicked
-    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        controlador.minimizar(this);
-    }//GEN-LAST:event_jLabel10MouseClicked
-    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        controlador.minimizar(this);
-    }//GEN-LAST:event_jLabel14MouseClicked
-    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        controlador.minimizar(this);
-    }//GEN-LAST:event_jLabel18MouseClicked
-
     private void botonAgregarCarritoVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarCarritoVActionPerformed
-        controlador.agregarAlCarrito(this);
+        //controlador.agregarAlCarrito(this);
 
     }//GEN-LAST:event_botonAgregarCarritoVActionPerformed
 
     private void textFieldPrecioVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPrecioVActionPerformed
     }//GEN-LAST:event_textFieldPrecioVActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void botonCambiarPeliculaSa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarPeliculaSa1ActionPerformed
-        controlador.botonCambiarPeliculasSalas(this);
+        //controlador.botonCambiarPeliculasSalas(this);
         controladorSalas.asignarPeliculaASala();
     }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
 
@@ -874,7 +751,7 @@ public class Principal extends javax.swing.JFrame {
             } catch (Exception e) {
                 return;
             }
-                controlador.modificarTelefonoCliente(this, nuevoTelefono, cedula);
+                controladorCliente.modificarTelefonoCliente(this, nuevoTelefono, cedula);
                 tableClientes.clearSelection();
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione el Cliente que quiere modificar", "Error", JOptionPane.ERROR_MESSAGE);
@@ -882,7 +759,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonModificarActionPerformed
 
     private void botonRegistrarC1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarC1ActionPerformed
-        controlador.crearCliente(this);
+        controladorCliente.crearCliente(this);
     }//GEN-LAST:event_botonRegistrarC1ActionPerformed
 
     private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
@@ -913,7 +790,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldClienteVKeyTyped
 
     private void botonCarritoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCarritoCActionPerformed
-        controlador.abrirCarrito(this);
+        //CORREGIRcontroladorVentas.abrirCarrito();
     }//GEN-LAST:event_botonCarritoCActionPerformed
 
     private void spinnerTicketsVStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerTicketsVStateChanged
@@ -932,107 +809,8 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fecha5ActionPerformed
 
-    private void jButton3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jButton3FocusGained
-        //controlador.mostrarPeliculasEnTablaPeliculas(this);
-    }//GEN-LAST:event_jButton3FocusGained
-
-    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        controlador.minimizar(this);
-    }//GEN-LAST:event_jLabel12MouseClicked
-
-    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        controlador.cerrar(this);
-    }//GEN-LAST:event_jLabel11MouseClicked
-
     private void botonAgregarPeliculaPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarPeliculaPActionPerformed
-        controlador.botonAgregarPelicula(this);
-        /*try {
-            // 1. Pedir y validar el título
-            String titulo = JOptionPane.showInputDialog(principal,
-                "Ingrese el nombre de la película\n(No más de 20 caracteres)");
-
-            if (titulo == null || titulo.isEmpty() || titulo.length() > 20) {
-                JOptionPane.showMessageDialog(principal,
-                    "El título debe tener entre 1 y 20 caracteres",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // 2. Pedir y validar el género
-            String[] generos = {"Acción", "Amor", "Suspenso", "Aventura"};
-            String genero = (String) JOptionPane.showInputDialog(
-                principal,
-                "Elija el género de la Película",
-                "Selección Género",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                generos,
-                generos[0]
-            );
-
-            if (genero == null) {
-                return;
-            }
-
-            // 3. Pedir duración
-            String duracionStr = JOptionPane.showInputDialog(principal,
-                "Ingrese la duración en minutos");
-
-            if (duracionStr == null) {
-                return;
-            }
-
-            int duracion = Integer.parseInt(duracionStr);
-            if (duracion <= 0) {
-                JOptionPane.showMessageDialog(principal,
-                    "La duración debe ser mayor a 0 minutos",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // 4. Pedir restricción de edad
-            RestriccionesEdad[] edades = RestriccionesEdad.values();
-            RestriccionesEdad restriccion = (RestriccionesEdad) JOptionPane.showInputDialog(
-                principal,
-                "Seleccione la restricción de edad",
-                "Clasificación",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                edades,
-                edades[0]
-            );
-
-            if (restriccion == null) {
-                return;
-            }
-
-            // 5. Generar ID único
-            String id = String.format("P%03d", peliculas.size() + 1);
-
-            // 6. Crear y agregar la película usando el constructor correcto
-            Pelicula pelicula = new Pelicula(id, titulo, genero, duracion, restriccion);
-            peliculas.add(pelicula);
-            crearPelicula(pelicula, principal);
-
-            JOptionPane.showMessageDialog(principal,
-                "Película agregada exitosamente",
-                "Éxito",
-                JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(principal,
-                "La duración debe ser un número válido",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(principal,
-                "Error al agregar la película: " + e.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-        }*/
-
+        controladorPeliculas.agregarNuevaPelicula();
     }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
 
     public void actualizarTablaSalas(ArrayList<Sala> salas) {
@@ -1084,19 +862,8 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JRadioButton fecha4;
     public javax.swing.JRadioButton fecha5;
     public javax.swing.ButtonGroup grupoBotones;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1132,13 +899,6 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JTextField textFieldPrecioV;
     // End of variables declaration//GEN-END:variables
 
-    public Controlador getControlador() {
-        return controlador;
-    }
-
-    public void setControlador(Controlador controlador) {
-        this.controlador = controlador;
-    }
 
     public JButton getBotonAgregarCarritoV() {
         return botonAgregarCarritoV;
@@ -1276,30 +1036,6 @@ public class Principal extends javax.swing.JFrame {
         this.grupoBotones = grupoBotones;
     }
 
-    public JButton getjButton1() {
-        return jButton1;
-    }
-
-    public void setjButton1(JButton jButton1) {
-        this.jButton1 = jButton1;
-    }
-
-    public JButton getjButton2() {
-        return jButton2;
-    }
-
-    public void setjButton2(JButton jButton2) {
-        this.jButton2 = jButton2;
-    }
-
-    public JButton getjButton3() {
-        return jButton3;
-    }
-
-    public void setjButton3(JButton jButton3) {
-        this.jButton3 = jButton3;
-    }
-
     public JComboBox<String> getjComboBox1() {
         return jComboBox1;
     }
@@ -1314,70 +1050,6 @@ public class Principal extends javax.swing.JFrame {
 
     public void setjLabel1(JLabel jLabel1) {
         this.jLabel1 = jLabel1;
-    }
-
-    public JLabel getjLabel10() {
-        return jLabel10;
-    }
-
-    public void setjLabel10(JLabel jLabel10) {
-        this.jLabel10 = jLabel10;
-    }
-
-    public JLabel getjLabel11() {
-        return jLabel11;
-    }
-
-    public void setjLabel11(JLabel jLabel11) {
-        this.jLabel11 = jLabel11;
-    }
-
-    public JLabel getjLabel12() {
-        return jLabel12;
-    }
-
-    public void setjLabel12(JLabel jLabel12) {
-        this.jLabel12 = jLabel12;
-    }
-
-    public JLabel getjLabel13() {
-        return jLabel13;
-    }
-
-    public void setjLabel13(JLabel jLabel13) {
-        this.jLabel13 = jLabel13;
-    }
-
-    public JLabel getjLabel14() {
-        return jLabel14;
-    }
-
-    public void setjLabel14(JLabel jLabel14) {
-        this.jLabel14 = jLabel14;
-    }
-
-    public JLabel getjLabel17() {
-        return jLabel17;
-    }
-
-    public void setjLabel17(JLabel jLabel17) {
-        this.jLabel17 = jLabel17;
-    }
-
-    public JLabel getjLabel18() {
-        return jLabel18;
-    }
-
-    public void setjLabel18(JLabel jLabel18) {
-        this.jLabel18 = jLabel18;
-    }
-
-    public JLabel getjLabel3() {
-        return jLabel3;
-    }
-
-    public void setjLabel3(JLabel jLabel3) {
-        this.jLabel3 = jLabel3;
     }
 
     public JLabel getjLabel4() {

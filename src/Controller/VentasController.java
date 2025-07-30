@@ -28,7 +28,7 @@ public class VentasController {
      * @param cedula La cédula del cliente cuyo carrito se va a abrir.
      */
     
-    public void abrirCarrito(long cedula) {
+    public void abrirCarrito(Principal principal, long cedula) {
         // Buscamos al cliente
         Cliente clienteEncontrado = repoClientes.buscarClientePorCedula(cedula);
         if (clienteEncontrado == null) {
@@ -39,7 +39,7 @@ public class VentasController {
         this.clienteActivo = clienteEncontrado;
         this.vistaCarritoActiva = new Carrito();
         // Configura las relaciones entre los componentes
-        vistaCarritoActiva.setControlador(this);
+        vistaCarritoActiva.setControladorVentas(this);
         vistaCarritoActiva.setPrincipal(vistaPrincipal);
         // "Pinta" la Vista con los datos del Modelo
         vistaCarritoActiva.labelNombre.setText(clienteActivo.getNombre());
