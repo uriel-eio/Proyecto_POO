@@ -1319,12 +1319,11 @@ public class Principal extends javax.swing.JFrame {
         this.textFieldPrecioV = textFieldPrecioV;
     }
 
-    /*public void setControllers(ClienteController controladorCliente, PeliculasController peliculasController,
-                            SalasController salasController, VentasController ventasController) {
-        this.clientesController = controladorCliente;
-        this.peliculasController = peliculasController;
-        this.salasController = salasController;
-        this.ventasController = ventasController;
-    }*/
+    public void setControllers(ClienteController controladorCliente, PeliculasController controladorPeliculas, SalasController controladorSalas, VentasController controladorVentas) {
+        this.controladorCliente = controladorCliente;
+        this.controladorPeliculas = controladorPeliculas;
+        this.controladorSalas = controladorSalas;
+        this.controladorVentas = controladorVentas;
+    }
 
 }

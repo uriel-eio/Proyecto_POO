@@ -12,13 +12,13 @@ public class AppController {
     //instancia de todos los controladores especialistas
     private AuthController authController;
     private ClienteController controladorCliente;
-    private PeliculasController peliculasController;
-    private SalasController salasController;
-    private VentasController ventasController;
+    private PeliculasController controladorPeliculas;
+    private SalasController controladorSalas;
+    private VentasController controladorVentas;
     
     //instancia de las vistas principales
     private Inicio vistaInicio;
-    private Principal vistaPrincipal;
+    private Principal principal;
     
     //creacion del constructor
     public AppController(){
@@ -50,9 +50,9 @@ public class AppController {
     public void setControllers(ClienteController cliente, 
             SalasController salas, PeliculasController peliculas, VentasController ventas) {
         this.controladorCliente = cliente;
-        this.peliculasController = peliculas;
-        this.salasController = salas;
-        this.ventasController = ventas;
+        this.controladorPeliculas = peliculas;
+        this.controladorSalas = salas;
+        this.controladorVentas = ventas;
     }
     
     //se oculta el login y construye la ventana principal con los controladores
@@ -60,25 +60,25 @@ public class AppController {
         this.vistaInicio.dispose(); //se oculta la ventana del login
         
         //se crea la vista principal
-        this.vistaPrincipal = new Principal();
+        this.principal = new Principal();
         
         //se crean los controladores especialistas
-        this.controladorCliente = new ClienteController(repClientes, vistaPrincipal);
-        this.peliculasController = new PeliculasController(repPeliculas, vistaPrincipal);
-        this.salasController = new SalasController(repSalas, repPeliculas, vistaPrincipal);
-        this.ventasController = new VentasController(repClientes, vistaPrincipal);
+        this.controladorCliente = new ClienteController(repClientes, principal);
+        this.controladorPeliculas = new PeliculasController(repPeliculas, principal);
+        this.controladorSalas = new SalasController(repSalas, repPeliculas, principal);
+        this.controladorVentas = new VentasController(repClientes, principal);
         
         //instancias de los controladores a la vista previa
         //para que los botones funcionen
-        vistaPrincipal.setControllers(controladorCliente, peliculasController, salasController, ventasController);
+        principal.setControllers(controladorCliente, controladorPeliculas, controladorSalas, controladorVentas);
         
         //carga los datos en las tablas de la vista
         this.controladorCliente.cargarClientesEnVista();
-        this.peliculasController.obtenerCartelera();
-        this.salasController.iniciarDatosDeSalaEnVista();
+        this.controladorPeliculas.obtenerCartelera();
+        this.controladorSalas.iniciarDatosDeSalaEnVista();
         
         //se muestra la ventana principal
-        vistaPrincipal.setVisible(true);
+        principal.setVisible(true);
     }
     
 }
