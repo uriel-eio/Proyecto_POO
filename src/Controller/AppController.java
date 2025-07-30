@@ -1,6 +1,7 @@
 package Controller;
 import Model.*;
 import View.*;
+import javax.swing.JOptionPane;
 
 public class AppController {
     
@@ -20,6 +21,10 @@ public class AppController {
     private Inicio vistaInicio;
     private Principal principal;
     
+    /*public void iniciarPrograma(){
+        Inicio vistaInicio = new Inicio(this);
+        vistaInicio.setVisible(true);
+    }*/
     //creacion del constructor
     public AppController(){
         //se instancia cada repositorio
@@ -43,7 +48,7 @@ public class AppController {
         //se crea el AuthController
         this.authController = new AuthController(this, vistaInicio);
         
-        //se pasa el controlador creado a la vista de inicio
+        //se pasa el controlador creado a la vista de vistaInicio
         this.vistaInicio.setControlador(this.authController); 
         this.vistaInicio.setVisible(true);
     }//Añadir al constructor peliculas

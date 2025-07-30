@@ -1,0 +1,3 @@
+sAlpha,Sala Alpha,60
+sBeta,Sala Beta,45
+sGamma,Sala Gamma,25

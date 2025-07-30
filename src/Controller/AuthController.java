@@ -18,14 +18,13 @@ public class AuthController {
     private final Inicio vistaInicio;
     
     //creacion del constructor
-    public AuthController(AppController appController, Inicio vistaInicio){
+    public AuthController(AppController appController, Inicio vistaInicio) {
         this.appController = appController;
         this.vistaInicio = vistaInicio;
-        
-        //se asigna el evento del boton "acceder" de la vista a nuestro metodo
-        this.vistaInicio.jButtonInicioSesion.addActionListener(e -> intentarLogin());
-        
+
+     // Ya no se necesita agregar un listener aquí porque la vista ya lo tiene
     }
+
     
     //metodo que se ejecuta cuando el usuario hace clic en el boton "acceder"
     public void intentarLogin(){
@@ -38,5 +37,11 @@ public class AuthController {
             appController.mostrarVentanaPrincipal();
         }
     }
+     public void iniciarPrograma(){
+        // Inicia el sistema
+    Inicio inicio = new Inicio(this);
+    inicio.setVisible(true);
+    }
+    
     
 }
