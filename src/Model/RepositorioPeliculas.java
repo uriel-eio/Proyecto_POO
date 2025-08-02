@@ -12,10 +12,10 @@ public class RepositorioPeliculas {
     
     private static final String ARCHIVO_PELICULAS = "peliculas.txt";
     //PELICULAS EN CARTELERA:
-    Pelicula matrix = new Pelicula("p001", "Matrix", "Ciencia Ficción", 148, RestriccionesEdad.B);
-    Pelicula kimetsu = new Pelicula("p002", "Kimetsu no yaiba", "Animación", 169, RestriccionesEdad.B);
-    Pelicula superman = new Pelicula("p003", "Superman", "Superheroes", 175, RestriccionesEdad.A);
-    Pelicula deadpool = new Pelicula("p004", "Deadpool", "acción", 120, RestriccionesEdad.C);
+    Pelicula matrix = new Pelicula("p001", "Matrix", "Ciencia Ficción", 148, RestriccionesEdad.B, "Matrix.jpg");
+    Pelicula kimetsu = new Pelicula("p002", "Kimetsu no yaiba", "Animación", 169, RestriccionesEdad.B, "Kimetsu.jpeg");
+    Pelicula superman = new Pelicula("p003", "Superman", "Superheroes", 175, RestriccionesEdad.A, "Superman.jpg");
+    Pelicula deadpool = new Pelicula("p004", "Deadpool", "acción", 120, RestriccionesEdad.C, "Deadpool.png");
 
     // método tentativo a utilizar para agregar una nueva película 
     public void guardarPelicula(Pelicula pelicula){
@@ -63,15 +63,16 @@ public class RepositorioPeliculas {
                 // Creo un arreglo que contendrá cada linea del archivo películas 
                 // separado por una coma
                 String[] datos = linea.split(",");
-                // Si llega al final de los datos (porque cada pelicula tiene 5 datos
+                // Si llega al final de los datos (porque cada pelicula tiene 6 datos
                 
-                if(datos.length == 5){
+                if(datos.length == 6){
                     // se le añade a nuestro ArrayList cada dato del archivo
                     peliculas.add(new Pelicula(datos[0],
                             datos[1], 
                             datos[2], 
                             Integer.parseInt(datos[3]), 
-                            RestriccionesEdad.valueOf(datos[4])));
+                            RestriccionesEdad.valueOf(datos[4]),
+                            datos[5]));
 
                 }
             }

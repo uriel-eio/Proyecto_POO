@@ -21,6 +21,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -34,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal() {
         initComponents();
-        
+        configurarTablaPeliculas();
         // Aquí va toda la configuración puramente visual
         UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
         jTabbedPane2.setForeground(Color.WHITE);
@@ -53,7 +54,10 @@ public class Principal extends javax.swing.JFrame {
       this.controladorVentas = ventas;
     }
     
-    
+    private void configurarTablaPeliculas() {
+        tablePeli.getColumnModel().getColumn(3).setCellRenderer(new RenderizadorImagenes());
+        tablePeli.setRowHeight(100); 
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,7 +122,6 @@ public class Principal extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(500, 400));
 
         jTabbedPane2.setBackground(new java.awt.Color(204, 204, 204));
-        jTabbedPane2.setForeground(new java.awt.Color(0, 0, 0));
         jTabbedPane2.setFocusable(false);
         jTabbedPane2.setPreferredSize(new java.awt.Dimension(700, 900));
 
@@ -149,7 +152,7 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Género", "Idioma"
+                "Nombre", "Género", "Clasificación", ""
             }
         ));
         tablePeli.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);

@@ -36,7 +36,7 @@ public class pruebasArchivos {
 
         System.out.println("\n--- PRUEBA 3: GUARDAR UNA NUEVA PELÍCULA ---");
         // 5. Creamos una nueva película y la guardamos.
-        Pelicula nuevaPelicula = new Pelicula("p005", "Dune: Parte 2", "Ciencia Ficción", 166, RestriccionesEdad.B);
+        Pelicula nuevaPelicula = new Pelicula("p005", "Dune: Parte 2", "Ciencia Ficción", 166, RestriccionesEdad.B, "Matrix.jpg");
         System.out.println("Guardando nueva película: " + nuevaPelicula.obtenerTitulo());
         miRepositorio.guardarPelicula(nuevaPelicula);
 
