@@ -56,8 +56,9 @@ public class Principal extends javax.swing.JFrame {
     
     private void configurarTablaPeliculas() {
         tablePeli.getColumnModel().getColumn(3).setCellRenderer(new RenderizadorImagenes());
-        tablePeli.setRowHeight(100); 
+        tablePeli.setRowHeight(300); 
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -159,6 +160,9 @@ public class Principal extends javax.swing.JFrame {
         tablePeli.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tablePeli.setFocusable(false);
         jScrollPane1.setViewportView(tablePeli);
+        if (tablePeli.getColumnModel().getColumnCount() > 0) {
+            tablePeli.getColumnModel().getColumn(3).setPreferredWidth(300);
+        }
 
         panelPeliculas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 70, 540, 250));
 

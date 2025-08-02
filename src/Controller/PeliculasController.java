@@ -55,7 +55,7 @@ public class PeliculasController {
     }
     private String seleccionarYCopiarPortada() {
         JFileChooser fileChooser = new JFileChooser();
-        // Filtro para mostrar solo archivos de imagen
+        // Filtra el tipo de archivos que podemos pasar en el file chooser
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes (jpg, png, gif, jpeg)", "jpg", "png", "gif", "jpeg");
         fileChooser.setFileFilter(filter);
         
@@ -63,7 +63,10 @@ public class PeliculasController {
         if (resultado == JFileChooser.APPROVE_OPTION) {
             File archivoSeleccionado = fileChooser.getSelectedFile();
             
-            // Define la carpeta de destino dentro del proyecto
+            // Construye la ruta de la imagen
+            // user.dir es algo no determinado, va a tomar el valor de la ruta de la carpeta
+            //File.separator es el separador de archivos que usa el SO del usuario
+            // En si lo que hará al final es pegar en copiar y pegar el archivo en la carpeta de imagens del proyecto
             String destPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "images";
             File carpetaDestino = new File(destPath);
             
@@ -76,7 +79,9 @@ public class PeliculasController {
             
             try {
                 // Copia el archivo a la carpeta del proyecto
-                Files.copy(archivoSeleccionado.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(archivoSeleccionado.toPath(), 
+                        archivoDestino.toPath(), 
+                        StandardCopyOption.REPLACE_EXISTING);
                 // Devuelve solo el nombre del archivo, que es lo que guardaremos en el modelo
                 return archivoSeleccionado.getName();
             } catch (IOException e) {
