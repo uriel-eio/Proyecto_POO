@@ -6,15 +6,21 @@ public class Sala implements ISala {
     private final String id;
     private final String nombre;
     private final int capacidad;
+    private boolean isVIP;
+    private String marcaVIP;
     private Pelicula pelicula;
     private ArrayList<Asiento> asientos;
-
-    public Sala(String id, String nombre, int capacidad) {
+    
+    String nombrePeli;
+    public Sala(String id, String nombre, int capacidad, boolean isVIP) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;
         this.pelicula = null;
         this.asientos = new ArrayList<>();
+        this.nombrePeli = nombrePeli;
+        this.marcaVIP = marcaVIP;
+        this.isVIP = isVIP;
         generarAsientos();
     }
     
@@ -28,7 +34,14 @@ public class Sala implements ISala {
             }
         }
     }
-
+    
+    public String getMarcaVIP() {
+        if (this.isVip()) { 
+            return "X";
+        } else {
+            return "";
+        }
+    }
 
 
 
@@ -38,6 +51,14 @@ public class Sala implements ISala {
 
     public int getCapacidad() {
         return capacidad;
+    }
+
+    public boolean isVip() {
+        return isVIP;
+    }
+
+    public void setIsVIP(boolean isVIP) {
+        this.isVIP = isVIP;
     }
         
 
@@ -63,6 +84,15 @@ public class Sala implements ISala {
         this.pelicula = pelicula;
     }
     public String toCSV() {
-        return this.id + "," + this.nombre + "," + this.capacidad;
+        String tituloPelicula = "Sin Asignar";
+        if (this.pelicula != null) {
+            tituloPelicula = this.pelicula.obtenerTitulo();
+        }
+        
+        return this.id + "," + 
+               this.nombre + "," + 
+               this.capacidad + "," + 
+               this.isVIP + "," + 
+               tituloPelicula;
     }
 }

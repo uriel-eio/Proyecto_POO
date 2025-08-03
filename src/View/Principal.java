@@ -257,13 +257,16 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Número", "Tipo", "Película"
+                "ID", "Nombre", "Capacidad", "VIP", "Película"
             }
         ));
         tableSalas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tableSalas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tableSalas.setFocusable(false);
         jScrollPane2.setViewportView(tableSalas);
+        if (tableSalas.getColumnModel().getColumnCount() > 0) {
+            tableSalas.getColumnModel().getColumn(4).setPreferredWidth(200);
+        }
 
         panelSalas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 540, 180));
 
@@ -714,8 +717,8 @@ public class Principal extends javax.swing.JFrame {
             return;
         }
 
-        String nombreSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-        Sala sala = salasRepositorio.buscarSalaPorNombre(nombreSala);
+        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+        Sala sala = salasRepositorio.buscarSalaPorId(idSala);
 
         if (sala != null) {
             SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
@@ -818,25 +821,25 @@ public class Principal extends javax.swing.JFrame {
     private void botonAgregarPeliculaPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarPeliculaPActionPerformed
         controladorPeliculas.agregarNuevaPelicula();
     }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
-
     public void actualizarTablaSalas(ArrayList<Sala> salas) {
         DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
-        model.setRowCount(0); // Limpia la tabla
-        
-        //Busca la sala
+        model.setRowCount(0);
+
         for (Sala sala : salas) {
-            String tituloPelicula = (sala.getPelicula() != null) 
-                        ? sala.getPelicula().obtenerTitulo() 
-                        : "Sin asignar";
-            
-            //obtiene los datos de la sala
+            String tituloPelicula;
+            if (sala.getPelicula() != null) {
+                tituloPelicula = sala.getPelicula().obtenerTitulo();
+            } else {
+                tituloPelicula = "Sin Asignar";
+            }
+
             Object[] fila = new Object[]{
+                sala.obtenerId(),
                 sala.getNombre(),
                 sala.getCapacidad(),
+                sala.getMarcaVIP(), // Usamos el método que devuelve "X" o ""
                 tituloPelicula
             };
-            
-            //Agrega al modelo 
             model.addRow(fila);
         }
     }

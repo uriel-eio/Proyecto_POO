@@ -46,27 +46,25 @@ public class SalasController {
             return;
         }
 
-        String nombreSala = (String) vistaPrincipal.getTableSalas().getValueAt(filaSeleccionada, 0);
-
-        // Buscar objetos
-        Sala salaSeleccionada = repoSalas.buscarSalaPorNombre(nombreSala);
-        Pelicula peliculaSeleccionada = repoPeliculas.buscarPeliculaPorTitulo(tituloPelicula);
+        String idSala = (String) vistaPrincipal.getTableSalas().getValueAt(filaSeleccionada, 0);
         
-        //Si se encuentra el objeto se hace la asignacion, si no salta el error
+        //Busca los objetos
+        Sala salaSeleccionada = repoSalas.buscarSalaPorId(idSala); 
+        Pelicula peliculaSeleccionada = repoPeliculas.buscarPeliculaPorTitulo(tituloPelicula);
+
         if (salaSeleccionada != null && peliculaSeleccionada != null) {
+            // Actualizamos el repositorio
             salaSeleccionada.setPelicula(peliculaSeleccionada);
+            repoSalas.actualizarSala(salaSeleccionada);
             cargarDatosDeSalas();
 
-            JOptionPane.showMessageDialog(vistaPrincipal,
-                "Película '" + tituloPelicula + "' asignada a la sala " + nombreSala + ".", "Éxito",
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(vistaPrincipal, "Película asignada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(vistaPrincipal,
-                "Error: No se encontró la sala o la película en los repositorios.", "Error de Datos",
-                JOptionPane.ERROR_MESSAGE);
+            // Este es el error que estás viendo. Ocurre si la sala o la película no se encuentran.
+            JOptionPane.showMessageDialog(vistaPrincipal, "Error: No se encontró la sala o la película en los repositorios.", "Error de Datos", JOptionPane.ERROR_MESSAGE);
         }
-     }
-     
+    }
+
      public void iniciarDatosDeSalaEnVista() {
         cargarDatosDeSalas();
     }

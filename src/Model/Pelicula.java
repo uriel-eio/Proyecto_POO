@@ -30,12 +30,12 @@ public class Pelicula implements IPelicula {
     public String obtenerTitulo() {
         return titulo;
     }
-
+    
     @Override
     public String obtenerGenero() {
         return genero;
     }
-
+    
     @Override
     public int obtenerDuracion() {
         return duracion;

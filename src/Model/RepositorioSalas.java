@@ -15,11 +15,20 @@ import java.util.ArrayList;
 
 
 public class RepositorioSalas {
+    private final RepositorioPeliculas repoPeliculas;
     public static final String ARCHIVO_SALAS = "lista_salas.txt";
     //Salas con identificador, nombre y capacidad respectivamente.
-    Sala alpha = new Sala("sAlpha", "Sala Alpha", 60);
-    Sala beta = new Sala("sBeta", "Sala Beta", 45);
-    Sala gamma = new Sala("sGamma", "Sala Gamma", 25);
+    public RepositorioSalas(RepositorioPeliculas repoPeliculas) {
+        this.repoPeliculas = repoPeliculas;
+    }
+    public void crearSala() {
+        File archivo = new File(ARCHIVO_SALAS);
+        if (archivo.exists()) return;
+
+        saveSala(new Sala("s01", "Sala Alpha", 60, false));
+        saveSala(new Sala("s02", "Sala Beta", 45, false));
+        saveSala(new Sala("s03", "Sala VIP", 25, true));
+    }
     
     //Método para guardar una sala en el archivo "lista_salas.txt"
     public void saveSala(Sala sala){
@@ -32,55 +41,45 @@ public class RepositorioSalas {
         }
     }
     
-    public void crearSala(){
-        File archivo = new File(ARCHIVO_SALAS);
-        //Verificar la existencia del archivo.
-        if(archivo.exists()){
-            return;
-        }
-        
-        //Uso de ArrayList para añadir salas predeterminadas.
-        ArrayList<Sala> salaNueva = new ArrayList<>();
-        salaNueva.add(alpha);
-        salaNueva.add(beta);
-        salaNueva.add(gamma);
-        
-        //Guarda salas en el archivo.
-        for(Sala sala : salaNueva){
-            saveSala(sala);
-        }
-    }
     
     //ArrayList para obtener las salas
-    public ArrayList<Sala> getSala(){
+    public ArrayList<Sala> getSala() {
         ArrayList<Sala> salas = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_SALAS))){
+        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_SALAS))) {
             String linea;
-            while((linea = br.readLine()) != null){
+            while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
-                //Si tiene los 3 datos de identificacion, nombre y capacidad, creaa una sala y la agrega.
-                if(datos.length == 3) {
-                    salas.add(new Sala(
-                            datos[0],
-                            datos[1],
-                            Integer.parseInt(datos[2])
-                    ));
+                String nombrePelicula = datos[4]; 
+
+                if (datos.length == 5) {
+                    boolean esVip = Boolean.parseBoolean(datos[3]); 
+                    Sala sala = new Sala(datos[0], 
+                            datos[1], 
+                            Integer.parseInt(datos[2]), 
+                            esVip);
+                    if (!nombrePelicula.equals("Sin Asignar")) {
+                        Pelicula peliculaAsignada = repoPeliculas.buscarPeliculaPorTitulo(nombrePelicula);
+                        if (peliculaAsignada != null) {
+                            sala.setPelicula(peliculaAsignada);
+                        }
+                    }
+                    salas.add(sala);
                 }
             }
-        } catch (IOException | NumberFormatException e){
-            System.out.println("Error al leer el archivo.");
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error al leer el archivo de salas: " + e.getMessage());
         }
         return salas;
     }
        
     //Metodo para buscar salas 
-    public Sala buscarSalaPorNombre(String nombre) {
+    public Sala buscarSalaPorId(String id) {
         for (Sala sala : this.getSala()) { 
-            if (sala.getNombre().equalsIgnoreCase(nombre)) {
+            if (sala.obtenerId().equals(id)) {
                 return sala;
             }
         }
-        return null; // Si no encuentra la sala
+        return null; // No se encontró la sala
     }
 
     private String salaToCSV(Sala sala){
@@ -88,5 +87,22 @@ public class RepositorioSalas {
     }
     
 
-    
+    public void actualizarSala(Sala salaModificada) {
+        ArrayList<Sala> salas = this.getSala();
+        for (int i = 0; i < salas.size(); i++) {
+            if (salas.get(i).obtenerId().equals(salaModificada.obtenerId())) {
+                salas.set(i, salaModificada);
+                break;
+            }
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALAS))) { // Modo sobre-escritura
+            for (Sala s : salas) {
+                bw.write(s.toCSV());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error al actualizar el archivo de salas: " + e.getMessage());
+        }
+    }
 }

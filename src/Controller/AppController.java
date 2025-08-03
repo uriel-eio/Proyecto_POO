@@ -29,7 +29,7 @@ public class AppController {
     public AppController(){
         //se instancia cada repositorio
         this.repPeliculas = new RepositorioPeliculas();
-        this.repSalas = new RepositorioSalas();
+        this.repSalas = new RepositorioSalas(this.repPeliculas); 
         this.repClientes = new RepositorioClientes();
         
         
