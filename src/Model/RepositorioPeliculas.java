@@ -84,13 +84,15 @@ public class RepositorioPeliculas {
     }
        
         //es un buscasdor por titulo, lo voy a  usar en el Controlador de la Sala
-    public Pelicula buscarPeliculaPorTitulo(String tituloPelicula) { //metodo a partir de pelicula
-            //voy a buscar en el Array
-        for (Pelicula c : obtenerCartelera()) { //metodo del array 
-            if (c.obtenerTitulo() == tituloPelicula) return c; //validacion
+    public Pelicula buscarPeliculaPorTitulo(String titulo) {
+    for (Pelicula p : obtenerCartelera()) {
+        System.out.println("Comparando con: '" + p.obtenerTitulo()+ "'");
+        if (p.obtenerTitulo().equalsIgnoreCase(titulo.trim())) {
+            return p;
         }
-        return null;
     }
+    return null;
+}
 
     
 }

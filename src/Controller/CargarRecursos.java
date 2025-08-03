@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
  */
 public class CargarRecursos {
     public static ImageIcon getIcon(String nombreImagen) {
+        // se encarga de conseguir la imagen de la dirección del archivo
         String projectPath = System.getProperty("user.dir");
         String fullPath = projectPath + File.separator + "src" + File.separator
                 + "images" + File.separator + nombreImagen;

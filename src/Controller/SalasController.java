@@ -34,37 +34,38 @@ public class SalasController {
     }
 
      public void asignarPeliculaASala() {
-        // Obtenemos la selección de la Vista
         int filaSeleccionada = vistaPrincipal.getTableSalas().getSelectedRow();
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(vistaPrincipal, "Por favor, seleccione una sala de la tabla.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (vistaPrincipal.getComboPeliculasSa1().getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(vistaPrincipal, "Por favor, seleccione una película del menú.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        String tituloPelicula = (String) vistaPrincipal.getComboPeliculasSa1().getSelectedItem();
+        if (tituloPelicula == null || tituloPelicula.equals("Seleccione una película")) {
+            JOptionPane.showMessageDialog(vistaPrincipal, "Por favor, seleccione una película válida del menú.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // se extraen los identificadores de la Vista
         String nombreSala = (String) vistaPrincipal.getTableSalas().getValueAt(filaSeleccionada, 0);
-        String tituloPelicula = (String) vistaPrincipal.getComboPeliculasSa1().getSelectedItem();
 
-        // se buscan los objetos del Modelo usando los repositorios
-        Sala salaSeleccionada = repoSalas.buscarSalaPorNombre(nombreSala); // Necesitarás crear este método
-        Pelicula peliculaSeleccionada = repoPeliculas.buscarPeliculaPorTitulo(tituloPelicula); // Y este también
+        // Buscar objetos
+        Sala salaSeleccionada = repoSalas.buscarSalaPorNombre(nombreSala);
+        Pelicula peliculaSeleccionada = repoPeliculas.buscarPeliculaPorTitulo(tituloPelicula);
         
-        //Si ambas existen usamos el metodo del modelo ...
+        //Si se encuentra el objeto se hace la asignacion, si no salta el error
         if (salaSeleccionada != null && peliculaSeleccionada != null) {
             salaSeleccionada.setPelicula(peliculaSeleccionada);
-            
             cargarDatosDeSalas();
-            
-            JOptionPane.showMessageDialog(vistaPrincipal, "Película '" + tituloPelicula + "' asignada a la " + nombreSala + ".", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            JOptionPane.showMessageDialog(vistaPrincipal,
+                "Película '" + tituloPelicula + "' asignada a la sala " + nombreSala + ".", "Éxito",
+                JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(vistaPrincipal, "Error: No se encontraron la sala o la película en los repositorios.", "Error de Datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(vistaPrincipal,
+                "Error: No se encontró la sala o la película en los repositorios.", "Error de Datos",
+                JOptionPane.ERROR_MESSAGE);
         }
-    }
+     }
      
      public void iniciarDatosDeSalaEnVista() {
         cargarDatosDeSalas();

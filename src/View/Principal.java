@@ -842,14 +842,15 @@ public class Principal extends javax.swing.JFrame {
     }
     
     public void actualizarComboPeliculas(ArrayList<Pelicula> peliculas) {
-        //Remueve cualquier iten de las peliculas
         comboPeliculasSa1.removeAllItems();
-        comboPeliculasSa1.addItem("Seleccione una película");
-        //Busca la pelicula por el titulo
+        comboPeliculasSa1.addItem("Seleccione una película"); // Ítem de encabezado
+
         for (Pelicula pelicula : peliculas) {
-            comboPeliculasSa1.addItem(pelicula.obtenerTitulo());
+            comboPeliculasSa1.addItem(pelicula.obtenerTitulo()); // Solo el título
         }
     }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarCarritoV;
     private javax.swing.JButton botonAgregarPeliculaP;
