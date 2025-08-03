@@ -755,7 +755,7 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Ingresó un formato de teléfono incorrecto\n   No ponga ni letras ni símbolos", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if(nuevoTelefono.length() != 11){
+            if(nuevoTelefono.length() != 10){
                 JOptionPane.showMessageDialog(this, "Su teléfono tiene más/menos números de los que debería", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -771,6 +771,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void botonRegistrarC1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarC1ActionPerformed
         controladorCliente.crearCliente(this);
+        controladorCliente.iniciarTablaClientes(this);
+        controladorCliente.cargarClientesEnVista();
     }//GEN-LAST:event_botonRegistrarC1ActionPerformed
 
     private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
@@ -850,6 +852,20 @@ public class Principal extends javax.swing.JFrame {
 
         for (Pelicula pelicula : peliculas) {
             comboPeliculasSa1.addItem(pelicula.obtenerTitulo()); // Solo el título
+        }
+    }
+    
+    public void actualizarTablaClientes(ArrayList<Cliente> clientes) {
+        DefaultTableModel modelo = (DefaultTableModel) tableSalas.getModel();
+        modelo.setRowCount(0); // Limpia la tabla
+        
+        //Busca la sala
+        for (Cliente cliente : clientes) {
+            modelo.addRow(new Object[]{
+                cliente.getNombre(),
+                cliente.getCedula(),
+                cliente.getTelefono()
+            });
         }
     }
 

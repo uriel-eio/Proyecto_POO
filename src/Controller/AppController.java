@@ -77,8 +77,11 @@ public class AppController {
         //para que los botones funcionen
         principal.setControllers(controladorCliente, controladorPeliculas, controladorSalas, controladorVentas);
         
-        //carga los datos en las tablas de la vista
+        // INICIALIZA TABLA DE CLIENTES Y LA CARGA
+        this.controladorCliente.iniciarTablaClientes(principal);
         this.controladorCliente.cargarClientesEnVista();
+        
+        //carga los datos en las tablas de la vista
         this.controladorPeliculas.obtenerCartelera();
         this.controladorSalas.iniciarDatosDeSalaEnVista();
         this.controladorPeliculas.cargarPeliculasEnVista();

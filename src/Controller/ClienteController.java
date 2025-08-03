@@ -29,7 +29,7 @@ public class ClienteController {
     }
 
     public ClienteController(RepositorioClientes repoClientes, Principal vista) {
-        this.repoClientes = new RepositorioClientes();
+        this.repoClientes = repoClientes;
         this.vista = vista;
         //Creamos los archivos .txt con datos si no existen
         //repoClientes.inicializarDatosPredeterminados();
@@ -149,7 +149,7 @@ public class ClienteController {
                     JOptionPane.showMessageDialog(principal, "Ingresó un formato de teléfono incorrecto\n   No ponga ni letras ni símbolos", "Error", JOptionPane.ERROR_MESSAGE);
                     flag1 = true;
                 }
-                if(telefono.length() != 11){
+                if(telefono.length() != 10){
                     JOptionPane.showMessageDialog(principal, "Su teléfono tiene más/menos números de los que debería", "Error", JOptionPane.ERROR_MESSAGE);
                     flag2 = true;
                 }
@@ -160,6 +160,7 @@ public class ClienteController {
         
         Cliente cliente = new Cliente(cedula, nombre, telefono);
         
+        repoClientes.guardarCliente(cliente);
         
         this.cargarClientesEnVista();
     }
@@ -216,6 +217,7 @@ public class ClienteController {
         modelo.setRowCount(0); // Limpiar la tabla primero
 
         ArrayList<Cliente> clientes = repoClientes.obtenerCliente(); // Obtener todos los clientes
+        vista.actualizarTablaClientes(clientes);
 
         for (Cliente cliente : clientes) {
             modelo.addRow(new Object[]{
