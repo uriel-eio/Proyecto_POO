@@ -104,9 +104,9 @@ public class Principal extends javax.swing.JFrame {
         labelNombreCliente = new javax.swing.JLabel();
         botonBuscarClienteV = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        comboSalasV = new javax.swing.JComboBox<>();
         labelMostrarPeli = new javax.swing.JLabel();
         labelPelicula = new javax.swing.JLabel();
+        btnAsientos = new javax.swing.JButton();
         jPanel16 = new javax.swing.JPanel();
         fecha3 = new javax.swing.JRadioButton();
         fecha4 = new javax.swing.JRadioButton();
@@ -468,37 +468,6 @@ public class Principal extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
-        comboSalasV.setBackground(new java.awt.Color(153, 153, 153));
-        comboSalasV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        comboSalasV.setForeground(new java.awt.Color(255, 255, 255));
-        comboSalasV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sala", "VIP", "Estandar" }));
-        comboSalasV.setFocusable(false);
-        comboSalasV.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                comboSalasVItemStateChanged(evt);
-            }
-        });
-        comboSalasV.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                comboSalasVMouseDragged(evt);
-            }
-        });
-        comboSalasV.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                comboSalasVFocusLost(evt);
-            }
-        });
-        comboSalasV.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                comboSalasVMouseClicked(evt);
-            }
-        });
-        comboSalasV.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboSalasVActionPerformed(evt);
-            }
-        });
-
         labelMostrarPeli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Next.png"))); // NOI18N
         labelMostrarPeli.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -511,13 +480,25 @@ public class Principal extends javax.swing.JFrame {
         labelPelicula.setText("-----------------------");
         labelPelicula.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Película", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri Light", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
+        btnAsientos.setBackground(new java.awt.Color(153, 153, 153));
+        btnAsientos.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        btnAsientos.setForeground(new java.awt.Color(255, 255, 255));
+        btnAsientos.setText("Asientos");
+        btnAsientos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAsientos.setFocusPainted(false);
+        btnAsientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAsientosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(btnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(labelMostrarPeli)
                 .addGap(18, 18, 18)
@@ -532,9 +513,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(labelPelicula)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelMostrarPeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelMostrarPeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -704,41 +685,6 @@ public class Principal extends javax.swing.JFrame {
         controladorSalas.asignarPeliculaASala();
     }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
 
-    private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
-        this.spinnerTicketsV.setValue(0);
-        
-        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
-        this.spinnerTicketsV.setValue(0); // Resetear spinner
-
-        // Obtener la sala seleccionada (ej: desde una tabla)
-        int filaSeleccionada = tableSalas.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
-            return;
-        }
-
-        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-        Sala sala = salasRepositorio.buscarSalaPorId(idSala);
-
-        if (sala != null) {
-            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
-            ventanaAsientos.setVisible(true);
-        }
-        
-    }//GEN-LAST:event_comboSalasVActionPerformed
-
-    private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
-    }//GEN-LAST:event_comboSalasVItemStateChanged
-
-    private void comboSalasVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_comboSalasVFocusLost
-    }//GEN-LAST:event_comboSalasVFocusLost
-
-    private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
-    }//GEN-LAST:event_comboSalasVMouseClicked
-
-    private void comboSalasVMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseDragged
-    }//GEN-LAST:event_comboSalasVMouseDragged
-
     private void labelMostrarPeliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelMostrarPeliMouseClicked
 
     }//GEN-LAST:event_labelMostrarPeliMouseClicked
@@ -823,6 +769,11 @@ public class Principal extends javax.swing.JFrame {
     private void botonAgregarPeliculaPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarPeliculaPActionPerformed
         controladorPeliculas.agregarNuevaPelicula();
     }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
+
+    private void btnAsientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsientosActionPerformed
+        controladorVentas.manejarSeleccionAsientos(tableSalas);
+
+    }//GEN-LAST:event_btnAsientosActionPerformed
     public void actualizarTablaSalas(ArrayList<Sala> salas) {
         DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
         model.setRowCount(0);
@@ -879,11 +830,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton botonModificar;
     private javax.swing.JButton botonRegistrarC1;
     public javax.swing.ButtonGroup botonesFecha;
+    public javax.swing.JButton btnAsientos;
     public javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     public javax.swing.JComboBox<String> comboClientesV;
     public javax.swing.JComboBox<String> comboPeliculasSa1;
-    public javax.swing.JComboBox<String> comboSalasV;
     public javax.swing.JRadioButton fecha3;
     public javax.swing.JRadioButton fecha4;
     public javax.swing.JRadioButton fecha5;
@@ -1022,13 +973,13 @@ public class Principal extends javax.swing.JFrame {
         this.comboPeliculasSa1 = comboPeliculasSa1;
     }
 
-    public JComboBox<String> getComboSalasV() {
+    /*public JComboBox<String> getComboSalasV() {
         return comboSalasV;
     }
 
     public void setComboSalasV(JComboBox<String> comboSalasV) {
         this.comboSalasV = comboSalasV;
-    }
+    }*/
 
     public JRadioButton getFecha3() {
         return fecha3;

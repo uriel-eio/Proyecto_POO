@@ -81,7 +81,7 @@ public class AsientosController {
         // Estilo visual minimalista
         btn.setContentAreaFilled(false); // Fondo transparente
         btn.setBorderPainted(false);    // Sin bordes
-        btn.setForeground(Color.WHITE); // Texto blanco
+        btn.setForeground(Color.BLACK); // Texto blanco
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 10)); // Fuente pequeña
         btn.setPreferredSize(new Dimension(tamaño, tamaño)); // Tamaño uniforme
         
@@ -94,7 +94,7 @@ public class AsientosController {
             }
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                if (btn.getBackground() != Color.GREEN) {
+                if (btn.getBackground() != Color.WHITE) {
                     btn.setContentAreaFilled(false); // Vuelve a transparente si no está seleccionado
                 }
             }
@@ -102,14 +102,14 @@ public class AsientosController {
         
         // Acción al hacer clic
         btn.addActionListener(e -> {
-            if (btn.getBackground() == Color.GREEN) {
+            if (btn.getBackground() == Color.WHITE) {
                 // Deseleccionar
                 btn.setContentAreaFilled(false);
                 asiento.liberar();
             } else {
                 // Seleccionar
                 btn.setContentAreaFilled(true);
-                btn.setBackground(Color.GREEN); // Verde para asiento seleccionado
+                btn.setBackground(Color.WHITE); // blanco para asiento seleccionado
                 asiento.reservar();
             }
         });

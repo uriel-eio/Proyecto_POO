@@ -63,24 +63,24 @@ public class AppController {
     //se oculta el login y construye la ventana principal con los controladores
     public void mostrarVentanaPrincipal(){
         this.vistaInicio.dispose(); //se oculta la ventana del login
-        
+
         //se crea la vista principal
         this.principal = new Principal();
-        
+
         //se crean los controladores especialistas
         this.controladorCliente = new ClienteController(repClientes, principal);
         this.controladorPeliculas = new PeliculasController(repPeliculas, principal);
         this.controladorSalas = new SalasController(repSalas, repPeliculas, principal);
-        this.controladorVentas = new VentasController(repClientes, principal);
+        this.controladorVentas = new VentasController(repClientes, repSalas, principal);  // <-- Aquí la corrección
 
         //instancias de los controladores a la vista previa
         //para que los botones funcionen
         principal.setControllers(controladorCliente, controladorPeliculas, controladorSalas, controladorVentas);
-        
+
         // INICIALIZA TABLA DE CLIENTES Y LA CARGA
         this.controladorCliente.iniciarTablaClientes(principal);
         this.controladorCliente.cargarClientesEnVista();
-        
+
         //carga los datos en las tablas de la vista
         this.controladorPeliculas.obtenerCartelera();
         this.controladorSalas.iniciarDatosDeSalaEnVista();
