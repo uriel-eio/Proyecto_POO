@@ -88,14 +88,17 @@ public class RepositorioSalas {
     
 
     public void actualizarSala(Sala salaModificada) {
+        //busca la sala por id y le asigna la modificacion que le vamos a dar
         ArrayList<Sala> salas = this.getSala();
         for (int i = 0; i < salas.size(); i++) {
             if (salas.get(i).obtenerId().equals(salaModificada.obtenerId())) {
+                // reemplaza el objeto que ya existia por uno nuevo con los nuevos parametros
+                // TODO: podemos optimizar esto haciendo que solo modifique un campo
                 salas.set(i, salaModificada);
                 break;
             }
         }
-
+        // re escribe el archivo
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALAS))) { // Modo sobre-escritura
             for (Sala s : salas) {
                 bw.write(s.toCSV());

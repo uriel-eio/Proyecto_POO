@@ -87,6 +87,7 @@ public class RepositorioPeliculas {
     public Pelicula buscarPeliculaPorTitulo(String titulo) {
     for (Pelicula p : obtenerCartelera()) {
         System.out.println("Comparando con: '" + p.obtenerTitulo()+ "'");
+        //usamos .trim para asegurarnos de obtener el titulo de la pelicuila sin espacios
         if (p.obtenerTitulo().equalsIgnoreCase(titulo.trim())) {
             return p;
         }
