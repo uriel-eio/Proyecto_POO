@@ -1,47 +1,67 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
+
 import View.Inicio;
-import javax.swing.JOptionPane;
+import Util.ManejoErrores;
 
 /**
- *
- * @author USER
+ * Controlador para la autenticación de usuarios
  */
 public class AuthController {
     
-    //se crea una referencia al controlador principal
+    // Referencia al controlador principal
     private final AppController appController;
-    //instancia de la vista de inicio
+    // Vista de inicio de sesión
     private final Inicio vistaInicio;
     
-    //creacion del constructor
+    /**
+     * Constructor
+     */
     public AuthController(AppController appController, Inicio vistaInicio) {
         this.appController = appController;
         this.vistaInicio = vistaInicio;
-
-     // Ya no se necesita agregar un listener aquí porque la vista ya lo tiene
     }
-
     
-    //metodo que se ejecuta cuando el usuario hace clic en el boton "acceder"
-    public void intentarLogin(){
-        //se obtienen los datos de los componentes de la vista
-        String usuario = vistaInicio.jTextFieldUsuario.getText().trim();
-        String password = new String(vistaInicio.jPasswordField.getPassword());
-        
-        //se realiza la validacion de las credenciales
-        if ("admin".equals(usuario) && "admin".equals(password)){
-            appController.mostrarVentanaPrincipal();
+    /**
+     * Intenta realizar el login con las credenciales ingresadas
+     */
+    public void intentarLogin() {
+        try {
+            // Obtener datos de los componentes de la vista
+            String usuario = vistaInicio.jTextFieldUsuario.getText().trim();
+            String password = new String(vistaInicio.jPasswordField.getPassword());
+            
+            // Validar credenciales
+            if (validarCredenciales(usuario, password)) {
+                // Cerrar ventana de login
+                cerrarVentanaLogin();
+                
+                // Mostrar ventana principal
+                appController.mostrarVentanaPrincipal();
+            } else {
+                ManejoErrores.mostrarAdvertencia(
+                    "Usuario o contraseña incorrectos", 
+                    "Error de autenticación", 
+                    vistaInicio
+                );
+            }
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error durante el inicio de sesión", e, vistaInicio);
         }
     }
-     public void iniciarPrograma(){
-        // Inicia el sistema
-    Inicio inicio = new Inicio(this);
-    inicio.setVisible(true);
+    
+    /**
+     * Valida las credenciales del usuario
+     */
+    private boolean validarCredenciales(String usuario, String password) {
+        // En una aplicación real, esto consultaría una base de datos
+        return "admin".equals(usuario) && "admin".equals(password);
     }
     
-    
+    /**
+     * Cierra la ventana de login
+     */
+    private void cerrarVentanaLogin() {
+        vistaInicio.setVisible(false);
+        vistaInicio.dispose();
+    }
 }

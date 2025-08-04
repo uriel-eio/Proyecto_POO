@@ -1,78 +1,99 @@
 package Controller;
 
-import Model.Venta;
-import java.util.List;
+import Model.*;
+import View.*;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import Util.ManejoErrores;
 
-/**
- * Controlador para la gestión de ventas siguiendo el patrón MVC y principios SOLID.
- * Principio de Responsabilidad Única: Solo maneja operaciones relacionadas con ventas
- */
 public class VentasController {
+    private Principal vista;
+    private LogicaOrdenes logicaOrdenes;
     
-    private final IVentasView view;
-    private final IVentasRepository repository;
-    
-    /**
-     * Constructor con inyección de dependencias (Principio de Inversión de Dependencias)
-     */
-    public VentasController(IVentasView view, IVentasRepository repository) {
-        this.view = view;
-        this.repository = repository;
+    public VentasController(Principal vista) {
+        this.vista = vista;
+        this.logicaOrdenes = new LogicaOrdenes();
     }
     
     /**
-     * Crear una nueva venta
+     * Procesa el pago de una orden
      */
-    public void crearVenta(Venta venta) {
-        repository.guardar(venta);
-        view.mostrarMensaje("Venta creada exitosamente");
-        actualizarVistaVentas();
-    }
-    
-    /**
-     * Obtener todas las ventas
-     */
-    public List<Venta> obtenerVentas() {
-        return repository.obtenerTodos();
-    }
-    
-    /**
-     * Buscar venta por ID
-     */
-    public Venta buscarVentaPorId(int id) {
-        return repository.buscarPorId(id);
-    }
-    
-    /**
-     * Actualizar una venta
-     */
-    public void actualizarVenta(Venta venta) {
-        boolean actualizado = repository.actualizar(venta);
-        if (actualizado) {
-            view.mostrarMensaje("Venta actualizada exitosamente");
-            actualizarVistaVentas();
-        } else {
-            view.mostrarMensaje("No se encontró la venta con ID: " + venta.getId());
+    public void pagarOrden(int numOrden, Cliente cliente) {
+        try {
+            boolean resultado = logicaOrdenes.pagarOrden(numOrden, cliente);
+            
+            if (resultado) {
+                JOptionPane.showMessageDialog(vista, 
+                    "Orden #" + numOrden + " pagada correctamente", 
+                    "Pago exitoso", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(vista, 
+                    "Error al procesar el pago de la orden #" + numOrden, 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error al pagar la orden", e, vista);
         }
     }
     
     /**
-     * Eliminar una venta
+     * Abre la ventana del carrito para un cliente
      */
-    public void eliminarVenta(int id) {
-        boolean eliminado = repository.eliminar(id);
-        if (eliminado) {
-            view.mostrarMensaje("Venta eliminada exitosamente");
-            actualizarVistaVentas();
-        } else {
-            view.mostrarMensaje("No se encontró la venta con ID: " + id);
+    public void abrirCarrito(Cliente cliente) {
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(vista, 
+                "Debe seleccionar un cliente primero", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            Carrito vistaCarrito = new Carrito(this, vista);
+            CarritoController carritoController = new CarritoController(vistaCarrito, cliente);
+            
+            vistaCarrito.setVisible(true);
+            vista.setVisible(false);
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error al abrir el carrito", e, vista);
         }
     }
     
     /**
-     * Actualizar la vista con los datos actuales de ventas
+     * Crea una nueva orden para un cliente
      */
-    private void actualizarVistaVentas() {
-        view.mostrarVentas(repository.obtenerTodos());
+    public void crearNuevaOrden(Cliente cliente, Funcion funcion, ArrayList<Asiento> asientos) {
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(vista, 
+                "Debe seleccionar un cliente primero", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            OrdenCompra nuevaOrden = logicaOrdenes.crearOrden(funcion, asientos, cliente);
+            
+            if (nuevaOrden != null) {
+                JOptionPane.showMessageDialog(vista, 
+                    "Orden creada exitosamente para la película " + 
+                    funcion.getPelicula().obtenerTitulo() + 
+                    " con " + asientos.size() + " asientos.\n" +
+                    "Total: $" + nuevaOrden.getPrecioTotal(), 
+                    "Orden Creada", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error al crear la orden", e, vista);
+        }
     }
+    public void agregarAlCarrito(Principal vista, Cliente cliente, int cantidadTickets) {
+    // Implementación para agregar items al carrito
+    JOptionPane.showMessageDialog(vista, 
+        "Se agregaron " + cantidadTickets + " tickets al carrito de " + cliente.getNombre(), 
+        "Agregado al carrito", 
+        JOptionPane.INFORMATION_MESSAGE);
+}
 }

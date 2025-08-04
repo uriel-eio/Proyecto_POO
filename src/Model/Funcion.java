@@ -2,85 +2,59 @@ package Model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Funcion {
-    // LA creación de IPelicula (objeto), quiere decir que el objeto debe cumplir
-    // el contrato que establece la interfaz 
     private final String id;
-    private final IPelicula pelicula; 
-    private final ISala sala;         
+    private final Pelicula pelicula; 
+    private final Sala sala;         
     private final LocalDateTime fechaHora;
-    private final List<IAsiento> asientos; 
+    private ArrayList<Asiento> asientosDisponibles;
 
-    public Funcion(String id, IPelicula pelicula, ISala sala, LocalDateTime fechaHora) {
+    public Funcion(String id, Pelicula pelicula, Sala sala, LocalDateTime fechaHora) {
         this.id = id;
         this.pelicula = pelicula;
         this.sala = sala;
         this.fechaHora = fechaHora;
-        this.asientos = new ArrayList<>();
-        
-        // Marcamos que el 20% de la sala corresponde a asientos VIP
-        int capacidadTotal = sala.contarAsientosDisponibles();
-        int cantidadVip = (int) (capacidadTotal * 0.20);
-        //Dentro de este bucle asignamos V para VIP y E para estandar
-        for (int i = 1; i <= capacidadTotal; i++) {
-            if (i <= cantidadVip) {
-                this.asientos.add(new AsientoVIP("V" + i, true, true));
-            } else {
-                this.asientos.add(new AsientoEstandar("E" + i));
-            }
-        }
+        this.asientosDisponibles = new ArrayList<>(sala.getAsientos());
     }
-    
-    public List<IAsiento> obtenerAsientosDisponibles() {
-        // Creamos un array list vacio en donde guardaremos los asientos disponibles
-        List<IAsiento> asientosLibres = new ArrayList<>();
-
-        // Interamos sobre la lista actual de asientos
-        // para cada asiento en asientos aplica esta condicion ...
-        for (IAsiento asiento : this.asientos) {
-            // Obtenemos el estado de los asientos para saber si estan reservados
-            if (!asiento.obtenerEstado()) {
-                asientosLibres.add(asiento);
-            }
-        }
-        return asientosLibres;
-    }
-
-
-    public boolean estaDisponible() {
-        // para cada asiento en asientos aplica esta condicion ...
-        for (IAsiento asiento : this.asientos) {
-     
-            if (!asiento.obtenerEstado()) {
-
-                return true;
-            }
-        }
-        //Este caso es cuando todos los asientos estan llenos y no hay ninguno disponible
-        System.out.println("No hay asientos disponibles!");
-        return false;
-    }
-    
 
     public String getId() {
         return id;
     }
 
-    public IPelicula getPelicula() {
+    public Pelicula getPelicula() {
         return pelicula;
     }
 
-    public ISala getSala() {
+    public Sala getSala() {
         return sala;
     }
 
     public LocalDateTime getFechaHora() {
         return fechaHora;
     }
-
-    public List<IAsiento> getAsientos() {
-        return asientos;
+    
+    public ArrayList<Asiento> getAsientosDisponibles() {
+        // Returns only available seats (not reserved)
+        ArrayList<Asiento> disponibles = new ArrayList<>();
+        for (Asiento asiento : asientosDisponibles) {
+            if (!asiento.obtenerEstado()) {
+                disponibles.add(asiento);
+            }
+        }
+        return disponibles;
+    }
+    
+    public boolean tieneAsientosDisponibles() {
+        return !getAsientosDisponibles().isEmpty();
+    }
+    
+    public void reservarAsiento(Asiento asiento) {
+        for (Asiento a : asientosDisponibles) {
+            if (a.obtenerNumero().equals(asiento.obtenerNumero())) {
+                a.reservar();
+                break;
+            }
+        }
     }
 }

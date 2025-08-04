@@ -8,27 +8,66 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Carrito extends javax.swing.JFrame {
+    // Referencias a otras clases
     private Principal principal;
     private VentasController controladorVentas;
+    private Cliente clienteActual;
 
+    /**
+     * Constructor de la vista de carrito
+     * @param controladorVentas Controlador de ventas
+     * @param principal Vista principal a la que volver
+     */
     public Carrito(VentasController controladorVentas, Principal principal) {
         this.controladorVentas = controladorVentas;
         this.principal = principal;
+        
+        // Inicializar componentes visuales
+        initComponents();
+        
+        // Configuración adicional
+        configurarVentana();
     }
     
-    //son cosas que aniado para que funcione el VentasController
+    /**
+     * Configura aspectos visuales y de comportamiento de la ventana
+     */
+    private void configurarVentana() {
+        // Centrar en pantalla
+        setLocationRelativeTo(null);
+        
+        // Establecer icono de la aplicación
+        setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
+        
+        // Configurar título
+        setTitle("Carrito de Compras");
+    }
+    
+    /**
+     * Muestra los datos del cliente en la vista
+     * @param cliente Cliente cuyo carrito se mostrará
+     */
     public void mostrarDatosCliente(Cliente cliente) {
-        lblNombre.setText(cliente.getNombre());
-        lblCedula.setText(String.valueOf(cliente.getCedula()));
+        this.clienteActual = cliente;
+
+        // Mostrar información del cliente en la interfaz
+        // Usamos el labelNombre para mostrar tanto nombre como cédula
+        labelNombre.setText(cliente.getNombre() + " - Cédula: " + cliente.getCedula());
+
+        // Cargar órdenes si el cliente tiene un carrito
+        if (cliente.getCarritoModel() != null) {
+            actualizarTabla(cliente.getCarritoModel().getOrdenesEnCarrito());
+        } else {
+            // Limpiar tabla si no hay carrito
+            DefaultTableModel model = (DefaultTableModel) tableCarrito.getModel();
+            model.setRowCount(0);
+        }
     }
     
-    /*tienen que agregar los metodos para abrir y cerrar en todas las ventanas
-    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {
-        controlador.cerrarSesion();
-        this.dispose();
-        principal.setVisible(true);
-    }*/
-    
+    /**
+     * Actualiza la tabla de órdenes con la información más reciente
+     * @param ordenes Lista de órdenes a mostrar
+     */
     public void actualizarTabla(ArrayList<OrdenCompra> ordenes) {
         DefaultTableModel model = (DefaultTableModel) tableCarrito.getModel();
         model.setRowCount(0); // Limpia la tabla
@@ -37,7 +76,6 @@ public class Carrito extends javax.swing.JFrame {
 
         for (OrdenCompra orden : ordenes) {
             Object[] fila = new Object[]{
-                //@TODO: explicar mas sobre como funciona esta parte con comentarios
                 orden.getNumOrden(),
                 orden.getCantidadAsientos(),
                 orden.getFuncion().getSala().getNombre(),
@@ -50,12 +88,82 @@ public class Carrito extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Establece la referencia a la ventana principal
+     * @param principal Ventana principal
+     */
     public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
 
+    /**
+     * Establece el controlador de ventas
+     * @param controladorVentas Nuevo controlador
+     */
     public void setControladorVentas(VentasController controladorVentas) {
         this.controladorVentas = controladorVentas;
+    }
+    
+    /**
+     * Procesa el pago de la orden seleccionada
+     */
+    private void pagarOrdenSeleccionada() {
+        // Verificar si hay alguna fila seleccionada
+        int filaSeleccionada = tableCarrito.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, 
+                "Seleccione la orden de compra que quiere pagar", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Verificar si ya está pagada
+        String estadoPago = (String) tableCarrito.getValueAt(filaSeleccionada, 6);
+        if ("Sí".equals(estadoPago)) {
+            JOptionPane.showMessageDialog(this, 
+                "Esta orden ya ha sido pagada", 
+                "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        // Confirmar pago
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Está seguro de realizar el pago de esta orden?",
+            "Confirmar pago",
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        // Obtener número de orden
+        int numOrden = (int) tableCarrito.getValueAt(filaSeleccionada, 0);
+        
+        // Verificar que el controlador y el cliente estén disponibles
+        if (controladorVentas == null || clienteActual == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Error del sistema: No se puede procesar el pago", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Procesar el pago
+        controladorVentas.pagarOrden(numOrden, clienteActual);
+        
+        // Actualizar la tabla
+        if (clienteActual.getCarritoModel() != null) {
+            actualizarTabla(clienteActual.getCarritoModel().getOrdenesEnCarrito());
+        }
+    }
+    
+    /**
+     * Cierra esta ventana y vuelve a la principal
+     */
+    private void volverAPrincipal() {
+        this.dispose();
+        if (principal != null) {
+            principal.setVisible(true);
+        }
     }
     
     
@@ -159,22 +267,11 @@ public class Carrito extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
-        this.dispose();
-        principal.setVisible(true);
+        volverAPrincipal();
     }//GEN-LAST:event_botonRegresarActionPerformed
 
     private void botonPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPagarActionPerformed
-        if (tableCarrito.getSelectedRow() != -1) {
-            // Obtenemos solo el ID de la orden desde la tabla
-            int numOrden = (int) tableCarrito.getModel().getValueAt(tableCarrito.getSelectedRow(), 0);
-
-            // Le pasamos únicamente el ID al controladorVentas
-            controladorVentas.pagarOrden(numOrden);
-        } else {
-            // Mensaje de error si no hay nada seleccionado
-            JOptionPane.showMessageDialog(this, "Seleccione la orden de compra que quiere pagar", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
+        pagarOrdenSeleccionada();
     }//GEN-LAST:event_botonPagarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

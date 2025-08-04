@@ -1,73 +1,60 @@
 package Model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import Util.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * Implementación del repositorio de clientes que utiliza archivos
- * Principio de Responsabilidad Única: Solo maneja la persistencia de clientes
  */
 public class RepositorioClientes implements IClienteRepositorio {
     
-    private static final String ARCHIVO_CLIENTES = "clientes.txt";
-    
     @Override
     public void guardarCliente(Cliente cliente) {
-        //se crea el archivo clientes.txt y se escriben todos los clientes agregados
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES, true))) {
-            bw.write(cliente.toCSV());
-            bw.newLine();
-        } catch (Exception e){
-            System.err.println("¡Error al guardar el cliente!: " + e.getMessage());
-            e.printStackTrace();
-        }
+        LeerEscribir.guardarLinea(Rutas.RUTA_CLIENTES, cliente.toCSV(), true);
     }
     
-    public void crearCliente(){
-        File archivo = new File(ARCHIVO_CLIENTES);
-        //Verificar la existencia del archivo.
-        if(archivo.exists()){
+    public void crearCliente() {
+        if (Rutas.existeArchivo(Rutas.RUTA_CLIENTES)) {
             return;
         }
         
-        //Uso de ArrayList para añadir salas predeterminadas.
+        // Clientes predeterminados
         ArrayList<Cliente> clienteNuevo = new ArrayList<>();
-        Cliente Ana = new Cliente(002, "Ana", "34");
-        Cliente Carlos = new Cliente(003, "Carlos", "56");
-        clienteNuevo.add(Ana);
-        clienteNuevo.add(Carlos);
-        //Guarda salas en el archivo.
-        for(Cliente cliente : clienteNuevo){
+        clienteNuevo.add(new Cliente(002, "Ana", "34"));
+        clienteNuevo.add(new Cliente(003, "Carlos", "56"));
+        
+        // Guardar clientes en el archivo
+        for (Cliente cliente : clienteNuevo) {
             guardarCliente(cliente);
         }
     }
  
     @Override
-    public ArrayList<Cliente> obtenerCliente(){
-        ArrayList<Cliente> clientes = new ArrayList<>();
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_CLIENTES))){
-            String line;
-            while ((line = br.readLine()) != null){
-                String[] data = line.split(",");
-                
-                if (data.length == 3) {
-                    clientes.add(new Cliente(
-                            Long.parseLong(String.valueOf(data[0])),
-                            data[1],
-                            data[2]
-                            ));
+    public ArrayList<Cliente> obtenerCliente() {
+        Function<String, Cliente> transformador = linea -> {
+            String[] data = linea.split(",");
+            if (data.length == 3) {
+                try {
+                    return new Cliente(
+                        Long.parseLong(data[0]),
+                        data[1],
+                        data[2]
+                    );
+                } catch (NumberFormatException e) {
+                    ManejoErrores.mostrarError("Error al convertir cédula: " + data[0], e);
                 }
             }
-        } catch (IOException | NumberFormatException e){
-            System.out.println("¡Error procesando el archivo!");
-        }
-        return clientes;
+            return null;
+        };
+        
+        List<Cliente> clientes = LeerEscribir.cargarObjetos(
+            Rutas.RUTA_CLIENTES, 
+            transformador
+        );
+        
+        return new ArrayList<>(clientes);
     }
     
     @Override
@@ -80,14 +67,12 @@ public class RepositorioClientes implements IClienteRepositorio {
     
     @Override
     public boolean actualizarCliente(long cedula, String nuevoTelefono) {
-        // Guardamos los clientes del archivo en nuevo arreglo
-        ArrayList<Cliente> clientes = this.obtenerCliente(); 
+        ArrayList<Cliente> clientes = this.obtenerCliente();
         boolean encontrado = false;
 
-        // busca la cedula del cliente para poder modificar el telefono que es lo unico que cambiaria
+        // Busca la cédula del cliente para poder modificar el teléfono
         for (Cliente c : clientes) {
             if (c.getCedula() == cedula) {
-                // Sobre escribimos solo el telefono
                 c.setTelefono(nuevoTelefono);
                 encontrado = true;
                 break;
@@ -95,21 +80,19 @@ public class RepositorioClientes implements IClienteRepositorio {
         }
 
         if (encontrado) {
-            // abrimos el archivo en modo sobre escritura
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES))) {
-                for (Cliente c : clientes) {
-                    // re escribimos toda la linea del cliente, pero como solo hubo
-                    //cambios en el telefono solo se sobre escribirá ese dato
-                    bw.write(c.toCSV());
-                    bw.newLine();
-                }
-            } catch (IOException e) {
-                System.err.println("Error, no se pudo sobre escribir el número del cliente " + e.getMessage());
-                return false; 
-            }
+            // Función para transformar Cliente a CSV
+            Function<Cliente, String> transformador = Cliente::toCSV;
+            
+            // Guardar todos los clientes actualizados
+            return LeerEscribir.guardarObjetos(
+                Rutas.RUTA_CLIENTES,
+                clientes,
+                transformador,
+                false // Sobrescribir el archivo
+            );
         }
         
-        return encontrado; 
+        return encontrado;
     }
     
     @Override
@@ -126,15 +109,16 @@ public class RepositorioClientes implements IClienteRepositorio {
         }
         
         if (encontrado) {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES))) {
-                for (Cliente c : clientes) {
-                    bw.write(c.toCSV());
-                    bw.newLine();
-                }
-            } catch (IOException e) {
-                System.err.println("Error, no se pudo eliminar el cliente: " + e.getMessage());
-                return false;
-            }
+            // Función para transformar Cliente a CSV
+            Function<Cliente, String> transformador = Cliente::toCSV;
+            
+            // Guardar los clientes restantes
+            return LeerEscribir.guardarObjetos(
+                Rutas.RUTA_CLIENTES,
+                clientes,
+                transformador,
+                false // Sobrescribir el archivo
+            );
         }
         
         return encontrado;

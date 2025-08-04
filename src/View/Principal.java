@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import Model.*;
+import Util.ManejoErrores;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,19 +22,24 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 public class Principal extends javax.swing.JFrame {
 
+    // Controladores
     private PeliculasController controladorPeliculas;
     private VentasController controladorVentas;
     private ClienteController controladorCliente;
     private SalasController controladorSalas;
-    private RepositorioSalas salasRepositorio;
     private AppController controladorApp;
+    
+    // Variables de estado
+    private Cliente clienteSeleccionado;
+    private Pelicula peliculaSeleccionada;
+    
+    // Botones de control de ventana
     private JButton btnSalir;
     private JButton btnMaximizar;
-
-
     
     public Principal() {
         initComponents();
@@ -46,10 +52,9 @@ public class Principal extends javax.swing.JFrame {
         btnSalir.addActionListener(e -> System.exit(0));
         
         btnMaximizar.addActionListener(e -> {
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setVisible(true);  
+            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.setVisible(true);  
         });
-
 
         btnMaximizar.setBounds(450, 10, 100, 30); 
         btnSalir.setBounds(450, 50, 100, 30);
@@ -58,7 +63,7 @@ public class Principal extends javax.swing.JFrame {
         this.add(btnSalir);
 
         configurarTablaPeliculas();
-        // Aquí va toda la configuración puramente visual
+        // Configuración puramente visual
         UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
         jTabbedPane2.setForeground(Color.WHITE);
         setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
@@ -69,18 +74,258 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void setControllers(AppController app, ClienteController clientes, PeliculasController peliculas, SalasController salas, VentasController ventas) {
-      this.controladorApp = app;
-      this.controladorCliente = clientes;
-      this.controladorPeliculas = peliculas;
-      this.controladorSalas = salas;
-      this.controladorVentas = ventas;
+        this.controladorApp = app;
+        this.controladorCliente = clientes;
+        this.controladorPeliculas = peliculas;
+        this.controladorSalas = salas;
+        this.controladorVentas = ventas;
+        
+        // Configurar eventos una vez que tenemos los controladores
+        configurarEventos();
+    }
+    
+    private void configurarEventos() {
+        // Eventos de la pestaña películas
+        botonAgregarPeliculaP.addActionListener(e -> {
+            try {
+                controladorPeliculas.agregarNuevaPelicula();
+            } catch (Exception ex) {
+                ManejoErrores.mostrarError("Error al agregar película", ex, this);
+            }
+        });
+        
+        // Eventos de la pestaña clientes
+        botonBuscarClienteV.addActionListener(e -> buscarCliente());
+        botonCarritoC.addActionListener(e -> abrirCarrito());
+        botonRegistrarC1.addActionListener(e -> registrarCliente());
+        botonModificar.addActionListener(e -> modificarCliente());
+        
+        // Eventos de la pestaña salas
+        botonCambiarPeliculaSa1.addActionListener(e -> {
+            try {
+                controladorSalas.asignarPeliculaASala();
+            } catch (Exception ex) {
+                ManejoErrores.mostrarError("Error al asignar película a sala", ex, this);
+            }
+        });
+        
+        // Eventos de la pestaña ventas
+        comboSalasV.addActionListener(e -> seleccionarSala());
     }
     
     private void configurarTablaPeliculas() {
         tablePeli.getColumnModel().getColumn(3).setCellRenderer(new RenderizadorImagenes());
         tablePeli.setRowHeight(300); 
     }
+    
+    public void configurarTablaClientes() {
+        tableClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableClientes.getTableHeader().setReorderingAllowed(false);
+        tableClientes.getTableHeader().setResizingAllowed(false);
+        // Tamaño de cada columna
+        tableClientes.getColumnModel().getColumn(0).setPreferredWidth(170);
+        tableClientes.getColumnModel().getColumn(1).setPreferredWidth(175);
+        tableClientes.getColumnModel().getColumn(2).setPreferredWidth(187);
+        // Altura de cada renglón
+        tableClientes.setRowHeight(20);
+    }
+    
+    // Métodos para manejar acciones del usuario
+    
+    private void buscarCliente() {
+        try {
+            String cedulaStr = textFieldClienteV.getText().trim();
+            if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor, ingrese una cédula para buscar", 
+                    "Campo vacío", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            controladorCliente.buscarClienteVentas(this);
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al buscar cliente", ex, this);
+        }
+    }
+    
+    private void abrirCarrito() {
+        try {
+            if (tableClientes.getSelectedRow() != -1) {
+                long cedula = Long.parseLong(String.valueOf(
+                    ((DefaultTableModel)tableClientes.getModel()).getValueAt(
+                        tableClientes.getSelectedRow(), 1
+                    )
+                ));
+                
+                Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
+                if (cliente != null) {
+                    controladorVentas.abrirCarrito(cliente);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Seleccione un cliente primero", 
+                    "Aviso", 
+                    JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al abrir carrito", ex, this);
+        }
+    }
+    
+    private void registrarCliente() {
+        try {
+            controladorCliente.crearCliente(this);
+            controladorCliente.iniciarTablaClientes(this);
+            controladorCliente.cargarClientesEnVista();
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al registrar cliente", ex, this);
+        }
+    }
+    
+    private void modificarCliente() {
+        try {
+            if (tableClientes.getSelectedRow() != -1) {
+                long cedula = Long.parseLong(String.valueOf(
+                    ((DefaultTableModel)tableClientes.getModel()).getValueAt(
+                        tableClientes.getSelectedRow(), 1
+                    )
+                ));
+                
+                String nuevoTelefono = JOptionPane.showInputDialog(
+                    this, 
+                    "Ingrese el teléfono del cliente", 
+                    "Ingrese teléfono", 
+                    JOptionPane.QUESTION_MESSAGE
+                );
+                
+                if (nuevoTelefono != null && !nuevoTelefono.isEmpty()) {
+                    if (!nuevoTelefono.matches("[0-9]*$")) {
+                        JOptionPane.showMessageDialog(this, 
+                            "Ingresó un formato de teléfono incorrecto\n   No ponga ni letras ni símbolos", 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                    if (nuevoTelefono.length() != 10) {
+                        JOptionPane.showMessageDialog(this, 
+                            "Su teléfono tiene más/menos números de los que debería", 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                    controladorCliente.modificarTelefonoCliente(this, nuevoTelefono, cedula);
+                    tableClientes.clearSelection();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Seleccione el Cliente que quiere modificar", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al modificar cliente", ex, this);
+        }
+    }
+    
+    private void seleccionarSala() {
+        try {
+            if (comboSalasV.getSelectedIndex() <= 0) {
+                return;
+            }
 
+            this.spinnerTicketsV.setValue(0);
+
+            boolean isVip = comboSalasV.getSelectedItem().equals("VIP");
+
+            // Verificar cliente
+            String cedulaStr = textFieldClienteV.getText().trim();
+            if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor, busque un cliente primero", 
+                    "Cliente no seleccionado", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Obtener la sala seleccionada desde la tabla
+            int filaSeleccionada = tableSalas.getSelectedRow();
+            if (filaSeleccionada == -1) {
+                JOptionPane.showMessageDialog(this, 
+                    "Seleccione una sala primero", 
+                    "Aviso", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Obtener datos de la sala seleccionada
+            String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+
+            // Usar controladorSalas para buscar la sala
+            Sala sala = controladorSalas.buscarSalaPorId(idSala);
+            if (sala != null) {
+                SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip);
+                ventanaAsientos.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Error al obtener información de la sala", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al seleccionar sala", ex, this);
+        }
+    }
+    
+    // Métodos para actualizar la UI desde los controladores
+    
+    public void actualizarTablaSalas(ArrayList<Sala> salas) {
+        DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
+        model.setRowCount(0);
+
+        for (Sala sala : salas) {
+            String tituloPelicula;
+            if (sala.getPelicula() != null) {
+                tituloPelicula = sala.getPelicula().obtenerTitulo();
+            } else {
+                tituloPelicula = "Sin Asignar";
+            }
+
+            Object[] fila = new Object[]{
+                sala.obtenerId(),
+                sala.getNombre(),
+                sala.getCapacidad(),
+                sala.getMarcaVIP(), // Usamos el método que devuelve "X" o ""
+                tituloPelicula
+            };
+            model.addRow(fila);
+        }
+    }
+    
+    public void actualizarComboPeliculas(ArrayList<Pelicula> peliculas) {
+        comboPeliculasSa1.removeAllItems();
+        comboPeliculasSa1.addItem("Seleccione una película"); // Ítem de encabezado
+
+        for (Pelicula pelicula : peliculas) {
+            comboPeliculasSa1.addItem(pelicula.obtenerTitulo()); // Solo el título
+        }
+    }
+    
+    public void actualizarTablaClientes(ArrayList<Cliente> clientes) {
+        DefaultTableModel modelo = (DefaultTableModel) tableClientes.getModel();
+        modelo.setRowCount(0); // Limpia la tabla
+        
+        for (Cliente cliente : clientes) {
+            modelo.addRow(new Object[]{
+                cliente.getNombre(),
+                cliente.getCedula(),
+                cliente.getTelefono()
+            });
+        }
+    }
+         
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -161,6 +406,7 @@ public class Principal extends javax.swing.JFrame {
         };
         tableSalas.setBackground(new java.awt.Color(204, 204, 204));
         tableSalas.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        tableSalas.setForeground(new java.awt.Color(0, 0, 0));
         tableSalas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -762,12 +1008,12 @@ public class Principal extends javax.swing.JFrame {
     private void textFieldClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldClienteVActionPerformed
     }//GEN-LAST:event_textFieldClienteVActionPerformed
     private void botonBuscarClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarClienteVActionPerformed
-        controladorCliente.buscarClienteVentas(this);
+        buscarCliente();
     }//GEN-LAST:event_botonBuscarClienteVActionPerformed
 
     private void textFieldClienteVFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusGained
-        if(textFieldClienteV.getText().equals("Ingrese Cédula") == true){
-            textFieldClienteV.setText("");
+        if(textFieldClienteV.getText().equals("") == true){
+            textFieldClienteV.setText("Ingrese Cédula");
         }
     }//GEN-LAST:event_textFieldClienteVFocusGained
 
@@ -778,34 +1024,87 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldClienteVFocusLost
 
     private void botonAgregarCarritoVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarCarritoVActionPerformed
-        //controlador.agregarAlCarrito(this);
-
+    try {
+        // Verificar si hay un cliente seleccionado
+        String cedulaStr = textFieldClienteV.getText().trim();
+        if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
+            JOptionPane.showMessageDialog(this, 
+                "Por favor, busque un cliente primero", 
+                "Cliente no seleccionado", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Buscar el cliente
+        long cedula = Long.parseLong(cedulaStr);
+        Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
+        
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(this, 
+                "No se encontró el cliente con la cédula ingresada", 
+                "Cliente no encontrado", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Verificar si hay sala seleccionada
+        int filaSeleccionada = tableSalas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, 
+                "Seleccione una sala primero", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Verificar cantidad de tickets
+        int cantidadTickets = (int) spinnerTicketsV.getValue();
+        if (cantidadTickets <= 0) {
+            JOptionPane.showMessageDialog(this, 
+                "Seleccione al menos un ticket", 
+                "Cantidad inválida", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Llamar al controlador para agregar al carrito
+        controladorVentas.agregarAlCarrito(this, cliente, cantidadTickets);
+        
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, 
+            "Error en el formato de la cédula", 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+    } catch (Exception ex) {
+        ManejoErrores.mostrarError("Error al agregar al carrito", ex, this);
+    }
     }//GEN-LAST:event_botonAgregarCarritoVActionPerformed
 
     private void textFieldPrecioVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPrecioVActionPerformed
     }//GEN-LAST:event_textFieldPrecioVActionPerformed
 
     private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
-        this.spinnerTicketsV.setValue(0);
-        
-        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
-        this.spinnerTicketsV.setValue(0); // Resetear spinner
+     this.spinnerTicketsV.setValue(0);
+    
+    boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
+    
+    // Obtener la sala seleccionada desde la tabla
+    int filaSeleccionada = tableSalas.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
+        return;
+    }
 
-        // Obtener la sala seleccionada (ej: desde una tabla)
-        int filaSeleccionada = tableSalas.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
-            return;
-        }
+    String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+    // Usar el controlador para acceder al repositorio
+    Sala sala = controladorSalas.buscarSalaPorId(idSala);
 
-        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-        Sala sala = salasRepositorio.buscarSalaPorId(idSala);
-
-        if (sala != null) {
-            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
-            ventanaAsientos.setVisible(true);
-        }
-        
+    if (sala != null) {
+        SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
+        ventanaAsientos.setVisible(true);
+    } else {
+        JOptionPane.showMessageDialog(this, "No se pudo encontrar la sala seleccionada.");
+    }   
     }//GEN-LAST:event_comboSalasVActionPerformed
 
     private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
@@ -825,29 +1124,28 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_labelMostrarPeliMouseClicked
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
-        // Buscamos que CLiente está seleccionado
         if(tableClientes.getSelectedRow() != -1){
             long cedula = Long.parseLong(String.valueOf( ((DefaultTableModel)tableClientes.getModel()).getValueAt(tableClientes.getSelectedRow(), 1) ) );
             
             String nuevoTelefono = "";
             try {
-            nuevoTelefono = JOptionPane.showInputDialog(this, "        Ingrese el teléfono del cliente", "Ingrese teléfono", JOptionPane.QUESTION_MESSAGE);
-            if(!nuevoTelefono.matches("[0-9]*$")){
-                JOptionPane.showMessageDialog(this, "Ingresó un formato de teléfono incorrecto\n   No ponga ni letras ni símbolos", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if(nuevoTelefono.length() != 10){
-                JOptionPane.showMessageDialog(this, "Su teléfono tiene más/menos números de los que debería", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+                nuevoTelefono = JOptionPane.showInputDialog(this, "        Ingrese el teléfono del cliente", "Ingrese teléfono", JOptionPane.QUESTION_MESSAGE);
+                if(!nuevoTelefono.matches("[0-9]*$")){
+                    JOptionPane.showMessageDialog(this, "Ingresó un formato de teléfono incorrecto\n   No ponga ni letras ni símbolos", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if(nuevoTelefono.length() != 10){
+                    JOptionPane.showMessageDialog(this, "Su teléfono tiene más/menos números de los que debería", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             } catch (Exception e) {
                 return;
             }
-                controladorCliente.modificarTelefonoCliente(this, nuevoTelefono, cedula);
-                tableClientes.clearSelection();
-        }else{
+            controladorCliente.modificarTelefonoCliente(this, nuevoTelefono, cedula);
+            tableClientes.clearSelection();
+        } else {
             JOptionPane.showMessageDialog(this, "Seleccione el Cliente que quiere modificar", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        } 
     }//GEN-LAST:event_botonModificarActionPerformed
 
     private void botonRegistrarC1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarC1ActionPerformed
@@ -857,17 +1155,18 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegistrarC1ActionPerformed
 
     private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
-        
         if(String.valueOf(comboClientesV.getSelectedItem()).equals("Clientes")){
             labelNombreCliente.setText("Nombre Cliente");
             return;
-        }long cedula = Long.parseLong(String.valueOf(comboClientesV.getSelectedItem()));
+        }
+        
+        long cedula = Long.parseLong(String.valueOf(comboClientesV.getSelectedItem()));
         
         Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
         
         if (cliente != null){
             labelNombreCliente.setText(cliente.getNombre());
-        }else{
+        } else {
             labelNombreCliente.setText("Cliente no encontrado");
         }
     }//GEN-LAST:event_comboClientesVActionPerformed
@@ -882,7 +1181,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldClienteVKeyTyped
 
     private void botonCarritoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCarritoCActionPerformed
-        //CORREGIRcontroladorVentas.abrirCarrito();
+        abrirCarrito();
     }//GEN-LAST:event_botonCarritoCActionPerformed
 
     private void spinnerTicketsVStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerTicketsVStateChanged
@@ -941,52 +1240,6 @@ public class Principal extends javax.swing.JFrame {
         //controlador.botonCambiarPeliculasSalas(this);
         controladorSalas.asignarPeliculaASala();
     }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
-    public void actualizarTablaSalas(ArrayList<Sala> salas) {
-        DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
-        model.setRowCount(0);
-
-        for (Sala sala : salas) {
-            String tituloPelicula;
-            if (sala.getPelicula() != null) {
-                tituloPelicula = sala.getPelicula().obtenerTitulo();
-            } else {
-                tituloPelicula = "Sin Asignar";
-            }
-
-            Object[] fila = new Object[]{
-                sala.obtenerId(),
-                sala.getNombre(),
-                sala.getCapacidad(),
-                sala.getMarcaVIP(), // Usamos el método que devuelve "X" o ""
-                tituloPelicula
-            };
-            model.addRow(fila);
-        }
-    }
-    
-    public void actualizarComboPeliculas(ArrayList<Pelicula> peliculas) {
-        comboPeliculasSa1.removeAllItems();
-        comboPeliculasSa1.addItem("Seleccione una película"); // Ítem de encabezado
-
-        for (Pelicula pelicula : peliculas) {
-            comboPeliculasSa1.addItem(pelicula.obtenerTitulo()); // Solo el título
-        }
-    }
-    
-    public void actualizarTablaClientes(ArrayList<Cliente> clientes) {
-        DefaultTableModel modelo = (DefaultTableModel) tableSalas.getModel();
-        modelo.setRowCount(0); // Limpia la tabla
-        
-        //Busca la sala
-        for (Cliente cliente : clientes) {
-            modelo.addRow(new Object[]{
-                cliente.getNombre(),
-                cliente.getCedula(),
-                cliente.getTelefono()
-            });
-        }
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarCarritoV;

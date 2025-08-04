@@ -1,34 +1,29 @@
 package Controller;
 
 import Model.Pelicula;
-import Model.RepositorioPeliculas;
+import Model.IPeliculasRepositorio;
 import Model.RestriccionesEdad;
 import View.Principal;
-import View.Principal;
+import Util.ManejoErrores;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 public class PeliculasController {
 
-    private final RepositorioPeliculas repoPeliculas;
-    private final Principal vistaPrincipal;
+    private final IPeliculasRepositorio repoPeliculas;
+    private Principal vista;
 
-    public PeliculasController(RepositorioPeliculas repoPeliculas, Principal vistaPrincipal) {
+    public PeliculasController(IPeliculasRepositorio repoPeliculas, Principal vista) {
         this.repoPeliculas = repoPeliculas;
-        this.vistaPrincipal = vistaPrincipal;
-        // Solo crea películas predeterminadas si el archivo no existe
-        this.repoPeliculas.creacionPeliculasPredeterminadas();
-        // No se llama actualizarTablaPeliculas aquí, lo decides tú
+        this.vista = vista;
     }
 
     /**
@@ -37,40 +32,54 @@ public class PeliculasController {
     public ArrayList<Pelicula> obtenerCartelera() {
         return repoPeliculas.obtenerCartelera();
     }
+    
+    /**
+     * Carga las películas en la vista principal
+     */
     public void cargarPeliculasEnVista() {
-        DefaultTableModel modelo = (DefaultTableModel) vistaPrincipal.getTablePeli().getModel();
-        modelo.setRowCount(0); // Limpia la tabla para evitar duplicados
+        if (vista == null) return;
+        
+        DefaultTableModel modelo = (DefaultTableModel) vista.getTablePeli().getModel();
+        modelo.setRowCount(0); // Limpia la tabla
 
         ArrayList<Pelicula> peliculas = repoPeliculas.obtenerCartelera();
         for (Pelicula pelicula : peliculas) {
-            ImageIcon portada = CargarRecursos.getIcon(pelicula.getRutaPortada());
+            ImageIcon portada = null;
+            try {
+                String rutaImagen = "/images/" + pelicula.getRutaPortada();
+                portada = new ImageIcon(getClass().getResource(rutaImagen));
+            } catch (Exception e) {
+                // Si no se encuentra la imagen, usamos un icono vacío sin mostrar error
+                portada = new ImageIcon();
+            }
 
             modelo.addRow(new Object[]{
                 pelicula.obtenerTitulo(),
                 pelicula.obtenerGenero(),
-                pelicula.obtenerRestriccionEdad().name(), // .name() convierte el enum a texto (A, B, C)
+                pelicula.obtenerRestriccionEdad().name(),
                 portada
             });
         }
     }
-    private String seleccionarYCopiarPortada() {
+    
+    /**
+     * Permite al usuario seleccionar y copiar una imagen de portada
+     * @return Nombre del archivo copiado o null si se canceló
+     */
+    public String seleccionarYCopiarPortada() {
+        if (vista == null) return null;
+        
         JFileChooser fileChooser = new JFileChooser();
-        // Filtra el tipo de archivos que podemos pasar en el file chooser
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes (jpg, png, gif, jpeg)", "jpg", "png", "gif", "jpeg");
         fileChooser.setFileFilter(filter);
         
-        int resultado = fileChooser.showOpenDialog(vistaPrincipal);
+        int resultado = fileChooser.showOpenDialog(vista);
         if (resultado == JFileChooser.APPROVE_OPTION) {
             File archivoSeleccionado = fileChooser.getSelectedFile();
             
-            // Construye la ruta de la imagen
-            // user.dir es algo no determinado, va a tomar el valor de la ruta de la carpeta
-            //File.separator es el separador de archivos que usa el SO del usuario
-            // En si lo que hará al final es pegar en copiar y pegar el archivo en la carpeta de imagens del proyecto
             String destPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "images";
             File carpetaDestino = new File(destPath);
             
-            // Crea la carpeta si no existe
             if (!carpetaDestino.exists()) {
                 carpetaDestino.mkdirs();
             }
@@ -78,35 +87,37 @@ public class PeliculasController {
             File archivoDestino = new File(carpetaDestino.getPath() + File.separator + archivoSeleccionado.getName());
             
             try {
-                // Copia el archivo a la carpeta del proyecto
                 Files.copy(archivoSeleccionado.toPath(), 
                         archivoDestino.toPath(), 
                         StandardCopyOption.REPLACE_EXISTING);
-                // Devuelve solo el nombre del archivo, que es lo que guardaremos en el modelo
                 return archivoSeleccionado.getName();
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(vistaPrincipal, "Error al copiar la imagen de portada.", "Error de Archivo", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
+                ManejoErrores.mostrarError("Error al copiar la imagen de portada", e, vista);
                 return null;
             }
         }
-        return null; // El usuario canceló la selección
+        return null;
     }
     
+    /**
+     * Añade una nueva película solicitando datos al usuario
+     */
     public void agregarNuevaPelicula() {
+        if (vista == null) return;
+        
         try {
-            String titulo = JOptionPane.showInputDialog(vistaPrincipal, "Ingrese el título de la película:");
+            String titulo = JOptionPane.showInputDialog(vista, "Ingrese el título de la película:");
             if (titulo == null || titulo.trim().isEmpty()) return;
 
-            String genero = JOptionPane.showInputDialog(vistaPrincipal, "Ingrese el género:");
+            String genero = JOptionPane.showInputDialog(vista, "Ingrese el género:");
             if (genero == null || genero.trim().isEmpty()) return;
 
-            String duracionStr = JOptionPane.showInputDialog(vistaPrincipal, "Ingrese la duración en minutos:");
+            String duracionStr = JOptionPane.showInputDialog(vista, "Ingrese la duración en minutos:");
             if (duracionStr == null || duracionStr.trim().isEmpty()) return;
             int duracion = Integer.parseInt(duracionStr);
 
             RestriccionesEdad restriccion = (RestriccionesEdad) JOptionPane.showInputDialog(
-                    vistaPrincipal,
+                    vista,
                     "Seleccione la restricción de edad",
                     "Clasificación",
                     JOptionPane.QUESTION_MESSAGE,
@@ -116,26 +127,30 @@ public class PeliculasController {
             );
             if (restriccion == null) return;
             
-            // TODO COMENTAR
             String nombreArchivoPortada = seleccionarYCopiarPortada();
             if (nombreArchivoPortada == null) {
-                JOptionPane.showMessageDialog(vistaPrincipal, "No se seleccionó una portada. Operación cancelada.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                ManejoErrores.mostrarAdvertencia(
+                    "No se seleccionó una portada. Operación cancelada.", 
+                    "Aviso", 
+                    vista
+                );
                 return;
             }
+            
             // Genera el ID automáticamente
             int nuevoIdNumerico = repoPeliculas.obtenerCartelera().size() + 1;
             String id = String.format("p%03d", nuevoIdNumerico);
 
-        Pelicula nuevaPelicula = new Pelicula(id, titulo, genero, duracion, restriccion, nombreArchivoPortada);
+            Pelicula nuevaPelicula = new Pelicula(id, titulo, genero, duracion, restriccion, nombreArchivoPortada);
             repoPeliculas.guardarPelicula(nuevaPelicula);
             cargarPeliculasEnVista();
-            JOptionPane.showMessageDialog(vistaPrincipal, "Se agregó la película", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            
+            ManejoErrores.mostrarInfo("Se agregó la película correctamente", "Éxito", vista);
                 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(vistaPrincipal, "La duración debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            ManejoErrores.mostrarError("La duración debe ser un número válido", e, vista);
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error al agregar película", e, vista);
         }
-        
-
-        
     }
 }

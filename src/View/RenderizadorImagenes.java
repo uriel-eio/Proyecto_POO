@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package View;
 
-/**
- *
- * @author usuario
- */
 import java.awt.Component;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -15,7 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * Clase utilitaria para renderizar imágenes en componentes de UI
+ */
 public class RenderizadorImagenes extends DefaultTableCellRenderer {
+    
+    /**
+     * Renderiza imágenes en celdas de tablas
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         // Llama al método del padre para la configuración básica (colores de fondo, etc.)
@@ -47,6 +46,11 @@ public class RenderizadorImagenes extends DefaultTableCellRenderer {
         return this; 
     }
     
+    /**
+     * Ajusta una imagen al tamaño de un JLabel
+     * @param label El JLabel donde se mostrará la imagen
+     * @param icon La imagen a ajustar
+     */
     public static void ajustarImagenEnLabel(JLabel label, ImageIcon icon) {
         if (icon == null || label == null) return;
 
@@ -71,5 +75,4 @@ public class RenderizadorImagenes extends DefaultTableCellRenderer {
         Image scaledImage = icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
         label.setIcon(new ImageIcon(scaledImage));
     }
-    
 }

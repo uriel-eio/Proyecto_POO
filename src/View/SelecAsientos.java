@@ -1,41 +1,230 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
 
-import Controller.AsientosController;
 import Model.Asiento;
 import Model.Sala;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import javax.swing.JButton;
 
-
-
-/**
- *
- * @author acha
- */
 public class SelecAsientos extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SelecAsientos.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SelecAsientos.class.getName());
+    
+    // Atributos principales
     private final Sala sala;
     private final boolean isVip;
+    private ArrayList<Asiento> asientosSeleccionados = new ArrayList<>();
+    
     /**
-     * Creates new form Asientos
+     * Constructor básico para la vista de selección de asientos
+     * @param sala La sala donde se seleccionarán asientos
+     * @param isVip Indica si se trata de una sala VIP
      */
-
     public SelecAsientos(Sala sala, boolean isVip) {
         this.sala = sala;
         this.isVip = isVip;
-        initComponents(); // Inicializa los componentes Swing
-        setLocationRelativeTo(null); // Centra la ventana
-        new AsientosController(sala, this, isVip); // Inicia el controlador // Pasar isVip al controlador
+        
+        // Inicializar componentes visuales
+        initComponents();
+        
+        // Configuración adicional
+        configurarVentana();
+        
+        try {
+            // Inicializar asientos manualmente
+            inicializarAsientos();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al inicializar asientos", e);
+            JOptionPane.showMessageDialog(this, 
+                "Error al inicializar asientos: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
+    /**
+     * Configura aspectos visuales y comportamiento de la ventana
+     */
+    private void configurarVentana() {
+        // Centrar ventana en pantalla
+        setLocationRelativeTo(null);
+        
+        // Configurar título y encabezado
+        setTitle("Selección de Asientos - " + sala.getNombre());
+        
+        // Mostrar información de la película si está disponible
+        if (sala.getPelicula() != null) {
+            jLabel1.setText("Selecciona los Asientos: " + sala.getPelicula().obtenerTitulo());
+        }
+        
+        // Configurar colores y aspecto visual
+        jPanel1.setBackground(new Color(70, 70, 70));
+        jPanel2.setBackground(new Color(50, 50, 50));
+        
+        // Configurar el panel de asientos
+        jPanel2.setLayout(new GridLayout(0, 8, 5, 5)); // 8 asientos por fila con espacio entre ellos
+    }
     
+    /**
+     * Inicializa los asientos en el panel
+     */
+    private void inicializarAsientos() {
+        // Limpiar panel
+        jPanel2.removeAll();
+        
+        // Usar GridLayout para organizar los asientos
+        int columnas = 8;
+        jPanel2.setLayout(new GridLayout(0, columnas, 5, 5));
+        
+        // Lista para guardar asientos seleccionados
+        asientosSeleccionados = new ArrayList<>();
+        
+        // Crear botones para cada asiento
+        for (Asiento asiento : sala.getAsientos()) {
+            JButton boton = crearBotonAsiento(asiento);
+            jPanel2.add(boton);
+        }
+        
+        // Actualizar la vista
+        jPanel2.revalidate();
+        jPanel2.repaint();
+    }
+    
+    /**
+     * Obtiene el panel donde se mostrarán los asientos
+     * @return El panel de asientos
+     */
+    public javax.swing.JPanel getPanelAsientos() {
+        return jPanel2;
+    }
+    
+    /**
+     * Crea un botón para un asiento con el estilo adecuado
+     * @param asiento El asiento a representar
+     * @return El botón configurado
+     */
+    public JButton crearBotonAsiento(Asiento asiento) {
+        JButton boton = new JButton(asiento.obtenerNumero());
+        
+        // Configurar aspecto visual
+        boton.setPreferredSize(new Dimension(60, 40));
+        boton.setBackground(asiento.isVIP() ? new Color(200, 170, 0) : new Color(100, 100, 200));
+        boton.setForeground(Color.WHITE);
+        boton.setFocusPainted(false);
+        
+        // Si el asiento ya está reservado, deshabilitarlo
+        if (asiento.obtenerEstado()) {
+            boton.setEnabled(false);
+            boton.setBackground(Color.GRAY);
+        }
+        
+        // Agregar acción de selección
+        boton.addActionListener(e -> manejarSeleccionAsiento(boton, asiento));
+        
+        return boton;
+    }
+    
+    /**
+     * Maneja la selección y deselección de asientos
+     * @param boton El botón presionado
+     * @param asiento El asiento asociado al botón
+     */
+    private void manejarSeleccionAsiento(JButton boton, Asiento asiento) {
+        if (boton.getBackground().equals(Color.GREEN)) {
+            // Deseleccionar asiento
+            boton.setBackground(asiento.isVIP() ? new Color(200, 170, 0) : new Color(100, 100, 200));
+            asientosSeleccionados.remove(asiento);
+        } else {
+            // Seleccionar asiento
+            boton.setBackground(Color.GREEN);
+            asientosSeleccionados.add(asiento);
+        }
+    }
+    
+    /**
+     * Obtiene la lista de asientos seleccionados
+     * @return Lista de asientos seleccionados
+     */
+    public ArrayList<Asiento> getAsientosSeleccionados() {
+        return asientosSeleccionados;
+    }
+    
+    /**
+     * Confirma los asientos seleccionados
+     */
+    private void confirmarAsientos() {
+        // Verificar si hay asientos seleccionados
+        if (asientosSeleccionados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "No ha seleccionado ningún asiento", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Confirmar selección
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Está seguro de confirmar la selección de " + 
+            asientosSeleccionados.size() + " asientos?",
+            "Confirmar selección",
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        // Reservar los asientos seleccionados
+        for (Asiento asiento : asientosSeleccionados) {
+            asiento.reservar();
+        }
+        
+        // Guardar asientos en archivo
+        guardarAsientosEnArchivo();
+        
+        // Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(this, 
+            "Se han seleccionado " + asientosSeleccionados.size() + 
+            " asientos correctamente.",
+            "Selección confirmada", 
+            JOptionPane.INFORMATION_MESSAGE);
+        
+        // Cerrar ventana
+        this.dispose();
+    }
+    
+    /**
+     * Guarda la selección de asientos en un archivo CSV
+     */
+    private void guardarAsientosEnArchivo() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("confirmarAsientos.csv"))) {
+            // Escribir encabezado
+            bw.write("Numero,Estado,VIP\n");
+            
+            // Escribir asientos reservados
+            for (Asiento asiento : sala.getAsientos()) {
+                if (asiento.obtenerEstado()) { // asiento reservado
+                    bw.write(asiento.obtenerNumero() + ",Reservado," + asiento.isVIP() + "\n");
+                }
+            }
+            
+            // Asegurar que se escriban todos los datos
+            bw.flush();
+            
+            LOGGER.log(Level.INFO, "Asientos guardados en archivo correctamente");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al guardar los asientos", e);
+            JOptionPane.showMessageDialog(this, 
+                "Error al guardar los asientos seleccionados: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -172,49 +361,28 @@ public class SelecAsientos extends javax.swing.JFrame {
     
     //método del botón volver para cerrar únicamente la ventana y que no se cierre todo el programa.
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // Confirmar si desea salir sin guardar cambios
+        if (!asientosSeleccionados.isEmpty()) {
+            int respuesta = JOptionPane.showConfirmDialog(this, 
+                "¿Está seguro que desea salir sin confirmar su selección?", 
+                "Confirmar salida", 
+                JOptionPane.YES_NO_OPTION);
+                
+            if (respuesta != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+        
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-
-        //Crear Archivo donde se guarden los asientos escogidos.
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("confirmarAsientos.csv"))) {
-
-                for (Asiento asiento : sala.getAsientos()) {
-                    if (asiento.obtenerEstado()) { // asiento reservado
-                        bw.write(asiento.obtenerNumero() + ",Reservado," + asiento.isVIP() + "\n");
-                    }
-                }
-                bw.flush();
-
-                JOptionPane.showMessageDialog(this, "Asientos guardados correctamente.");
-                
-                //Captura la excepcion en caso de error.
-            } catch (IOException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error al guardar los asientos seleccionados.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        dispose();
+        confirmarAsientos();
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    
-    
-    
-    
-    public javax.swing.JPanel getPanelAsientos() {
-        return jPanel2;
-    }
-
-
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmar;

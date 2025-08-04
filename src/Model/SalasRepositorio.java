@@ -8,14 +8,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-public class RepositorioSalas {
-    private final RepositorioPeliculas repoPeliculas;
+// Renombrada desde ISalasRepositorio para reflejar que es una implementación
+public class SalasRepositorio implements ISalasRepositorio {
+    private final IPeliculasRepositorio repoPeliculas;
     public static final String ARCHIVO_SALAS = "lista_salas.txt";
     //Salas con identificador, nombre y capacidad respectivamente.
-    public RepositorioSalas(RepositorioPeliculas repoPeliculas) {
+    
+    public SalasRepositorio(IPeliculasRepositorio repoPeliculas) {
         this.repoPeliculas = repoPeliculas;
     }
+    
+    @Override
     public void crearSala() {
         File archivo = new File(ARCHIVO_SALAS);
         if (archivo.exists()) return;
@@ -26,6 +29,7 @@ public class RepositorioSalas {
     }
     
     //Método para guardar una sala en el archivo "lista_salas.txt"
+    @Override
     public void saveSala(Sala sala){
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALAS, true))){
             //Escribe en formato CSV
@@ -38,6 +42,7 @@ public class RepositorioSalas {
     
     
     //ArrayList para obtener las salas
+    @Override
     public ArrayList<Sala> getSala() {
         ArrayList<Sala> salas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_SALAS))) {
@@ -68,6 +73,7 @@ public class RepositorioSalas {
     }
        
     //Metodo para buscar salas 
+    @Override
     public Sala buscarSalaPorId(String id) {
         for (Sala sala : this.getSala()) { 
             if (sala.obtenerId().equals(id)) {
@@ -77,11 +83,7 @@ public class RepositorioSalas {
         return null; // No se encontró la sala
     }
 
-    private String salaToCSV(Sala sala){
-        return sala.obtenerId() + "," + sala.getNombre() + "," + sala.contarAsientosDisponibles();
-    }
-    
-
+    @Override
     public void actualizarSala(Sala salaModificada) {
         //busca la sala por id y le asigna la modificacion que le vamos a dar
         ArrayList<Sala> salas = this.getSala();

@@ -1,114 +1,147 @@
 package Controller;
+
 import Model.*;
 import View.*;
-import javax.swing.JOptionPane; // no se esytaba usand la puse en la validadecion de errores
+import Util.*;
 
+/**
+ * Controlador principal de la aplicación
+ * Responsable de iniciar la aplicación y coordinar entre controladores
+ */
 public class AppController {
     
-    //instancia de todos los repositorios
-    private final RepositorioPeliculas repPeliculas;
-    private final RepositorioSalas repSalas;
-    private final RepositorioClientes repClientes;
-
-    //instancia de todos los controladores especialistas
+    // Repositorios
+    private final IClienteRepositorio repoClientes;
+    private final IPeliculasRepositorio repoPeliculas;
+    private final ISalasRepositorio repoSalas;
+    
+    // Controladores principales
     private AuthController authController;
-    private ClienteController controladorCliente;
-    private PeliculasController controladorPeliculas;
-    private SalasController controladorSalas;
-    private VentasController controladorVentas;
-    
-    //instancia de las vistas principales
-    private Inicio vistaInicio;
-    private Principal principal;
-    
-    /*public void iniciarPrograma(){
-        Inicio vistaInicio = new Inicio(this);
-        vistaInicio.setVisible(true);
-    }*/
-    //creacion del constructor
-    
-    public void iniciarDatos(){
-        repPeliculas.creacionPeliculasPredeterminadas();
-        repSalas.crearSala();
-        repClientes.crearCliente();
-    }
-    
-    public AppController(){
-        //se instancia cada repositorio
-        this.repPeliculas = new RepositorioPeliculas();
-        this.repSalas = new RepositorioSalas(this.repPeliculas); 
-        this.repClientes = new RepositorioClientes();
-        
-        
-        iniciarDatos();       
-    }
 
-    //crea el flujo de autenticacion mostrando la ventana del login
-    public void iniciarAplicacion(){
-        this.vistaInicio = new Inicio(null);
+    /**
+     * Constructor principal que inicializa los repositorios básicos
+     */
+    public AppController() {
+        // Inicializar repositorios
+        this.repoPeliculas = new PeliculasRepositorio();
+        this.repoSalas = new SalasRepositorio(repoPeliculas);
+        this.repoClientes = new RepositorioClientes();
         
-        //se crea el AuthController
-        this.authController = new AuthController(this, vistaInicio);
-        
-        //se pasa el controlador creado a la vista de vistaInicio
-        this.vistaInicio.setControlador(this.authController); 
-        this.vistaInicio.setVisible(true);
-    }//Añadir al constructor peliculas
-    
-    /*public void setControllers(ClienteController cliente, 
-            SalasController salas, PeliculasController peliculas, VentasController ventas) {
-        this.controladorCliente = cliente;
-        this.controladorPeliculas = peliculas;
-        this.controladorSalas = salas;
-        this.controladorVentas = ventas;
-    }*/
-    
-    //se oculta el login y construye la ventana principal con los controladores
-    public void mostrarVentanaPrincipal(){
-        this.vistaInicio.dispose(); //se oculta la ventana del login
-
-        //se crea la vista principal
-        this.principal = new Principal(); 
-
-        crearControladores();
-        configurarVista();
-        cargarDatosIniciales();
-        
-        principal.setVisible(true);
+        // Inicializar datos
+        inicializarDatos();
     }
     
-    //acabo de separar todo esto para que un metodo no haga todo
-    private void crearControladores() {
-        this.controladorCliente = new ClienteController(repClientes, principal);
-        this.controladorPeliculas = new PeliculasController(repPeliculas, principal);
-        this.controladorSalas = new SalasController(repSalas, repPeliculas, principal);
-        this.controladorVentas = new VentasController(repClientes, repSalas, principal);
-    }
-    
-    private void configurarVista() {
-        principal.setControllers(
-            this, 
-            controladorCliente, 
-            controladorPeliculas, 
-            controladorSalas, 
-            controladorVentas
-        );
-        controladorCliente.iniciarTablaClientes(principal);
-    }
-    
-    private void cargarDatosIniciales() {
+    /**
+     * Inicializa los datos predeterminados en los repositorios
+     */
+    private void inicializarDatos() {
         try {
-            controladorCliente.cargarClientesEnVista();
-            controladorPeliculas.cargarPeliculasEnVista();
-            controladorSalas.iniciarDatosDeSalaEnVista();
+            // Primero crear carpeta de datos si no existe
+            Rutas.inicializarCarpetas();
+
+            // Luego crear archivos si no existen
+            repoPeliculas.creacionPeliculasPredeterminadas();
+            repoSalas.crearSala();
+            ((RepositorioClientes)repoClientes).crearCliente();
+
+            // Ahora explícitamente cargar los datos existentes
+            System.out.println("Cargando datos existentes...");
+            repoPeliculas.obtenerCartelera();
+            repoSalas.getSala();
+            repoClientes.obtenerCliente();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                principal,
-                "Error al cargar datos iniciales: " + e.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-            );
+            ManejoErrores.mostrarError("Error al inicializar datos", e);
         }
     }
     
+    /**
+     * Inicia la aplicación mostrando la pantalla de login
+     */
+    public void iniciarAplicacion() {
+        try {
+            // Crear y mostrar la vista de inicio de sesión
+            Inicio vistaInicio = new Inicio(null);
+            authController = new AuthController(this, vistaInicio);
+            vistaInicio.setControlador(authController);
+            vistaInicio.setVisible(true);
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error al iniciar la aplicación", e);
+        }
+    }
+    
+    /**
+     * Muestra la ventana principal de la aplicación
+     * Llamado por AuthController después de login exitoso
+     */
+    public void mostrarVentanaPrincipal() {
+        try {
+            // Crear vista principal
+            Principal principal = new Principal();
+            
+            // Crear controladores específicos
+            ClienteController controladorCliente = crearClienteController(principal);
+            PeliculasController controladorPeliculas = crearPeliculasController(principal);
+            SalasController controladorSalas = crearSalasController(principal);
+            VentasController controladorVentas = new VentasController(principal);
+            
+            // Configurar vista con controladores
+            principal.setControllers(
+                this, 
+                controladorCliente, 
+                controladorPeliculas, 
+                controladorSalas, 
+                controladorVentas
+            );
+            
+            // Cargar datos iniciales en la vista
+            inicializarVistaPrincipal(
+                principal, 
+                controladorCliente, 
+                controladorPeliculas, 
+                controladorSalas
+            );
+            
+            principal.setVisible(true);
+        } catch (Exception e) {
+            ManejoErrores.mostrarError("Error al mostrar la ventana principal", e);
+        }
+    }
+    
+    /**
+     * Crea el controlador de clientes
+     */
+    private ClienteController crearClienteController(Principal vista) {
+        ClienteController controlador = new ClienteController(repoClientes);
+        controlador.setVista(vista);
+        return controlador;
+    }
+    
+    /**
+     * Crea el controlador de películas
+     */
+    private PeliculasController crearPeliculasController(Principal vista) {
+        return new PeliculasController(repoPeliculas, vista);
+    }
+    
+    /**
+     * Crea el controlador de salas
+     */
+    private SalasController crearSalasController(Principal vista) {
+        return new SalasController(repoSalas, repoPeliculas, vista);
+    }
+    
+    /**
+     * Inicializa los datos en la vista principal
+     */
+    private void inicializarVistaPrincipal(
+            Principal vista, 
+            ClienteController controladorCliente, 
+            PeliculasController controladorPeliculas, 
+            SalasController controladorSalas) {
+        
+        controladorCliente.iniciarTablaClientes(vista);
+        controladorCliente.cargarClientesEnVista();
+        controladorPeliculas.cargarPeliculasEnVista();
+        controladorSalas.iniciarDatosDeSalaEnVista();
+    }
 }
