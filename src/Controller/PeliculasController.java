@@ -47,7 +47,7 @@ public class PeliculasController {
             ImageIcon portada = null;
             try {
                 String rutaImagen = "/images/" + pelicula.getRutaPortada();
-                portada = new ImageIcon(getClass().getResource(rutaImagen));
+                portada = Util.CargarRecursos.getIcon(pelicula.getRutaPortada());
             } catch (Exception e) {
                 // Si no se encuentra la imagen, usamos un icono vacío sin mostrar error
                 portada = new ImageIcon();

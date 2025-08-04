@@ -66,7 +66,7 @@ public class Principal extends javax.swing.JFrame {
         // Configuración puramente visual
         UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
         jTabbedPane2.setForeground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
+        setIconImage(Util.CargarRecursos.getIcon("icono.png").getImage());
         this.setLocationRelativeTo(null);
         this.setResizable(true);
         this.setSize(600, 430);

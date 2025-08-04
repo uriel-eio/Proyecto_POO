@@ -27,11 +27,8 @@ public class Inicio extends javax.swing.JFrame {
         setTitle("Sistema de Cine - Inicio de Sesión");
         
         // Cargar la imagen en el JLabel
-        jLabelImagen1.setIcon(
-            new javax.swing.ImageIcon(
-                getClass().getResource("/images/BannerInicio.png")
-            )
-        );
+        jLabelImagen1.setIcon(Util.CargarRecursos.getIcon("BannerInicio.png"));
+
 
         // Guardar la imagen original para poder escalarla luego
         imagenOriginal = (ImageIcon) jLabelImagen1.getIcon();
@@ -40,8 +37,8 @@ public class Inicio extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         // Configurar icono de la aplicación
-        setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
-
+        setIconImage(Util.CargarRecursos.getIcon("icono.png").getImage());
+        
         // Listener para redimensionar dinámicamente la imagen
         jLabelImagen1.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
@@ -245,7 +242,7 @@ public class Inicio extends javax.swing.JFrame {
 
         jButtonInicioSesion.setBackground(new java.awt.Color(14, 42, 83));
         jButtonInicioSesion.setFont(new java.awt.Font("Yu Gothic", 1, 17)); // NOI18N
-        jButtonInicioSesion.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonInicioSesion.setForeground(new java.awt.Color(51, 51, 255));
         jButtonInicioSesion.setText("Acceder");
         jButtonInicioSesion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButtonInicioSesion.setFocusPainted(false);

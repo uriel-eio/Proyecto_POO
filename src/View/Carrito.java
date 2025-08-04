@@ -37,8 +37,7 @@ public class Carrito extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         
         // Establecer icono de la aplicación
-        setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
-        
+        setIconImage(Util.CargarRecursos.getIcon("icono.png").getImage());          
         // Configurar título
         setTitle("Carrito de Compras");
     }
