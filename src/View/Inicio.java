@@ -36,8 +36,7 @@ public class Inicio extends javax.swing.JFrame {
         // Centrar ventana
         this.setLocationRelativeTo(null);
         
-        // Configurar icono de la aplicación
-        setIconImage(Util.CargarRecursos.getIcon("icono.png").getImage());
+
         
         // Listener para redimensionar dinámicamente la imagen
         jLabelImagen1.addComponentListener(new java.awt.event.ComponentAdapter() {
