@@ -5,7 +5,7 @@ import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        // Asegurarnos de arrancar la interfaz en el Event Dispatch Thread
+        // Asegurarnos de arrancar la interfaz
         SwingUtilities.invokeLater(() -> {
             AppController app = new AppController();
             app.iniciarAplicacion();

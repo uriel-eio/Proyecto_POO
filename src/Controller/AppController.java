@@ -1,7 +1,6 @@
 package Controller;
 import Model.*;
 import View.*;
-import javax.swing.JOptionPane;
 
 public class AppController {
     
@@ -26,6 +25,7 @@ public class AppController {
         vistaInicio.setVisible(true);
     }*/
     //creacion del constructor
+    
     public AppController(){
         //se instancia cada repositorio
         this.repPeliculas = new RepositorioPeliculas();
@@ -41,6 +41,7 @@ public class AppController {
         repSalas.crearSala();
         repClientes.crearCliente();
     }
+    
     //crea el flujo de autenticacion mostrando la ventana del login
     public void iniciarAplicacion(){
         this.vistaInicio = new Inicio(null);

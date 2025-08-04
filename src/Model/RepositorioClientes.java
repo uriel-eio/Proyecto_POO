@@ -1,5 +1,5 @@
 package Model;
-import static Model.RepositorioSalas.ARCHIVO_SALAS;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,8 +26,7 @@ public class RepositorioClientes {
     
     }
     
-    //<-----------------AQUI---------------------------------------------------<<MIRAME
-    //HOLA MI AMOR COMO ESTAS??
+    //revisen esto
     public void crearCliente(){
         File archivo = new File(ARCHIVO_CLIENTES    );
         //Verificar la existencia del archivo.

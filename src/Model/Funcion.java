@@ -3,7 +3,6 @@ package Model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Funcion {
     // LA creación de IPelicula (objeto), quiere decir que el objeto debe cumplir

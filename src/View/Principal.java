@@ -11,17 +11,16 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -31,17 +30,40 @@ public class Principal extends javax.swing.JFrame {
     private SalasController controladorSalas;
     private RepositorioSalas salasRepositorio;
     private AppController controladorApp;
+    private JButton btnSalir;
+    private JButton btnMaximizar;
+
 
     
     public Principal() {
         initComponents();
+        btnSalir = new JButton("Salir");
+        btnMaximizar = new JButton("Maximizar");
+
+        btnSalir.setBackground(Color.RED);
+        btnMaximizar.setBackground(Color.GREEN);
+
+        btnSalir.addActionListener(e -> System.exit(0));
+        
+        btnMaximizar.addActionListener(e -> {
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setVisible(true);  
+        });
+
+
+        btnMaximizar.setBounds(450, 10, 100, 30); 
+        btnSalir.setBounds(450, 50, 100, 30);
+
+        this.add(btnMaximizar);
+        this.add(btnSalir);
+
         configurarTablaPeliculas();
         // Aquí va toda la configuración puramente visual
         UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
         jTabbedPane2.setForeground(Color.WHITE);
         setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        this.setResizable(true);
         this.setSize(600, 430);
         this.setBackground(new Color(0, 0, 0, 0));
     }
@@ -69,44 +91,29 @@ public class Principal extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         botonesFecha = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        panelPeliculas = new javax.swing.JPanel();
-        botonAgregarPeliculaP = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablePeli = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
-        panelClientes = new javax.swing.JPanel();
-        botonCarritoC = new javax.swing.JButton();
-        botonModificar = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tableClientes = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
-        botonRegistrarC1 = new javax.swing.JButton();
         panelSalas = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableSalas = new javax.swing.JTable();
-        jLabel6 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         comboPeliculasSa1 = new javax.swing.JComboBox<>();
         botonCambiarPeliculaSa1 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         panelVentas = new javax.swing.JPanel();
         label$1T2 = new javax.swing.JLabel();
         comboClientesV = new javax.swing.JComboBox<>();
-        jSeparator3 = new javax.swing.JSeparator();
         labelPrecioV = new javax.swing.JLabel();
         textFieldPrecioV = new javax.swing.JTextField();
         botonAgregarCarritoV = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jTextArea1 = new javax.swing.JTextArea();
-        jSeparator2 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         textFieldClienteV = new javax.swing.JTextField();
         labelNombreCliente = new javax.swing.JLabel();
         botonBuscarClienteV = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        comboSalasV = new javax.swing.JComboBox<>();
         labelMostrarPeli = new javax.swing.JLabel();
         labelPelicula = new javax.swing.JLabel();
-        btnAsientos = new javax.swing.JButton();
         jPanel16 = new javax.swing.JPanel();
         fecha3 = new javax.swing.JRadioButton();
         fecha4 = new javax.swing.JRadioButton();
@@ -115,6 +122,22 @@ public class Principal extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         labelCantidadTicketsV = new javax.swing.JLabel();
         spinnerTicketsV = new javax.swing.JSpinner();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        panelPeliculas = new javax.swing.JPanel();
+        botonAgregarPeliculaP = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePeli = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        panelClientes = new javax.swing.JPanel();
+        botonCarritoC = new javax.swing.JButton();
+        botonModificar = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableClientes = new javax.swing.JTable();
+        botonRegistrarC1 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -122,128 +145,13 @@ public class Principal extends javax.swing.JFrame {
         setUndecorated(true);
         setSize(new java.awt.Dimension(500, 400));
 
-        jTabbedPane2.setBackground(new java.awt.Color(204, 204, 204));
+        jTabbedPane2.setBackground(new java.awt.Color(38, 75, 120));
+        jTabbedPane2.setForeground(new java.awt.Color(255, 255, 255));
         jTabbedPane2.setFocusable(false);
+        jTabbedPane2.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         jTabbedPane2.setPreferredSize(new java.awt.Dimension(700, 900));
 
-        panelPeliculas.setBackground(new java.awt.Color(153, 153, 153));
-        panelPeliculas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        botonAgregarPeliculaP.setBackground(new java.awt.Color(102, 102, 102));
-        botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonAgregarPeliculaP.setForeground(new java.awt.Color(255, 255, 255));
-        botonAgregarPeliculaP.setText("Agregar Película");
-        botonAgregarPeliculaP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonAgregarPeliculaP.setFocusPainted(false);
-        botonAgregarPeliculaP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAgregarPeliculaPActionPerformed(evt);
-            }
-        });
-        panelPeliculas.add(botonAgregarPeliculaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, 130, 30));
-
-        tablePeli = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tablePeli.setBackground(new java.awt.Color(204, 204, 204));
-        tablePeli.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Género", "Clasificación", ""
-            }
-        ));
-        tablePeli.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tablePeli.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tablePeli.setFocusable(false);
-        jScrollPane1.setViewportView(tablePeli);
-        if (tablePeli.getColumnModel().getColumnCount() > 0) {
-            tablePeli.getColumnModel().getColumn(3).setPreferredWidth(300);
-        }
-
-        panelPeliculas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 70, 540, 250));
-
-        jLabel4.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/peliculas.png"))); // NOI18N
-        panelPeliculas.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 7, -1, -1));
-
-        jTabbedPane2.addTab("Peliculas", panelPeliculas);
-
-        panelClientes.setBackground(new java.awt.Color(153, 153, 153));
-        panelClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        botonCarritoC.setBackground(new java.awt.Color(102, 102, 102));
-        botonCarritoC.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
-        botonCarritoC.setText("Carrito");
-        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonCarritoC.setFocusPainted(false);
-        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCarritoCActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonCarritoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 320, 90, 30));
-
-        botonModificar.setBackground(new java.awt.Color(102, 102, 102));
-        botonModificar.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonModificar.setForeground(new java.awt.Color(255, 255, 255));
-        botonModificar.setText("Modificar");
-        botonModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonModificar.setFocusPainted(false);
-        botonModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonModificarActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 90, 30));
-
-        tableClientes = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tableClientes.setBackground(new java.awt.Color(204, 204, 204));
-        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Cédula", "Teléfono"
-            }
-        ));
-        tableClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tableClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableClientes.setFocusable(false);
-        jScrollPane4.setViewportView(tableClientes);
-
-        panelClientes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 550, 210));
-
-        jLabel5.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
-        panelClientes.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        botonRegistrarC1.setBackground(new java.awt.Color(102, 102, 102));
-        botonRegistrarC1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonRegistrarC1.setForeground(new java.awt.Color(255, 255, 255));
-        botonRegistrarC1.setText("Registrar");
-        botonRegistrarC1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonRegistrarC1.setFocusPainted(false);
-        botonRegistrarC1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRegistrarC1ActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 90, 30));
-
-        jTabbedPane2.addTab("Clientes", panelClientes);
-
-        panelSalas.setBackground(new java.awt.Color(153, 153, 153));
+        panelSalas.setBackground(new java.awt.Color(3, 30, 68));
         panelSalas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tableSalas = new javax.swing.JTable(){
@@ -252,6 +160,7 @@ public class Principal extends javax.swing.JFrame {
             }
         };
         tableSalas.setBackground(new java.awt.Color(204, 204, 204));
+        tableSalas.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         tableSalas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -268,25 +177,20 @@ public class Principal extends javax.swing.JFrame {
             tableSalas.getColumnModel().getColumn(4).setPreferredWidth(200);
         }
 
-        panelSalas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 80, 540, 180));
+        panelSalas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 290));
 
-        jLabel6.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salas.png"))); // NOI18N
-        panelSalas.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        jPanel12.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel12.setBackground(new java.awt.Color(204, 204, 204));
         jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
-        comboPeliculasSa1.setBackground(new java.awt.Color(153, 153, 153));
-        comboPeliculasSa1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        comboPeliculasSa1.setBackground(new java.awt.Color(14, 66, 134));
+        comboPeliculasSa1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         comboPeliculasSa1.setForeground(new java.awt.Color(255, 255, 255));
         comboPeliculasSa1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Películas" }));
 
-        botonCambiarPeliculaSa1.setBackground(new java.awt.Color(153, 153, 153));
-        botonCambiarPeliculaSa1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonCambiarPeliculaSa1.setBackground(new java.awt.Color(14, 66, 134));
+        botonCambiarPeliculaSa1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         botonCambiarPeliculaSa1.setForeground(new java.awt.Color(255, 255, 255));
-        botonCambiarPeliculaSa1.setText("Cambiar Película");
+        botonCambiarPeliculaSa1.setText("Cambiar ");
         botonCambiarPeliculaSa1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonCambiarPeliculaSa1.setFocusPainted(false);
         botonCambiarPeliculaSa1.addActionListener(new java.awt.event.ActionListener() {
@@ -300,9 +204,9 @@ public class Principal extends javax.swing.JFrame {
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(comboPeliculasSa1, 0, 136, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(comboPeliculasSa1, 0, 140, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -311,16 +215,38 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
-        panelSalas.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 320, 60));
+        panelSalas.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 320, 50));
+
+        jButton5.setBackground(new java.awt.Color(14, 66, 134));
+        jButton5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setText("Maximizar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        panelSalas.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, -1, -1));
+
+        jButton7.setBackground(new java.awt.Color(14, 66, 134));
+        jButton7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButton7.setForeground(new java.awt.Color(255, 255, 255));
+        jButton7.setText("Salir");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        panelSalas.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 320, -1, -1));
 
         jTabbedPane2.addTab("Salas", panelSalas);
 
-        panelVentas.setBackground(new java.awt.Color(153, 153, 153));
+        panelVentas.setBackground(new java.awt.Color(3, 30, 68));
         panelVentas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         label$1T2.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
@@ -339,7 +265,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         panelVentas.add(comboClientesV, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 137, 107, 26));
-        panelVentas.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 375, 60, 10));
 
         labelPrecioV.setFont(new java.awt.Font("Calibri Light", 2, 14)); // NOI18N
         labelPrecioV.setForeground(new java.awt.Color(255, 255, 255));
@@ -373,12 +298,6 @@ public class Principal extends javax.swing.JFrame {
         });
         panelVentas.add(botonAgregarCarritoV, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 330, 140, 40));
 
-        jLabel1.setFont(new java.awt.Font("Meiryo UI", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ventas.png"))); // NOI18N
-        panelVentas.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 240, 50));
-        panelVentas.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, -1, -1));
-
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
         jTextArea1.setColumns(20);
@@ -391,7 +310,6 @@ public class Principal extends javax.swing.JFrame {
         jTextArea1.setFocusable(false);
         jTextArea1.setMargin(new java.awt.Insets(22, 2, 2, 2));
         panelVentas.add(jTextArea1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 210, 20));
-        panelVentas.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 107, 10));
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -468,6 +386,37 @@ public class Principal extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
+        comboSalasV.setBackground(new java.awt.Color(153, 153, 153));
+        comboSalasV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        comboSalasV.setForeground(new java.awt.Color(255, 255, 255));
+        comboSalasV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sala", "VIP", "Estandar" }));
+        comboSalasV.setFocusable(false);
+        comboSalasV.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboSalasVItemStateChanged(evt);
+            }
+        });
+        comboSalasV.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                comboSalasVMouseDragged(evt);
+            }
+        });
+        comboSalasV.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                comboSalasVFocusLost(evt);
+            }
+        });
+        comboSalasV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboSalasVMouseClicked(evt);
+            }
+        });
+        comboSalasV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSalasVActionPerformed(evt);
+            }
+        });
+
         labelMostrarPeli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Next.png"))); // NOI18N
         labelMostrarPeli.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -480,25 +429,13 @@ public class Principal extends javax.swing.JFrame {
         labelPelicula.setText("-----------------------");
         labelPelicula.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Película", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri Light", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        btnAsientos.setBackground(new java.awt.Color(153, 153, 153));
-        btnAsientos.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        btnAsientos.setForeground(new java.awt.Color(255, 255, 255));
-        btnAsientos.setText("Asientos");
-        btnAsientos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnAsientos.setFocusPainted(false);
-        btnAsientos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAsientosActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(btnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(labelMostrarPeli)
                 .addGap(18, 18, 18)
@@ -513,9 +450,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(labelPelicula)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelMostrarPeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelMostrarPeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -638,17 +575,185 @@ public class Principal extends javax.swing.JFrame {
 
         panelVentas.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 230, 170, 50));
 
+        jButton3.setText("Salir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        panelVentas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, -1, -1));
+
+        jButton4.setText("Maximizar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        panelVentas.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 0, -1, -1));
+
         jTabbedPane2.addTab("Ventas", panelVentas);
+
+        panelPeliculas.setBackground(new java.awt.Color(3, 30, 68));
+        panelPeliculas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        botonAgregarPeliculaP.setBackground(new java.awt.Color(14, 66, 134));
+        botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarPeliculaP.setForeground(new java.awt.Color(255, 255, 255));
+        botonAgregarPeliculaP.setText("Agregar Película");
+        botonAgregarPeliculaP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonAgregarPeliculaP.setFocusPainted(false);
+        botonAgregarPeliculaP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAgregarPeliculaPActionPerformed(evt);
+            }
+        });
+        panelPeliculas.add(botonAgregarPeliculaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 340, 130, 30));
+
+        tablePeli = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
+        tablePeli.setBackground(new java.awt.Color(204, 204, 204));
+        tablePeli.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        tablePeli.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Género", "Clasificación", ""
+            }
+        ));
+        tablePeli.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tablePeli.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tablePeli.setFocusable(false);
+        jScrollPane1.setViewportView(tablePeli);
+        if (tablePeli.getColumnModel().getColumnCount() > 0) {
+            tablePeli.getColumnModel().getColumn(3).setPreferredWidth(300);
+        }
+
+        panelPeliculas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 310));
+
+        jButton1.setBackground(new java.awt.Color(14, 66, 134));
+        jButton1.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        jButton1.setText("Salir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        panelPeliculas.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, -1, -1));
+
+        jButton2.setBackground(new java.awt.Color(14, 66, 134));
+        jButton2.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        jButton2.setText("Maximizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        panelPeliculas.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 340, -1, -1));
+
+        jTabbedPane2.addTab("Peliculas", panelPeliculas);
+
+        panelClientes.setBackground(new java.awt.Color(3, 30, 68));
+        panelClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        botonCarritoC.setBackground(new java.awt.Color(14, 66, 134));
+        botonCarritoC.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
+        botonCarritoC.setText("Carrito");
+        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCarritoC.setFocusPainted(false);
+        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCarritoCActionPerformed(evt);
+            }
+        });
+        panelClientes.add(botonCarritoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 320, 90, 30));
+
+        botonModificar.setBackground(new java.awt.Color(14, 66, 134));
+        botonModificar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonModificar.setForeground(new java.awt.Color(255, 255, 255));
+        botonModificar.setText("Modificar");
+        botonModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonModificar.setFocusPainted(false);
+        botonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarActionPerformed(evt);
+            }
+        });
+        panelClientes.add(botonModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, 90, 30));
+
+        tableClientes = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
+        tableClientes.setBackground(new java.awt.Color(204, 204, 204));
+        tableClientes.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        tableClientes.setForeground(new java.awt.Color(0, 0, 0));
+        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Cédula", "Teléfono"
+            }
+        ));
+        tableClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tableClientes.setFocusable(false);
+        jScrollPane4.setViewportView(tableClientes);
+
+        panelClientes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 400));
+
+        botonRegistrarC1.setBackground(new java.awt.Color(14, 66, 134));
+        botonRegistrarC1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonRegistrarC1.setForeground(new java.awt.Color(255, 255, 255));
+        botonRegistrarC1.setText("Registrar");
+        botonRegistrarC1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonRegistrarC1.setFocusPainted(false);
+        botonRegistrarC1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegistrarC1ActionPerformed(evt);
+            }
+        });
+        panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 90, 30));
+
+        jButton6.setBackground(new java.awt.Color(14, 66, 134));
+        jButton6.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jButton6.setText("Maximizar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        panelClientes.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 90, -1));
+
+        jButton8.setBackground(new java.awt.Color(14, 66, 134));
+        jButton8.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(255, 255, 255));
+        jButton8.setText("Salir");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        panelClientes.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, 90, -1));
+
+        jTabbedPane2.addTab("Clientes", panelClientes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
         );
 
         pack();
@@ -680,10 +785,40 @@ public class Principal extends javax.swing.JFrame {
     private void textFieldPrecioVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPrecioVActionPerformed
     }//GEN-LAST:event_textFieldPrecioVActionPerformed
 
-    private void botonCambiarPeliculaSa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarPeliculaSa1ActionPerformed
-        //controlador.botonCambiarPeliculasSalas(this);
-        controladorSalas.asignarPeliculaASala();
-    }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
+    private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
+        this.spinnerTicketsV.setValue(0);
+        
+        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
+        this.spinnerTicketsV.setValue(0); // Resetear spinner
+
+        // Obtener la sala seleccionada (ej: desde una tabla)
+        int filaSeleccionada = tableSalas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
+            return;
+        }
+
+        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+        Sala sala = salasRepositorio.buscarSalaPorId(idSala);
+
+        if (sala != null) {
+            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
+            ventanaAsientos.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_comboSalasVActionPerformed
+
+    private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
+    }//GEN-LAST:event_comboSalasVItemStateChanged
+
+    private void comboSalasVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_comboSalasVFocusLost
+    }//GEN-LAST:event_comboSalasVFocusLost
+
+    private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
+    }//GEN-LAST:event_comboSalasVMouseClicked
+
+    private void comboSalasVMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseDragged
+    }//GEN-LAST:event_comboSalasVMouseDragged
 
     private void labelMostrarPeliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelMostrarPeliMouseClicked
 
@@ -770,10 +905,42 @@ public class Principal extends javax.swing.JFrame {
         controladorPeliculas.agregarNuevaPelicula();
     }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
 
-    private void btnAsientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsientosActionPerformed
-        controladorVentas.manejarSeleccionAsientos(tableSalas);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    }//GEN-LAST:event_btnAsientosActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+     System.exit(0);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+     System.exit(0);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    System.exit(0);    
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void botonCambiarPeliculaSa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarPeliculaSa1ActionPerformed
+        //controlador.botonCambiarPeliculasSalas(this);
+        controladorSalas.asignarPeliculaASala();
+    }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
     public void actualizarTablaSalas(ArrayList<Sala> salas) {
         DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
         model.setRowCount(0);
@@ -830,20 +997,24 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton botonModificar;
     private javax.swing.JButton botonRegistrarC1;
     public javax.swing.ButtonGroup botonesFecha;
-    public javax.swing.JButton btnAsientos;
     public javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     public javax.swing.JComboBox<String> comboClientesV;
     public javax.swing.JComboBox<String> comboPeliculasSa1;
+    public javax.swing.JComboBox<String> comboSalasV;
     public javax.swing.JRadioButton fecha3;
     public javax.swing.JRadioButton fecha4;
     public javax.swing.JRadioButton fecha5;
     public javax.swing.ButtonGroup grupoBotones;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel16;
@@ -853,9 +1024,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel label$1T2;
@@ -973,13 +1141,13 @@ public class Principal extends javax.swing.JFrame {
         this.comboPeliculasSa1 = comboPeliculasSa1;
     }
 
-    /*public JComboBox<String> getComboSalasV() {
+    public JComboBox<String> getComboSalasV() {
         return comboSalasV;
     }
 
     public void setComboSalasV(JComboBox<String> comboSalasV) {
         this.comboSalasV = comboSalasV;
-    }*/
+    }
 
     public JRadioButton getFecha3() {
         return fecha3;
@@ -1019,38 +1187,6 @@ public class Principal extends javax.swing.JFrame {
 
     public void setjComboBox1(JComboBox<String> jComboBox1) {
         this.jComboBox1 = jComboBox1;
-    }
-
-    public JLabel getjLabel1() {
-        return jLabel1;
-    }
-
-    public void setjLabel1(JLabel jLabel1) {
-        this.jLabel1 = jLabel1;
-    }
-
-    public JLabel getjLabel4() {
-        return jLabel4;
-    }
-
-    public void setjLabel4(JLabel jLabel4) {
-        this.jLabel4 = jLabel4;
-    }
-
-    public JLabel getjLabel5() {
-        return jLabel5;
-    }
-
-    public void setjLabel5(JLabel jLabel5) {
-        this.jLabel5 = jLabel5;
-    }
-
-    public JLabel getjLabel6() {
-        return jLabel6;
-    }
-
-    public void setjLabel6(JLabel jLabel6) {
-        this.jLabel6 = jLabel6;
     }
 
     public JPanel getjPanel1() {
@@ -1123,30 +1259,6 @@ public class Principal extends javax.swing.JFrame {
 
     public void setjScrollPane4(JScrollPane jScrollPane4) {
         this.jScrollPane4 = jScrollPane4;
-    }
-
-    public JSeparator getjSeparator1() {
-        return jSeparator1;
-    }
-
-    public void setjSeparator1(JSeparator jSeparator1) {
-        this.jSeparator1 = jSeparator1;
-    }
-
-    public JSeparator getjSeparator2() {
-        return jSeparator2;
-    }
-
-    public void setjSeparator2(JSeparator jSeparator2) {
-        this.jSeparator2 = jSeparator2;
-    }
-
-    public JSeparator getjSeparator3() {
-        return jSeparator3;
-    }
-
-    public void setjSeparator3(JSeparator jSeparator3) {
-        this.jSeparator3 = jSeparator3;
     }
 
     public JTabbedPane getjTabbedPane2() {

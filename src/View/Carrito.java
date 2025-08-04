@@ -53,7 +53,6 @@ public class Carrito extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCarrito = new javax.swing.JTable();
         botonRegresar = new javax.swing.JButton();
@@ -67,15 +66,13 @@ public class Carrito extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/carrito.png"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
         tableCarrito = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex){
                 return false;
             }
         };
         tableCarrito.setBackground(new java.awt.Color(204, 204, 204));
+        tableCarrito.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         tableCarrito.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -91,7 +88,7 @@ public class Carrito extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 610, 190));
 
         botonRegresar.setBackground(new java.awt.Color(153, 153, 153));
-        botonRegresar.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonRegresar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         botonRegresar.setForeground(new java.awt.Color(255, 255, 255));
         botonRegresar.setText("Regresar");
         botonRegresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -103,12 +100,13 @@ public class Carrito extends javax.swing.JFrame {
         });
         jPanel1.add(botonRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 90, 30));
 
-        labelNombre.setFont(new java.awt.Font("Calibri Light", 3, 30)); // NOI18N
-        labelNombre.setText("Cliente");
+        labelNombre.setFont(new java.awt.Font("Roboto Light", 1, 30)); // NOI18N
+        labelNombre.setForeground(new java.awt.Color(255, 255, 255));
+        labelNombre.setText("Carrito");
         jPanel1.add(labelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 220, -1));
 
         botonPagar.setBackground(new java.awt.Color(153, 153, 153));
-        botonPagar.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonPagar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         botonPagar.setForeground(new java.awt.Color(255, 255, 255));
         botonPagar.setText("Pagar Orden");
         botonPagar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -140,7 +138,7 @@ public class Carrito extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,7 +170,6 @@ public class Carrito extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonPagar;
     private javax.swing.JButton botonRegresar;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;

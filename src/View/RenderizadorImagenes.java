@@ -46,4 +46,30 @@ public class RenderizadorImagenes extends DefaultTableCellRenderer {
         
         return this; 
     }
+    
+    public static void ajustarImagenEnLabel(JLabel label, ImageIcon icon) {
+        if (icon == null || label == null) return;
+
+        int labelWidth = label.getWidth();
+        int labelHeight = label.getHeight();
+
+        if (labelWidth <= 0 || labelHeight <= 0) {
+            return; // Evitar errores si el label no tiene tamaño aún
+        }
+
+        int iconWidth = icon.getIconWidth();
+        int iconHeight = icon.getIconHeight();
+
+        // Calcular escala para mantener el aspecto
+        double scaleWidth = (double) labelWidth / iconWidth;
+        double scaleHeight = (double) labelHeight / iconHeight;
+        double scale = Math.min(scaleWidth, scaleHeight); // Escalar sin deformar
+
+        int newWidth = (int) (iconWidth * scale);
+        int newHeight = (int) (iconHeight * scale);
+
+        Image scaledImage = icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        label.setIcon(new ImageIcon(scaledImage));
+    }
+    
 }
