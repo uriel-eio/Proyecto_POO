@@ -89,13 +89,16 @@ public class AsientosController {
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setContentAreaFilled(true);
+                /*btn.setContentAreaFilled(true);
                 btn.setBackground(new Color(80, 80, 80)); // Gris oscuro al pasar mouse
+                */
             }
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (btn.getBackground() != Color.WHITE) {
                     btn.setContentAreaFilled(false); // Vuelve a transparente si no está seleccionado
+                } else {
+                    btn.setContentAreaFilled(true);
                 }
             }
         });
@@ -116,4 +119,6 @@ public class AsientosController {
         
         return btn;
     }
+    
+    
 }
