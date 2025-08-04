@@ -8,12 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class RepositorioClientes {
-    
+/**
+ * Implementación del repositorio de clientes que utiliza archivos
+ * Principio de Responsabilidad Única: Solo maneja la persistencia de clientes
+ */
+public class RepositorioClientes implements IClienteRepositorio {
     
     private static final String ARCHIVO_CLIENTES = "clientes.txt";
     
-    //metodo para agregar clientes
+    @Override
     public void guardarCliente(Cliente cliente) {
         //se crea el archivo clientes.txt y se escriben todos los clientes agregados
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES, true))) {
@@ -23,12 +26,10 @@ public class RepositorioClientes {
             System.err.println("¡Error al guardar el cliente!: " + e.getMessage());
             e.printStackTrace();
         }
-    
     }
     
-    //revisen esto
     public void crearCliente(){
-        File archivo = new File(ARCHIVO_CLIENTES    );
+        File archivo = new File(ARCHIVO_CLIENTES);
         //Verificar la existencia del archivo.
         if(archivo.exists()){
             return;
@@ -46,7 +47,7 @@ public class RepositorioClientes {
         }
     }
  
-    //metodo para extraer la informacion de los clientes
+    @Override
     public ArrayList<Cliente> obtenerCliente(){
         ArrayList<Cliente> clientes = new ArrayList<>();
         
@@ -69,6 +70,7 @@ public class RepositorioClientes {
         return clientes;
     }
     
+    @Override
     public Cliente buscarClientePorCedula(long cedula) {
         for (Cliente c : obtenerCliente()) {
             if (c.getCedula() == cedula) return c;
@@ -76,6 +78,7 @@ public class RepositorioClientes {
         return null;
     }
     
+    @Override
     public boolean actualizarCliente(long cedula, String nuevoTelefono) {
         // Guardamos los clientes del archivo en nuevo arreglo
         ArrayList<Cliente> clientes = this.obtenerCliente(); 
@@ -107,6 +110,33 @@ public class RepositorioClientes {
         }
         
         return encontrado; 
-    }    
+    }
     
+    @Override
+    public boolean eliminarCliente(long cedula) {
+        ArrayList<Cliente> clientes = obtenerCliente();
+        boolean encontrado = false;
+        
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i).getCedula() == cedula) {
+                clientes.remove(i);
+                encontrado = true;
+                break;
+            }
+        }
+        
+        if (encontrado) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_CLIENTES))) {
+                for (Cliente c : clientes) {
+                    bw.write(c.toCSV());
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                System.err.println("Error, no se pudo eliminar el cliente: " + e.getMessage());
+                return false;
+            }
+        }
+        
+        return encontrado;
+    }
 }

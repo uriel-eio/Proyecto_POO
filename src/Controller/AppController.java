@@ -1,6 +1,7 @@
 package Controller;
 import Model.*;
 import View.*;
+import javax.swing.JOptionPane; // no se esytaba usand la puse en la validadecion de errores
 
 public class AppController {
     
@@ -8,7 +9,7 @@ public class AppController {
     private final RepositorioPeliculas repPeliculas;
     private final RepositorioSalas repSalas;
     private final RepositorioClientes repClientes;
-    
+
     //instancia de todos los controladores especialistas
     private AuthController authController;
     private ClienteController controladorCliente;
@@ -26,6 +27,12 @@ public class AppController {
     }*/
     //creacion del constructor
     
+    public void iniciarDatos(){
+        repPeliculas.creacionPeliculasPredeterminadas();
+        repSalas.crearSala();
+        repClientes.crearCliente();
+    }
+    
     public AppController(){
         //se instancia cada repositorio
         this.repPeliculas = new RepositorioPeliculas();
@@ -35,13 +42,7 @@ public class AppController {
         
         iniciarDatos();       
     }
-    
-    public void iniciarDatos(){
-        repPeliculas.creacionPeliculasPredeterminadas();
-        repSalas.crearSala();
-        repClientes.crearCliente();
-    }
-    
+
     //crea el flujo de autenticacion mostrando la ventana del login
     public void iniciarAplicacion(){
         this.vistaInicio = new Inicio(null);
@@ -53,42 +54,61 @@ public class AppController {
         this.vistaInicio.setControlador(this.authController); 
         this.vistaInicio.setVisible(true);
     }//Añadir al constructor peliculas
-    public void setControllers(ClienteController cliente, 
+    
+    /*public void setControllers(ClienteController cliente, 
             SalasController salas, PeliculasController peliculas, VentasController ventas) {
         this.controladorCliente = cliente;
         this.controladorPeliculas = peliculas;
         this.controladorSalas = salas;
         this.controladorVentas = ventas;
-    }
+    }*/
     
     //se oculta el login y construye la ventana principal con los controladores
     public void mostrarVentanaPrincipal(){
         this.vistaInicio.dispose(); //se oculta la ventana del login
 
         //se crea la vista principal
-        this.principal = new Principal();
+        this.principal = new Principal(); 
 
-        //se crean los controladores especialistas
+        crearControladores();
+        configurarVista();
+        cargarDatosIniciales();
+        
+        principal.setVisible(true);
+    }
+    
+    //acabo de separar todo esto para que un metodo no haga todo
+    private void crearControladores() {
         this.controladorCliente = new ClienteController(repClientes, principal);
         this.controladorPeliculas = new PeliculasController(repPeliculas, principal);
         this.controladorSalas = new SalasController(repSalas, repPeliculas, principal);
-        this.controladorVentas = new VentasController(repClientes, repSalas, principal);  // <-- Aquí la corrección
-
-        //instancias de los controladores a la vista previa
-        //para que los botones funcionen
-        principal.setControllers(controladorCliente, controladorPeliculas, controladorSalas, controladorVentas);
-
-        // INICIALIZA TABLA DE CLIENTES Y LA CARGA
-        this.controladorCliente.iniciarTablaClientes(principal);
-        this.controladorCliente.cargarClientesEnVista();
-
-        //carga los datos en las tablas de la vista
-        this.controladorPeliculas.obtenerCartelera();
-        this.controladorSalas.iniciarDatosDeSalaEnVista();
-        this.controladorPeliculas.cargarPeliculasEnVista();
-
-        //se muestra la ventana principal
-        principal.setVisible(true);
+        this.controladorVentas = new VentasController(repClientes, repSalas, principal);
+    }
+    
+    private void configurarVista() {
+        principal.setControllers(
+            this, 
+            controladorCliente, 
+            controladorPeliculas, 
+            controladorSalas, 
+            controladorVentas
+        );
+        controladorCliente.iniciarTablaClientes(principal);
+    }
+    
+    private void cargarDatosIniciales() {
+        try {
+            controladorCliente.cargarClientesEnVista();
+            controladorPeliculas.cargarPeliculasEnVista();
+            controladorSalas.iniciarDatosDeSalaEnVista();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                principal,
+                "Error al cargar datos iniciales: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
 }

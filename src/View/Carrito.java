@@ -5,19 +5,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.format.DateTimeFormatter;
-//import model.Cliente;
-//import model.OrdenCompra;
 import java.util.*;
+
 public class Carrito extends javax.swing.JFrame {
     private Principal principal;
     private VentasController controladorVentas;
 
-    public Carrito() {
-        initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("../images/icono.png")).getImage());
-        this.setSize(720, 350);
-        this.setLocationRelativeTo(null);
+    public Carrito(VentasController controladorVentas, Principal principal) {
+        this.controladorVentas = controladorVentas;
+        this.principal = principal;
     }
+    
+    //son cosas que aniado para que funcione el VentasController
+    public void mostrarDatosCliente(Cliente cliente) {
+        lblNombre.setText(cliente.getNombre());
+        lblCedula.setText(String.valueOf(cliente.getCedula()));
+    }
+    
+    /*tienen que agregar los metodos para abrir y cerrar en todas las ventanas
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {
+        controlador.cerrarSesion();
+        this.dispose();
+        principal.setVisible(true);
+    }*/
     
     public void actualizarTabla(ArrayList<OrdenCompra> ordenes) {
         DefaultTableModel model = (DefaultTableModel) tableCarrito.getModel();
