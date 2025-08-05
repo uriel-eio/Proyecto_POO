@@ -44,7 +44,7 @@ public class Principal extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(null);
         this.setResizable(true);
-        this.setSize(600, 430);
+        //this.setSize(600, 430);
         // Se elimina la línea problemática que causaba el error
         
         configurarTablaPeliculas();
@@ -682,7 +682,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel9Layout.createSequentialGroup()
                             .addGap(10, 10, 10)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(40, 40, 40)
                     .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(50, 50, 50)
@@ -718,10 +718,13 @@ public class Principal extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nombre", "Genero", "Imagen", "Title 4"
+                "Nombre", "Genero", "Imagen", "Portada"
             }
         ));
         jScrollPane2.setViewportView(tablePeli);
+        if (tablePeli.getColumnModel().getColumnCount() > 0) {
+            tablePeli.getColumnModel().getColumn(3).setPreferredWidth(200);
+        }
 
         botonAgregarPeliculaP.setBackground(new java.awt.Color(14, 66, 134));
         botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -746,8 +749,8 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(botonAgregarPeliculaP, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(98, 98, 98)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(195, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
