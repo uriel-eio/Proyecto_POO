@@ -140,15 +140,7 @@ public class AsientosController {
      * Configura la interacción del usuario con el botón
      */
     private void configurarInteraccionBoton(JButton btn, Asiento asiento) {
-        // Efecto hover sutil
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                if (btn.isEnabled() && !btn.getBackground().equals(Color.GREEN)) {
-                    btn.setBackground(new Color(200, 200, 200));
-                    btn.setContentAreaFilled(true);
-                }
-            }
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (btn.isEnabled() && !btn.getBackground().equals(Color.GREEN)) {
@@ -156,10 +148,10 @@ public class AsientosController {
                 }
             }
         });
-        
-        // Acción al hacer clic
+
         btn.addActionListener(e -> manejarClicAsiento(btn, asiento));
     }
+
     
     /**
      * Maneja el clic en un botón de asiento
@@ -177,6 +169,7 @@ public class AsientosController {
             asientosSeleccionados.add(asiento);
         }
     }
+
     
     /**
      * Devuelve los asientos seleccionados por el usuario
@@ -195,20 +188,40 @@ public class AsientosController {
                 "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         try {
+            // Confirmación visual
+            int confirmacion = JOptionPane.showConfirmDialog(vista,
+                    "¿Está seguro de confirmar la selección de "
+                    + asientosSeleccionados.size() + " asientos?",
+                    "Confirmar selección",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // Reservar asientos
+            for (Asiento asiento : asientosSeleccionados) {
+                asiento.reservar();
+            }
+
             // Crear la orden a través del controlador de ventas
             ventasController.crearNuevaOrden(cliente, funcion, asientosSeleccionados);
-            
+
             JOptionPane.showMessageDialog(vista, 
                 "Se han reservado " + asientosSeleccionados.size() + " asientos", 
                 "Reserva exitosa", JOptionPane.INFORMATION_MESSAGE);
-            
-            vista.dispose();
-        } catch (Exception e) {
+
+            // Regenerar los botones para que reflejen los nuevos estados
+            generarAsientos();
+            asientosSeleccionados.clear();
+
+        } catch (HeadlessException e) {
             ManejoErrores.mostrarError("Error al confirmar la selección", e, vista);
         }
     }
+
     
     /**
      * Reserva los asientos seleccionados

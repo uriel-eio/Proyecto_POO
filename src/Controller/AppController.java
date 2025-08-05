@@ -82,7 +82,7 @@ public class AppController {
             ClienteController controladorCliente = crearClienteController(principal);
             PeliculasController controladorPeliculas = crearPeliculasController(principal);
             SalasController controladorSalas = crearSalasController(principal);
-            VentasController controladorVentas = new VentasController(principal);
+            VentasController controladorVentas = new VentasController(principal, (SalasRepositorio) repoSalas);
             
             // Configurar vista con controladores
             principal.setControllers(

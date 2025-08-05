@@ -13,12 +13,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import Controller.AsientosController;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SelecAsientos extends javax.swing.JFrame {
     
     private static final Logger LOGGER = Logger.getLogger(SelecAsientos.class.getName());
-    
     // Atributos principales
+    
     private final Sala sala;
     private final boolean isVip;
     private ArrayList<Asiento> asientosSeleccionados = new ArrayList<>();
@@ -56,6 +59,8 @@ public class SelecAsientos extends javax.swing.JFrame {
         // Centrar ventana en pantalla
         setLocationRelativeTo(null);
         
+        //Hace que no se pueda cambiar el tamaño de la ventana manualmente.
+         setResizable(false);
         // Configurar título y encabezado
         setTitle("Selección de Asientos - " + sala.getNombre());
         
@@ -136,18 +141,53 @@ public class SelecAsientos extends javax.swing.JFrame {
      * @param boton El botón presionado
      * @param asiento El asiento asociado al botón
      */
+    
+    private void agregarBotonesAsientos() {
+        for (Asiento asiento : sala.getAsientos()) {
+            JButton btnAsiento = new JButton(asiento.obtenerNumero());
+
+            // Pintar según el estado
+            if (asiento.obtenerEstado()) {
+                btnAsiento.setBackground(Color.RED);
+                btnAsiento.setEnabled(false);
+            } else {
+                btnAsiento.setBackground(Color.GREEN);
+            }
+
+            // Listener para reservar asiento
+            btnAsiento.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    asiento.reservar();
+                    btnAsiento.setBackground(Color.RED);
+                    btnAsiento.setEnabled(false);
+                }
+            });
+
+            jPanel2.add(btnAsiento);
+        }
+    }
+    
     private void manejarSeleccionAsiento(JButton boton, Asiento asiento) {
-        if (boton.getBackground().equals(Color.GREEN)) {
+        if (boton.getBackground().equals(Color.WHITE)) {
             // Deseleccionar asiento
             boton.setBackground(asiento.isVIP() ? new Color(200, 170, 0) : new Color(100, 100, 200));
             asientosSeleccionados.remove(asiento);
         } else {
             // Seleccionar asiento
-            boton.setBackground(Color.GREEN);
+            boton.setBackground(Color.WHITE);
             asientosSeleccionados.add(asiento);
         }
     }
     
+    // ... (resto de la clase igual)
+
+/**
+ * Pinta de blanco y deshabilita los botones de los asientos reservados.
+ * Este método debe llamarse después de la confirmación.
+ */
+   
     /**
      * Obtiene la lista de asientos seleccionados
      * @return Lista de asientos seleccionados
@@ -160,42 +200,40 @@ public class SelecAsientos extends javax.swing.JFrame {
      * Confirma los asientos seleccionados
      */
     private void confirmarAsientos() {
-        // Verificar si hay asientos seleccionados
         if (asientosSeleccionados.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "No ha seleccionado ningún asiento", 
-                "Aviso", 
-                JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "No ha seleccionado ningún asiento",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        // Confirmar selección
+
         int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Está seguro de confirmar la selección de " + 
-            asientosSeleccionados.size() + " asientos?",
-            "Confirmar selección",
-            JOptionPane.YES_NO_OPTION);
-            
+                "¿Está seguro de confirmar la selección de "
+                + asientosSeleccionados.size() + " asientos?",
+                "Confirmar selección",
+                JOptionPane.YES_NO_OPTION);
+
         if (confirmacion != JOptionPane.YES_OPTION) {
             return;
         }
-        
+
         // Reservar los asientos seleccionados
         for (Asiento asiento : asientosSeleccionados) {
             asiento.reservar();
         }
+
+       
         
-        // Guardar asientos en archivo
+
         guardarAsientosEnArchivo();
-        
-        // Mostrar mensaje de éxito
-        JOptionPane.showMessageDialog(this, 
-            "Se han seleccionado " + asientosSeleccionados.size() + 
-            " asientos correctamente.",
-            "Selección confirmada", 
-            JOptionPane.INFORMATION_MESSAGE);
-        
-        // Cerrar ventana
+
+        JOptionPane.showMessageDialog(this,
+                "Se han seleccionado " + asientosSeleccionados.size()
+                + " asientos correctamente.",
+                "Selección confirmada",
+                JOptionPane.INFORMATION_MESSAGE);
+
         this.dispose();
     }
     
@@ -225,6 +263,8 @@ public class SelecAsientos extends javax.swing.JFrame {
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -376,8 +416,11 @@ public class SelecAsientos extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
+    
+    
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         confirmarAsientos();
+        //asientosController.confirmarSeleccion();
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -394,4 +437,5 @@ public class SelecAsientos extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
+
 

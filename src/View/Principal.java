@@ -341,7 +341,6 @@ public class Principal extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         comboPeliculasSa1 = new javax.swing.JComboBox<>();
         botonCambiarPeliculaSa1 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         panelVentas = new javax.swing.JPanel();
         label$1T2 = new javax.swing.JLabel();
@@ -367,20 +366,18 @@ public class Principal extends javax.swing.JFrame {
         labelCantidadTicketsV = new javax.swing.JLabel();
         spinnerTicketsV = new javax.swing.JSpinner();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        botonAsignarAsientos = new javax.swing.JButton();
         panelPeliculas = new javax.swing.JPanel();
         botonAgregarPeliculaP = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablePeli = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         panelClientes = new javax.swing.JPanel();
         botonCarritoC = new javax.swing.JButton();
         botonModificar = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableClientes = new javax.swing.JTable();
         botonRegistrarC1 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -467,17 +464,6 @@ public class Principal extends javax.swing.JFrame {
 
         panelSalas.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 320, 50));
 
-        jButton5.setBackground(new java.awt.Color(14, 66, 134));
-        jButton5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Maximizar");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        panelSalas.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, -1, -1));
-
         jButton7.setBackground(new java.awt.Color(14, 66, 134));
         jButton7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton7.setForeground(new java.awt.Color(255, 255, 255));
@@ -487,7 +473,7 @@ public class Principal extends javax.swing.JFrame {
                 jButton7ActionPerformed(evt);
             }
         });
-        panelSalas.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 320, -1, -1));
+        panelSalas.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 330, -1, -1));
 
         jTabbedPane2.addTab("Salas", panelSalas);
 
@@ -826,15 +812,20 @@ public class Principal extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        panelVentas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, -1, -1));
+        panelVentas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
 
-        jButton4.setText("Maximizar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        botonAsignarAsientos.setBackground(new java.awt.Color(153, 153, 153));
+        botonAsignarAsientos.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAsignarAsientos.setForeground(new java.awt.Color(255, 255, 255));
+        botonAsignarAsientos.setText("Buscar");
+        botonAsignarAsientos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonAsignarAsientos.setFocusPainted(false);
+        botonAsignarAsientos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                botonAsignarAsientosActionPerformed(evt);
             }
         });
-        panelVentas.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 0, -1, -1));
+        panelVentas.add(botonAsignarAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, -1, -1));
 
         jTabbedPane2.addTab("Ventas", panelVentas);
 
@@ -887,17 +878,7 @@ public class Principal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        panelPeliculas.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, -1, -1));
-
-        jButton2.setBackground(new java.awt.Color(14, 66, 134));
-        jButton2.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jButton2.setText("Maximizar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        panelPeliculas.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 340, -1, -1));
+        panelPeliculas.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, -1, -1));
 
         jTabbedPane2.addTab("Peliculas", panelPeliculas);
 
@@ -965,17 +946,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 90, 30));
-
-        jButton6.setBackground(new java.awt.Color(14, 66, 134));
-        jButton6.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Maximizar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        panelClientes.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 90, -1));
 
         jButton8.setBackground(new java.awt.Color(14, 66, 134));
         jButton8.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -1207,25 +1177,9 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
      System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
      System.exit(0);
@@ -1240,9 +1194,14 @@ public class Principal extends javax.swing.JFrame {
         controladorSalas.asignarPeliculaASala();
     }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
 
+    private void botonAsignarAsientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAsignarAsientosActionPerformed
+
+    }//GEN-LAST:event_botonAsignarAsientosActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarCarritoV;
     private javax.swing.JButton botonAgregarPeliculaP;
+    public javax.swing.JButton botonAsignarAsientos;
     private javax.swing.JButton botonBuscarClienteV;
     private javax.swing.JButton botonCambiarPeliculaSa1;
     private javax.swing.JButton botonCarritoC;
@@ -1259,11 +1218,7 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JRadioButton fecha5;
     public javax.swing.ButtonGroup grupoBotones;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -1295,6 +1250,10 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JTextField textFieldClienteV;
     public javax.swing.JTextField textFieldPrecioV;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getBtnSeleccionarAsientos() {
+        return botonAsignarAsientos;
+    }
 
 
     public JButton getBotonAgregarCarritoV() {

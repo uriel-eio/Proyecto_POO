@@ -5,14 +5,21 @@ import View.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Util.ManejoErrores;
+import java.awt.HeadlessException;
 
 public class VentasController {
     private Principal vista;
     private LogicaOrdenes logicaOrdenes;
+    private final SalasRepositorio repoSalas;
     
-    public VentasController(Principal vista) {
+    public VentasController(Principal vista, SalasRepositorio repoSalas) {
         this.vista = vista;
         this.logicaOrdenes = new LogicaOrdenes();
+        this.repoSalas = repoSalas;
+        
+        this.vista.botonAsignarAsientos.addActionListener(e -> {
+            manejarSeleccionAsientos(this.vista.tableSalas);
+        });
     }
     
     /**
@@ -63,6 +70,9 @@ public class VentasController {
     
     /**
      * Crea una nueva orden para un cliente
+     * @param cliente
+     * @param funcion
+     * @param asientos
      */
     public void crearNuevaOrden(Cliente cliente, Funcion funcion, ArrayList<Asiento> asientos) {
         if (cliente == null) {
@@ -85,7 +95,7 @@ public class VentasController {
                     "Orden Creada", 
                     JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             ManejoErrores.mostrarError("Error al crear la orden", e, vista);
         }
     }
@@ -95,5 +105,44 @@ public class VentasController {
         "Se agregaron " + cantidadTickets + " tickets al carrito de " + cliente.getNombre(), 
         "Agregado al carrito", 
         JOptionPane.INFORMATION_MESSAGE);
-}
+    }
+    
+    //parte que se agregara
+    public void manejarSeleccionAsientos(javax.swing.JTable tablaSalas) {
+        int filaSeleccionada = tablaSalas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(vista, "Debes seleccionar una sala primero.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Nombre de la sala está en la columna 1
+        String nombreSala = (String) tablaSalas.getValueAt(filaSeleccionada, 1);
+        Sala salaSeleccionada = null;
+
+        // Busca la sala en el repositorio
+        for (Sala s : repoSalas.getSala()) {
+            if (s.getNombre().equals(nombreSala)) {
+                salaSeleccionada = s;
+                break;
+            }
+        }
+
+        if (salaSeleccionada == null) {
+            JOptionPane.showMessageDialog(vista, "No se encontró la sala seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        abrirSeleccionAsientos(salaSeleccionada);
+    }
+     
+    public void abrirSeleccionAsientos(Sala salaSeleccionada) {
+        if (salaSeleccionada == null) {
+            JOptionPane.showMessageDialog(vista, "Sala inválida o no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        boolean esVip = salaSeleccionada.isVip();
+        SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, esVip);
+        vistaAsientos.setVisible(true);
+    }
 }
