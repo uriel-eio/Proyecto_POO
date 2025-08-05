@@ -1,4 +1,4 @@
-package View;
+ package View;
 
 import Controller.*;
 import java.awt.Color;
@@ -9,13 +9,10 @@ import javax.swing.table.DefaultTableModel;
 import Model.*;
 import Util.ManejoErrores;
 import java.util.ArrayList;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
@@ -26,50 +23,31 @@ import javax.swing.ListSelectionModel;
 
 public class Principal extends javax.swing.JFrame {
 
-    // Controladores
     private PeliculasController controladorPeliculas;
     private VentasController controladorVentas;
     private ClienteController controladorCliente;
     private SalasController controladorSalas;
     private AppController controladorApp;
-    
-    // Variables de estado
-    private Cliente clienteSeleccionado;
-    private Pelicula peliculaSeleccionada;
-    
-    // Botones de control de ventana
-    private JButton btnSalir;
-    private JButton btnMaximizar;
+    //private JLabel labelMostrarPeli;
     
     public Principal() {
         initComponents();
-        btnSalir = new JButton("Salir");
-        btnMaximizar = new JButton("Maximizar");
-
-        btnSalir.setBackground(Color.RED);
-        btnMaximizar.setBackground(Color.GREEN);
-
-        btnSalir.addActionListener(e -> System.exit(0));
         
-        btnMaximizar.addActionListener(e -> {
-            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.setVisible(true);  
-        });
-
-        btnMaximizar.setBounds(450, 10, 100, 30); 
-        btnSalir.setBounds(450, 50, 100, 30);
-
-        this.add(btnMaximizar);
-        this.add(btnSalir);
-
-        configurarTablaPeliculas();
-        // Configuración puramente visual
+        // Configuración visual básica
         UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
         jTabbedPane2.setForeground(Color.WHITE);
+        try {
+            setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar el icono: " + e.getMessage());
+        }
+        
         this.setLocationRelativeTo(null);
         this.setResizable(true);
         this.setSize(600, 430);
-        this.setBackground(new Color(0, 0, 0, 0));
+        // Se elimina la línea problemática que causaba el error
+        
+        configurarTablaPeliculas();
     }
 
     public void setControllers(AppController app, ClienteController clientes, PeliculasController peliculas, SalasController salas, VentasController ventas) {
@@ -83,38 +61,13 @@ public class Principal extends javax.swing.JFrame {
         configurarEventos();
     }
     
-    private void configurarEventos() {
-        // Eventos de la pestaña películas
-        botonAgregarPeliculaP.addActionListener(e -> {
-            try {
-                controladorPeliculas.agregarNuevaPelicula();
-            } catch (Exception ex) {
-                ManejoErrores.mostrarError("Error al agregar película", ex, this);
-            }
-        });
-        
-        // Eventos de la pestaña clientes
-        botonBuscarClienteV.addActionListener(e -> buscarCliente());
-        botonCarritoC.addActionListener(e -> abrirCarrito());
-        botonRegistrarC1.addActionListener(e -> registrarCliente());
-        botonModificar.addActionListener(e -> modificarCliente());
-        
-        // Eventos de la pestaña salas
-        botonCambiarPeliculaSa1.addActionListener(e -> {
-            try {
-                controladorSalas.asignarPeliculaASala();
-            } catch (Exception ex) {
-                ManejoErrores.mostrarError("Error al asignar película a sala", ex, this);
-            }
-        });
-        
-        // Eventos de la pestaña ventas
-        comboSalasV.addActionListener(e -> seleccionarSala());
-    }
-    
     private void configurarTablaPeliculas() {
-        tablePeli.getColumnModel().getColumn(3).setCellRenderer(new RenderizadorImagenes());
-        tablePeli.setRowHeight(300); 
+        try {
+            tablePeli.getColumnModel().getColumn(3).setCellRenderer(new RenderizadorImagenes());
+            tablePeli.setRowHeight(300);
+        } catch (Exception e) {
+            System.err.println("Error al configurar tabla de películas: " + e.getMessage());
+        }
     }
     
     public void configurarTablaClientes() {
@@ -129,7 +82,29 @@ public class Principal extends javax.swing.JFrame {
         tableClientes.setRowHeight(20);
     }
     
-    // Métodos para manejar acciones del usuario
+    private void abrirCarrito() {
+        try {
+            if (tableClientes.getSelectedRow() != -1) {
+                long cedula = Long.parseLong(String.valueOf(
+                    ((DefaultTableModel)tableClientes.getModel()).getValueAt(
+                        tableClientes.getSelectedRow(), 1
+                    )
+                ));
+
+                Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
+                if (cliente != null) {
+                    controladorVentas.abrirCarrito(cliente);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Seleccione un cliente primero", 
+                    "Aviso", 
+                    JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al abrir carrito", ex, this);
+        }
+    }
     
     private void buscarCliente() {
         try {
@@ -145,30 +120,6 @@ public class Principal extends javax.swing.JFrame {
             controladorCliente.buscarClienteVentas(this);
         } catch (Exception ex) {
             ManejoErrores.mostrarError("Error al buscar cliente", ex, this);
-        }
-    }
-    
-    private void abrirCarrito() {
-        try {
-            if (tableClientes.getSelectedRow() != -1) {
-                long cedula = Long.parseLong(String.valueOf(
-                    ((DefaultTableModel)tableClientes.getModel()).getValueAt(
-                        tableClientes.getSelectedRow(), 1
-                    )
-                ));
-                
-                Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
-                if (cliente != null) {
-                    controladorVentas.abrirCarrito(cliente);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, 
-                    "Seleccione un cliente primero", 
-                    "Aviso", 
-                    JOptionPane.WARNING_MESSAGE);
-            }
-        } catch (Exception ex) {
-            ManejoErrores.mostrarError("Error al abrir carrito", ex, this);
         }
     }
     
@@ -278,8 +229,36 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
-    // Métodos para actualizar la UI desde los controladores
+    private void configurarEventos() {
+        // Eventos de la pestaña películas
+        botonAgregarPeliculaP.addActionListener(e -> {
+            try {
+                controladorPeliculas.agregarNuevaPelicula();
+            } catch (Exception ex) {
+                ManejoErrores.mostrarError("Error al agregar película", ex, this);
+            }
+        });
+        
+        // Eventos de la pestaña clientes
+        botonBuscarClienteV.addActionListener(e -> buscarCliente());
+        botonCarritoC.addActionListener(e -> abrirCarrito());
+        botonRegistrarC1.addActionListener(e -> registrarCliente());
+        botonModificar.addActionListener(e -> modificarCliente());
+        
+        // Eventos de la pestaña salas
+        botonCambiarPeliculaSa1.addActionListener(e -> {
+            try {
+                controladorSalas.asignarPeliculaASala();
+            } catch (Exception ex) {
+                ManejoErrores.mostrarError("Error al asignar película a sala", ex, this);
+            }
+        });
+        
+        // Eventos de la pestaña ventas
+        comboSalasV.addActionListener(e -> seleccionarSala());
+    }
     
+    // Métodos para actualizar la UI desde los controladores
     public void actualizarTablaSalas(ArrayList<Sala> salas) {
         DefaultTableModel model = (DefaultTableModel) tableSalas.getModel();
         model.setRowCount(0);
@@ -311,118 +290,68 @@ public class Principal extends javax.swing.JFrame {
             comboPeliculasSa1.addItem(pelicula.obtenerTitulo()); // Solo el título
         }
     }
-    
-    public void actualizarTablaClientes(ArrayList<Cliente> clientes) {
-        DefaultTableModel modelo = (DefaultTableModel) tableClientes.getModel();
-        modelo.setRowCount(0); // Limpia la tabla
-        
-        for (Cliente cliente : clientes) {
-            modelo.addRow(new Object[]{
-                cliente.getNombre(),
-                cliente.getCedula(),
-                cliente.getTelefono()
-            });
-        }
-    }
-         
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        grupoBotones = new javax.swing.ButtonGroup();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        botonesFecha = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        panelSalas = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         tableSalas = new javax.swing.JTable();
-        jPanel12 = new javax.swing.JPanel();
         comboPeliculasSa1 = new javax.swing.JComboBox<>();
         botonCambiarPeliculaSa1 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        panelVentas = new javax.swing.JPanel();
-        label$1T2 = new javax.swing.JLabel();
-        comboClientesV = new javax.swing.JComboBox<>();
-        labelPrecioV = new javax.swing.JLabel();
-        textFieldPrecioV = new javax.swing.JTextField();
-        botonAgregarCarritoV = new javax.swing.JButton();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         textFieldClienteV = new javax.swing.JTextField();
         labelNombreCliente = new javax.swing.JLabel();
         botonBuscarClienteV = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         comboSalasV = new javax.swing.JComboBox<>();
-        labelMostrarPeli = new javax.swing.JLabel();
         labelPelicula = new javax.swing.JLabel();
-        jPanel16 = new javax.swing.JPanel();
-        fecha3 = new javax.swing.JRadioButton();
-        fecha4 = new javax.swing.JRadioButton();
-        fecha5 = new javax.swing.JRadioButton();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanel13 = new javax.swing.JPanel();
         labelCantidadTicketsV = new javax.swing.JLabel();
         spinnerTicketsV = new javax.swing.JSpinner();
-        jButton3 = new javax.swing.JButton();
+        botonAgregarCarritoV = new javax.swing.JButton();
         botonAsignarAsientos = new javax.swing.JButton();
-        panelPeliculas = new javax.swing.JPanel();
-        botonAgregarPeliculaP = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        comboClientesV = new javax.swing.JComboBox<>();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tablePeli = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        panelClientes = new javax.swing.JPanel();
-        botonCarritoC = new javax.swing.JButton();
-        botonModificar = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
+        botonAgregarPeliculaP = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
         tableClientes = new javax.swing.JTable();
+        botonModificar = new javax.swing.JButton();
         botonRegistrarC1 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        botonCarritoC = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setSize(new java.awt.Dimension(500, 400));
 
-        jTabbedPane2.setBackground(new java.awt.Color(38, 75, 120));
-        jTabbedPane2.setForeground(new java.awt.Color(255, 255, 255));
-        jTabbedPane2.setFocusable(false);
-        jTabbedPane2.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jTabbedPane2.setPreferredSize(new java.awt.Dimension(700, 900));
-
-        panelSalas.setBackground(new java.awt.Color(3, 30, 68));
-        panelSalas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        tableSalas = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tableSalas.setBackground(new java.awt.Color(204, 204, 204));
-        tableSalas.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        tableSalas.setForeground(new java.awt.Color(0, 0, 0));
         tableSalas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Capacidad", "VIP", "Película"
+                "ID", "Nombre", "Capacidad", "VIP", "Pelicula"
             }
         ));
-        tableSalas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tableSalas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableSalas.setFocusable(false);
-        jScrollPane2.setViewportView(tableSalas);
-        if (tableSalas.getColumnModel().getColumnCount() > 0) {
-            tableSalas.getColumnModel().getColumn(4).setPreferredWidth(200);
-        }
-
-        panelSalas.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 290));
-
-        jPanel12.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jScrollPane1.setViewportView(tableSalas);
 
         comboPeliculasSa1.setBackground(new java.awt.Color(14, 66, 134));
         comboPeliculasSa1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -441,109 +370,62 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(145, 145, 145)
+                .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(185, 185, 185))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(113, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(86, 86, 86))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Salas", jPanel4);
+
+        jPanel12.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(comboPeliculasSa1, 0, 140, Short.MAX_VALUE)
-                .addGap(32, 32, 32)
-                .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGap(0, 174, Short.MAX_VALUE)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(8, Short.MAX_VALUE))
+            .addGap(0, 44, Short.MAX_VALUE)
         );
 
-        panelSalas.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 320, 50));
-
-        jButton7.setBackground(new java.awt.Color(14, 66, 134));
-        jButton7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setText("Salir");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-        panelSalas.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 330, -1, -1));
-
-        jTabbedPane2.addTab("Salas", panelSalas);
-
-        panelVentas.setBackground(new java.awt.Color(3, 30, 68));
-        panelVentas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        label$1T2.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
-        label$1T2.setForeground(new java.awt.Color(255, 255, 255));
-        label$1T2.setText("$");
-        panelVentas.add(label$1T2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, -1, -1));
-
-        comboClientesV.setBackground(new java.awt.Color(153, 153, 153));
-        comboClientesV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        comboClientesV.setForeground(new java.awt.Color(255, 255, 255));
-        comboClientesV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clientes" }));
-        comboClientesV.setFocusable(false);
-        comboClientesV.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboClientesVActionPerformed(evt);
-            }
-        });
-        panelVentas.add(comboClientesV, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 137, 107, 26));
-
-        labelPrecioV.setFont(new java.awt.Font("Calibri Light", 2, 14)); // NOI18N
-        labelPrecioV.setForeground(new java.awt.Color(255, 255, 255));
-        labelPrecioV.setText("Precio Total");
-        panelVentas.add(labelPrecioV, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
-
-        textFieldPrecioV.setEditable(false);
-        textFieldPrecioV.setBackground(new java.awt.Color(102, 102, 102));
-        textFieldPrecioV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        textFieldPrecioV.setForeground(new java.awt.Color(255, 255, 255));
-        textFieldPrecioV.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        textFieldPrecioV.setText("Precio");
-        textFieldPrecioV.setBorder(null);
-        textFieldPrecioV.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldPrecioVActionPerformed(evt);
-            }
-        });
-        panelVentas.add(textFieldPrecioV, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 60, 26));
-
-        botonAgregarCarritoV.setBackground(new java.awt.Color(153, 153, 153));
-        botonAgregarCarritoV.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        botonAgregarCarritoV.setForeground(new java.awt.Color(255, 255, 255));
-        botonAgregarCarritoV.setText("Agregar al carrito");
-        botonAgregarCarritoV.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonAgregarCarritoV.setFocusPainted(false);
-        botonAgregarCarritoV.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAgregarCarritoVActionPerformed(evt);
-            }
-        });
-        panelVentas.add(botonAgregarCarritoV, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 330, 140, 40));
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Calibri Light", 0, 11)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(5);
-        jTextArea1.setText("  Para ver la película pulse la flecha.");
-        jTextArea1.setAlignmentX(1.0F);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextArea1.setFocusable(false);
-        jTextArea1.setMargin(new java.awt.Insets(22, 2, 2, 2));
-        panelVentas.add(jTextArea1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 210, 20));
-
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         textFieldClienteV.setBackground(new java.awt.Color(102, 102, 102));
         textFieldClienteV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
@@ -586,33 +468,29 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGap(14, 121, Short.MAX_VALUE))
             .addComponent(labelNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(136, Short.MAX_VALUE)
+                .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 22, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelNombreCliente))
         );
-
-        panelVentas.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 240, 90));
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -648,13 +526,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        labelMostrarPeli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Next.png"))); // NOI18N
-        labelMostrarPeli.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                labelMostrarPeliMouseClicked(evt);
-            }
-        });
-
         labelPelicula.setFont(new java.awt.Font("Calibri Light", 0, 15)); // NOI18N
         labelPelicula.setForeground(new java.awt.Color(255, 255, 255));
         labelPelicula.setText("-----------------------");
@@ -665,11 +536,9 @@ public class Principal extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(labelMostrarPeli)
-                .addGap(18, 18, 18)
+                .addGap(546, 546, 546)
                 .addComponent(labelPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -681,94 +550,24 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(labelPelicula)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelMostrarPeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(comboSalasV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
-        panelVentas.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 300, 60));
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Calibri Light", 0, 11)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setRows(5);
+        jTextArea1.setText("  Para ver la película pulse la flecha.");
+        jTextArea1.setAlignmentX(1.0F);
+        jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextArea1.setFocusable(false);
+        jTextArea1.setMargin(new java.awt.Insets(22, 2, 2, 2));
 
-        jPanel16.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel16.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-        fecha3.setBackground(new java.awt.Color(102, 102, 102));
-        botonesFecha.add(fecha3);
-        fecha3.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
-        fecha3.setForeground(new java.awt.Color(255, 255, 255));
-        fecha3.setText("26/ 07 / 2025");
-        fecha3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fecha3ActionPerformed(evt);
-            }
-        });
-
-        fecha4.setBackground(new java.awt.Color(102, 102, 102));
-        botonesFecha.add(fecha4);
-        fecha4.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
-        fecha4.setForeground(new java.awt.Color(255, 255, 255));
-        fecha4.setText("27 / 07 / 2025");
-        fecha4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fecha4ActionPerformed(evt);
-            }
-        });
-
-        fecha5.setBackground(new java.awt.Color(102, 102, 102));
-        botonesFecha.add(fecha5);
-        fecha5.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
-        fecha5.setForeground(new java.awt.Color(255, 255, 255));
-        fecha5.setText("28 / 07 / 2025");
-        fecha5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fecha5ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fecha3)
-                    .addComponent(fecha4)
-                    .addComponent(fecha5))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(fecha3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fecha4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fecha5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        panelVentas.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 110, 90));
-
-        jPanel4.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 174, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 44, Short.MAX_VALUE)
-        );
-
-        panelVentas.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 180, 50));
-
-        jPanel7.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel13.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel13.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         labelCantidadTicketsV.setFont(new java.awt.Font("Calibri Light", 2, 16)); // NOI18N
         labelCantidadTicketsV.setForeground(new java.awt.Color(255, 255, 255));
@@ -784,35 +583,37 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
                 .addComponent(labelCantidadTicketsV, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(spinnerTicketsV, javax.swing.GroupLayout.PREFERRED_SIZE, 62, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelCantidadTicketsV, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spinnerTicketsV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 7, Short.MAX_VALUE))
         );
 
-        panelVentas.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 230, 170, 50));
-
-        jButton3.setText("Salir");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botonAgregarCarritoV.setBackground(new java.awt.Color(153, 153, 153));
+        botonAgregarCarritoV.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarCarritoV.setForeground(new java.awt.Color(255, 255, 255));
+        botonAgregarCarritoV.setText("Agregar al carrito");
+        botonAgregarCarritoV.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonAgregarCarritoV.setFocusPainted(false);
+        botonAgregarCarritoV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botonAgregarCarritoVActionPerformed(evt);
             }
         });
-        panelVentas.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, -1));
 
         botonAsignarAsientos.setBackground(new java.awt.Color(153, 153, 153));
         botonAsignarAsientos.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -825,12 +626,102 @@ public class Principal extends javax.swing.JFrame {
                 botonAsignarAsientosActionPerformed(evt);
             }
         });
-        panelVentas.add(botonAsignarAsientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, -1, -1));
 
-        jTabbedPane2.addTab("Ventas", panelVentas);
+        comboClientesV.setBackground(new java.awt.Color(153, 153, 153));
+        comboClientesV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        comboClientesV.setForeground(new java.awt.Color(255, 255, 255));
+        comboClientesV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clientes" }));
+        comboClientesV.setFocusable(false);
+        comboClientesV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboClientesVActionPerformed(evt);
+            }
+        });
 
-        panelPeliculas.setBackground(new java.awt.Color(3, 30, 68));
-        panelPeliculas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addComponent(comboClientesV, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(531, Short.MAX_VALUE))
+            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addGap(310, 310, 310)
+                            .addComponent(jTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(20, 20, 20)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addGap(340, 340, 340)
+                            .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(70, 70, 70)
+                            .addComponent(botonAsignarAsientos)
+                            .addGap(60, 60, 60)
+                            .addComponent(botonAgregarCarritoV, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(136, 136, 136)
+                .addComponent(comboClientesV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(304, Short.MAX_VALUE))
+            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(40, 40, 40)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(50, 50, 50)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addGap(30, 30, 30)
+                            .addComponent(botonAsignarAsientos))
+                        .addComponent(botonAgregarCarritoV, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Ventas", jPanel6);
+
+        tablePeli.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Nombre", "Genero", "Imagen", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tablePeli);
 
         botonAgregarPeliculaP.setBackground(new java.awt.Color(14, 66, 134));
         botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -843,60 +734,56 @@ public class Principal extends javax.swing.JFrame {
                 botonAgregarPeliculaPActionPerformed(evt);
             }
         });
-        panelPeliculas.add(botonAgregarPeliculaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 340, 130, 30));
 
-        tablePeli = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tablePeli.setBackground(new java.awt.Color(204, 204, 204));
-        tablePeli.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        tablePeli.setModel(new javax.swing.table.DefaultTableModel(
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(296, 296, 296)
+                        .addComponent(botonAgregarPeliculaP, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(195, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap(82, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63)
+                .addComponent(botonAgregarPeliculaP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65))
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Peliculas", jPanel7);
+
+        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Nombre", "Género", "Clasificación", ""
+                "Nombre", "Cedula", "Telefono"
             }
         ));
-        tablePeli.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tablePeli.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tablePeli.setFocusable(false);
-        jScrollPane1.setViewportView(tablePeli);
-        if (tablePeli.getColumnModel().getColumnCount() > 0) {
-            tablePeli.getColumnModel().getColumn(3).setPreferredWidth(300);
-        }
-
-        panelPeliculas.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 310));
-
-        jButton1.setBackground(new java.awt.Color(14, 66, 134));
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jButton1.setText("Salir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        panelPeliculas.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, -1, -1));
-
-        jTabbedPane2.addTab("Peliculas", panelPeliculas);
-
-        panelClientes.setBackground(new java.awt.Color(3, 30, 68));
-        panelClientes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        botonCarritoC.setBackground(new java.awt.Color(14, 66, 134));
-        botonCarritoC.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
-        botonCarritoC.setText("Carrito");
-        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonCarritoC.setFocusPainted(false);
-        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCarritoCActionPerformed(evt);
-            }
-        });
-        panelClientes.add(botonCarritoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 320, 90, 30));
+        jScrollPane3.setViewportView(tableClientes);
 
         botonModificar.setBackground(new java.awt.Color(14, 66, 134));
         botonModificar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -909,30 +796,6 @@ public class Principal extends javax.swing.JFrame {
                 botonModificarActionPerformed(evt);
             }
         });
-        panelClientes.add(botonModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, 90, 30));
-
-        tableClientes = new javax.swing.JTable(){
-            public boolean isCellEditable(int rowIndex, int colIndex){
-                return false;
-            }
-        };
-        tableClientes.setBackground(new java.awt.Color(204, 204, 204));
-        tableClientes.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        tableClientes.setForeground(new java.awt.Color(0, 0, 0));
-        tableClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Cédula", "Teléfono"
-            }
-        ));
-        tableClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tableClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableClientes.setFocusable(false);
-        jScrollPane4.setViewportView(tableClientes);
-
-        panelClientes.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 400));
 
         botonRegistrarC1.setBackground(new java.awt.Color(14, 66, 134));
         botonRegistrarC1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -945,157 +808,100 @@ public class Principal extends javax.swing.JFrame {
                 botonRegistrarC1ActionPerformed(evt);
             }
         });
-        panelClientes.add(botonRegistrarC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 90, 30));
 
-        jButton8.setBackground(new java.awt.Color(14, 66, 134));
-        jButton8.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("Salir");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        botonCarritoC.setBackground(new java.awt.Color(14, 66, 134));
+        botonCarritoC.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
+        botonCarritoC.setText("Carrito");
+        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCarritoC.setFocusPainted(false);
+        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                botonCarritoCActionPerformed(evt);
             }
         });
-        panelClientes.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, 90, -1));
 
-        jTabbedPane2.addTab("Clientes", panelClientes);
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(139, 139, 139)
+                .addComponent(botonCarritoC, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
+                .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonRegistrarC1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(177, 177, 177))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonCarritoC, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonRegistrarC1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(81, 81, 81))
+        );
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Clientes", jPanel8);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane2)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane2)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textFieldClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldClienteVActionPerformed
-    }//GEN-LAST:event_textFieldClienteVActionPerformed
-    private void botonBuscarClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarClienteVActionPerformed
-        buscarCliente();
-    }//GEN-LAST:event_botonBuscarClienteVActionPerformed
+    private void botonCambiarPeliculaSa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarPeliculaSa1ActionPerformed
+        //controlador.botonCambiarPeliculasSalas(this);
+        controladorSalas.asignarPeliculaASala();
+    }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
 
-    private void textFieldClienteVFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusGained
-        if(textFieldClienteV.getText().equals("") == true){
-            textFieldClienteV.setText("Ingrese Cédula");
-        }
-    }//GEN-LAST:event_textFieldClienteVFocusGained
-
-    private void textFieldClienteVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusLost
-        if(textFieldClienteV.getText().equals("") == true){
-            textFieldClienteV.setText("Ingrese Cédula");
-        }
-    }//GEN-LAST:event_textFieldClienteVFocusLost
-
-    private void botonAgregarCarritoVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarCarritoVActionPerformed
-    try {
-        // Verificar si hay un cliente seleccionado
-        String cedulaStr = textFieldClienteV.getText().trim();
-        if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
-            JOptionPane.showMessageDialog(this, 
-                "Por favor, busque un cliente primero", 
-                "Cliente no seleccionado", 
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // Buscar el cliente
-        long cedula = Long.parseLong(cedulaStr);
-        Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
-        
-        if (cliente == null) {
-            JOptionPane.showMessageDialog(this, 
-                "No se encontró el cliente con la cédula ingresada", 
-                "Cliente no encontrado", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Verificar si hay sala seleccionada
-        int filaSeleccionada = tableSalas.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, 
-                "Seleccione una sala primero", 
-                "Aviso", 
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // Verificar cantidad de tickets
-        int cantidadTickets = (int) spinnerTicketsV.getValue();
-        if (cantidadTickets <= 0) {
-            JOptionPane.showMessageDialog(this, 
-                "Seleccione al menos un ticket", 
-                "Cantidad inválida", 
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // Llamar al controlador para agregar al carrito
-        controladorVentas.agregarAlCarrito(this, cliente, cantidadTickets);
-        
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, 
-            "Error en el formato de la cédula", 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    } catch (Exception ex) {
-        ManejoErrores.mostrarError("Error al agregar al carrito", ex, this);
-    }
-    }//GEN-LAST:event_botonAgregarCarritoVActionPerformed
-
-    private void textFieldPrecioVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPrecioVActionPerformed
-    }//GEN-LAST:event_textFieldPrecioVActionPerformed
-
-    private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
-     this.spinnerTicketsV.setValue(0);
-    
-    boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
-    
-    // Obtener la sala seleccionada desde la tabla
-    int filaSeleccionada = tableSalas.getSelectedRow();
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
-        return;
-    }
-
-    String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-    // Usar el controlador para acceder al repositorio
-    Sala sala = controladorSalas.buscarSalaPorId(idSala);
-
-    if (sala != null) {
-        SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
-        ventanaAsientos.setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(this, "No se pudo encontrar la sala seleccionada.");
-    }   
-    }//GEN-LAST:event_comboSalasVActionPerformed
-
-    private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
-    }//GEN-LAST:event_comboSalasVItemStateChanged
-
-    private void comboSalasVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_comboSalasVFocusLost
-    }//GEN-LAST:event_comboSalasVFocusLost
-
-    private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
-    }//GEN-LAST:event_comboSalasVMouseClicked
-
-    private void comboSalasVMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseDragged
-    }//GEN-LAST:event_comboSalasVMouseDragged
-
-    private void labelMostrarPeliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelMostrarPeliMouseClicked
-
-    }//GEN-LAST:event_labelMostrarPeliMouseClicked
+    private void botonAgregarPeliculaPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarPeliculaPActionPerformed
+        controladorPeliculas.agregarNuevaPelicula();
+    }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         if(tableClientes.getSelectedRow() != -1){
             long cedula = Long.parseLong(String.valueOf( ((DefaultTableModel)tableClientes.getModel()).getValueAt(tableClientes.getSelectedRow(), 1) ) );
-            
+
             String nuevoTelefono = "";
             try {
                 nuevoTelefono = JOptionPane.showInputDialog(this, "        Ingrese el teléfono del cliente", "Ingrese teléfono", JOptionPane.QUESTION_MESSAGE);
@@ -1114,7 +920,7 @@ public class Principal extends javax.swing.JFrame {
             tableClientes.clearSelection();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione el Cliente que quiere modificar", "Error", JOptionPane.ERROR_MESSAGE);
-        } 
+        }
     }//GEN-LAST:event_botonModificarActionPerformed
 
     private void botonRegistrarC1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarC1ActionPerformed
@@ -1123,138 +929,160 @@ public class Principal extends javax.swing.JFrame {
         controladorCliente.cargarClientesEnVista();
     }//GEN-LAST:event_botonRegistrarC1ActionPerformed
 
-    private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
-        if(String.valueOf(comboClientesV.getSelectedItem()).equals("Clientes")){
-            labelNombreCliente.setText("Nombre Cliente");
-            return;
+    private void botonCarritoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCarritoCActionPerformed
+        abrirCarrito();
+    }//GEN-LAST:event_botonCarritoCActionPerformed
+
+    private void textFieldClienteVFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusGained
+        if(textFieldClienteV.getText().equals("Ingrese Cédula") == true){
+            textFieldClienteV.setText("");
         }
-        
-        long cedula = Long.parseLong(String.valueOf(comboClientesV.getSelectedItem()));
-        
-        Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
-        
-        if (cliente != null){
-            labelNombreCliente.setText(cliente.getNombre());
-        } else {
-            labelNombreCliente.setText("Cliente no encontrado");
+    }//GEN-LAST:event_textFieldClienteVFocusGained
+
+    private void textFieldClienteVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusLost
+        if(textFieldClienteV.getText().equals("") == true){
+            textFieldClienteV.setText("Ingrese Cédula");
         }
-    }//GEN-LAST:event_comboClientesVActionPerformed
+    }//GEN-LAST:event_textFieldClienteVFocusLost
+
+    private void textFieldClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldClienteVActionPerformed
+
+    }//GEN-LAST:event_textFieldClienteVActionPerformed
 
     private void textFieldClienteVKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldClienteVKeyTyped
         char validar = evt.getKeyChar();
-        
+
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
         }
     }//GEN-LAST:event_textFieldClienteVKeyTyped
 
-    private void botonCarritoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCarritoCActionPerformed
-        abrirCarrito();
-    }//GEN-LAST:event_botonCarritoCActionPerformed
+    private void botonBuscarClienteVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarClienteVActionPerformed
+        controladorCliente.buscarClienteVentas(this);
+    }//GEN-LAST:event_botonBuscarClienteVActionPerformed
+
+    private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
+
+    }//GEN-LAST:event_comboSalasVItemStateChanged
+
+    private void comboSalasVMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseDragged
+
+    }//GEN-LAST:event_comboSalasVMouseDragged
+
+    private void comboSalasVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_comboSalasVFocusLost
+
+    }//GEN-LAST:event_comboSalasVFocusLost
+
+    private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
+
+    }//GEN-LAST:event_comboSalasVMouseClicked
+
+    private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
+        this.spinnerTicketsV.setValue(0);
+
+        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
+
+        // Obtener la sala seleccionada desde la tabla
+        int filaSeleccionada = tableSalas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
+            return;
+        }
+
+        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+        // Usar el controlador para acceder al repositorio
+        Sala sala = controladorSalas.buscarSalaPorId(idSala);
+
+        if (sala != null) {
+            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
+            ventanaAsientos.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo encontrar la sala seleccionada.");
+        }
+    }//GEN-LAST:event_comboSalasVActionPerformed
 
     private void spinnerTicketsVStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerTicketsVStateChanged
         //controlador.calcularPrecioVentas(this);
     }//GEN-LAST:event_spinnerTicketsVStateChanged
 
-    private void fecha3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecha3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fecha3ActionPerformed
+    private void botonAgregarCarritoVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarCarritoVActionPerformed
+        try {
+            // Verificar si hay un cliente seleccionado
+            String cedulaStr = textFieldClienteV.getText().trim();
+            if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
+                JOptionPane.showMessageDialog(this,
+                    "Por favor, busque un cliente primero",
+                    "Cliente no seleccionado",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    private void fecha4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecha4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fecha4ActionPerformed
+            // Buscar el cliente
+            long cedula = Long.parseLong(cedulaStr);
+            Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
 
-    private void fecha5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecha5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fecha5ActionPerformed
+            if (cliente == null) {
+                JOptionPane.showMessageDialog(this,
+                    "No se encontró el cliente con la cédula ingresada",
+                    "Cliente no encontrado",
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-    private void botonAgregarPeliculaPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarPeliculaPActionPerformed
-        controladorPeliculas.agregarNuevaPelicula();
-    }//GEN-LAST:event_botonAgregarPeliculaPActionPerformed
+            // Verificar si hay sala seleccionada
+            int filaSeleccionada = tableSalas.getSelectedRow();
+            if (filaSeleccionada == -1) {
+                JOptionPane.showMessageDialog(this,
+                    "Seleccione una sala primero",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+            // Verificar cantidad de tickets
+            int cantidadTickets = (int) spinnerTicketsV.getValue();
+            if (cantidadTickets <= 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Seleccione al menos un ticket",
+                    "Cantidad inválida",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-     System.exit(0);
-    }//GEN-LAST:event_jButton3ActionPerformed
+            // Llamar al controlador para agregar al carrito
+            controladorVentas.agregarAlCarrito(this, cliente, cantidadTickets);
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-     System.exit(0);
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-    System.exit(0);    
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void botonCambiarPeliculaSa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarPeliculaSa1ActionPerformed
-        //controlador.botonCambiarPeliculasSalas(this);
-        controladorSalas.asignarPeliculaASala();
-    }//GEN-LAST:event_botonCambiarPeliculaSa1ActionPerformed
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                "Error en el formato de la cédula",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            ManejoErrores.mostrarError("Error al agregar al carrito", ex, this);
+        }
+    }//GEN-LAST:event_botonAgregarCarritoVActionPerformed
 
     private void botonAsignarAsientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAsignarAsientosActionPerformed
 
     }//GEN-LAST:event_botonAsignarAsientosActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonAgregarCarritoV;
-    private javax.swing.JButton botonAgregarPeliculaP;
-    public javax.swing.JButton botonAsignarAsientos;
-    private javax.swing.JButton botonBuscarClienteV;
-    private javax.swing.JButton botonCambiarPeliculaSa1;
-    private javax.swing.JButton botonCarritoC;
-    private javax.swing.JButton botonModificar;
-    private javax.swing.JButton botonRegistrarC1;
-    public javax.swing.ButtonGroup botonesFecha;
-    public javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
-    public javax.swing.JComboBox<String> comboClientesV;
-    public javax.swing.JComboBox<String> comboPeliculasSa1;
-    public javax.swing.JComboBox<String> comboSalasV;
-    public javax.swing.JRadioButton fecha3;
-    public javax.swing.JRadioButton fecha4;
-    public javax.swing.JRadioButton fecha5;
-    public javax.swing.ButtonGroup grupoBotones;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel label$1T2;
-    private javax.swing.JLabel labelCantidadTicketsV;
-    public javax.swing.JLabel labelMostrarPeli;
-    private javax.swing.JLabel labelNombreCliente;
-    public javax.swing.JLabel labelPelicula;
-    private javax.swing.JLabel labelPrecioV;
-    private javax.swing.JPanel panelClientes;
-    private javax.swing.JPanel panelPeliculas;
-    private javax.swing.JPanel panelSalas;
-    private javax.swing.JPanel panelVentas;
-    public javax.swing.JSpinner spinnerTicketsV;
-    public javax.swing.JTable tableClientes;
-    public javax.swing.JTable tablePeli;
-    public javax.swing.JTable tableSalas;
-    public javax.swing.JTextField textFieldClienteV;
-    public javax.swing.JTextField textFieldPrecioV;
-    // End of variables declaration//GEN-END:variables
+    private void comboClientesVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesVActionPerformed
+        if(String.valueOf(comboClientesV.getSelectedItem()).equals("Clientes")){
+            labelNombreCliente.setText("Nombre Cliente");
+            return;
+        }
 
-    public JButton getBtnSeleccionarAsientos() {
-        return botonAsignarAsientos;
-    }
+        long cedula = Long.parseLong(String.valueOf(comboClientesV.getSelectedItem()));
 
+        Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
+
+        if (cliente != null){
+            labelNombreCliente.setText(cliente.getNombre());
+        } else {
+            labelNombreCliente.setText("Cliente no encontrado");
+        }
+    }//GEN-LAST:event_comboClientesVActionPerformed
 
     public JButton getBotonAgregarCarritoV() {
         return botonAgregarCarritoV;
@@ -1312,30 +1140,6 @@ public class Principal extends javax.swing.JFrame {
         this.botonRegistrarC1 = botonRegistrarC1;
     }
 
-    public ButtonGroup getBotonesFecha() {
-        return botonesFecha;
-    }
-
-    public void setBotonesFecha(ButtonGroup botonesFecha) {
-        this.botonesFecha = botonesFecha;
-    }
-
-    public ButtonGroup getButtonGroup1() {
-        return buttonGroup1;
-    }
-
-    public void setButtonGroup1(ButtonGroup buttonGroup1) {
-        this.buttonGroup1 = buttonGroup1;
-    }
-
-    public ButtonGroup getButtonGroup2() {
-        return buttonGroup2;
-    }
-
-    public void setButtonGroup2(ButtonGroup buttonGroup2) {
-        this.buttonGroup2 = buttonGroup2;
-    }
-
     public JComboBox<String> getComboClientesV() {
         return comboClientesV;
     }
@@ -1360,46 +1164,6 @@ public class Principal extends javax.swing.JFrame {
         this.comboSalasV = comboSalasV;
     }
 
-    public JRadioButton getFecha3() {
-        return fecha3;
-    }
-
-    public void setFecha3(JRadioButton fecha3) {
-        this.fecha3 = fecha3;
-    }
-
-    public JRadioButton getFecha4() {
-        return fecha4;
-    }
-
-    public void setFecha4(JRadioButton fecha4) {
-        this.fecha4 = fecha4;
-    }
-
-    public JRadioButton getFecha5() {
-        return fecha5;
-    }
-
-    public void setFecha5(JRadioButton fecha5) {
-        this.fecha5 = fecha5;
-    }
-
-    public ButtonGroup getGrupoBotones() {
-        return grupoBotones;
-    }
-
-    public void setGrupoBotones(ButtonGroup grupoBotones) {
-        this.grupoBotones = grupoBotones;
-    }
-
-    public JComboBox<String> getjComboBox1() {
-        return jComboBox1;
-    }
-
-    public void setjComboBox1(JComboBox<String> jComboBox1) {
-        this.jComboBox1 = jComboBox1;
-    }
-
     public JPanel getjPanel1() {
         return jPanel1;
     }
@@ -1414,14 +1178,6 @@ public class Principal extends javax.swing.JFrame {
 
     public void setjPanel12(JPanel jPanel12) {
         this.jPanel12 = jPanel12;
-    }
-
-    public JPanel getjPanel16() {
-        return jPanel16;
-    }
-
-    public void setjPanel16(JPanel jPanel16) {
-        this.jPanel16 = jPanel16;
     }
 
     public JPanel getjPanel3() {
@@ -1464,14 +1220,6 @@ public class Principal extends javax.swing.JFrame {
         this.jScrollPane2 = jScrollPane2;
     }
 
-    public JScrollPane getjScrollPane4() {
-        return jScrollPane4;
-    }
-
-    public void setjScrollPane4(JScrollPane jScrollPane4) {
-        this.jScrollPane4 = jScrollPane4;
-    }
-
     public JTabbedPane getjTabbedPane2() {
         return jTabbedPane2;
     }
@@ -1488,14 +1236,6 @@ public class Principal extends javax.swing.JFrame {
         this.jTextArea1 = jTextArea1;
     }
 
-    public JLabel getLabel$1T2() {
-        return label$1T2;
-    }
-
-    public void setLabel$1T2(JLabel label$1T2) {
-        this.label$1T2 = label$1T2;
-    }
-
     public JLabel getLabelCantidadTicketsV() {
         return labelCantidadTicketsV;
     }
@@ -1504,13 +1244,13 @@ public class Principal extends javax.swing.JFrame {
         this.labelCantidadTicketsV = labelCantidadTicketsV;
     }
 
-    public JLabel getLabelMostrarPeli() {
+    /*public JLabel getLabelMostrarPeli() {
         return labelMostrarPeli;
     }
 
     public void setLabelMostrarPeli(JLabel labelMostrarPeli) {
         this.labelMostrarPeli = labelMostrarPeli;
-    }
+    }*/
 
     public JLabel getLabelNombreCliente() {
         return labelNombreCliente;
@@ -1526,46 +1266,6 @@ public class Principal extends javax.swing.JFrame {
 
     public void setLabelPelicula(JLabel labelPelicula) {
         this.labelPelicula = labelPelicula;
-    }
-
-    public JLabel getLabelPrecioV() {
-        return labelPrecioV;
-    }
-
-    public void setLabelPrecioV(JLabel labelPrecioV) {
-        this.labelPrecioV = labelPrecioV;
-    }
-
-    public JPanel getPanelClientes() {
-        return panelClientes;
-    }
-
-    public void setPanelClientes(JPanel panelClientes) {
-        this.panelClientes = panelClientes;
-    }
-
-    public JPanel getPanelPeliculas() {
-        return panelPeliculas;
-    }
-
-    public void setPanelPeliculas(JPanel panelPeliculas) {
-        this.panelPeliculas = panelPeliculas;
-    }
-
-    public JPanel getPanelSalas() {
-        return panelSalas;
-    }
-
-    public void setPanelSalas(JPanel panelSalas) {
-        this.panelSalas = panelSalas;
-    }
-
-    public JPanel getPanelVentas() {
-        return panelVentas;
-    }
-
-    public void setPanelVentas(JPanel panelVentas) {
-        this.panelVentas = panelVentas;
     }
 
     public JSpinner getSpinnerTicketsV() {
@@ -1607,20 +1307,44 @@ public class Principal extends javax.swing.JFrame {
     public void setTextFieldClienteV(JTextField textFieldClienteV) {
         this.textFieldClienteV = textFieldClienteV;
     }
-
-    public JTextField getTextFieldPrecioV() {
-        return textFieldPrecioV;
-    }
-
-    public void setTextFieldPrecioV(JTextField textFieldPrecioV) {
-        this.textFieldPrecioV = textFieldPrecioV;
-    }
-
-    public void setControllers(ClienteController controladorCliente, PeliculasController controladorPeliculas, SalasController controladorSalas, VentasController controladorVentas) {
-        this.controladorCliente = controladorCliente;
-        this.controladorPeliculas = controladorPeliculas;
-        this.controladorSalas = controladorSalas;
-        this.controladorVentas = controladorVentas;
-    }
-
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAgregarCarritoV;
+    private javax.swing.JButton botonAgregarPeliculaP;
+    public javax.swing.JButton botonAsignarAsientos;
+    private javax.swing.JButton botonBuscarClienteV;
+    private javax.swing.JButton botonCambiarPeliculaSa1;
+    private javax.swing.JButton botonCarritoC;
+    private javax.swing.JButton botonModificar;
+    private javax.swing.JButton botonRegistrarC1;
+    public javax.swing.JComboBox<String> comboClientesV;
+    public javax.swing.JComboBox<String> comboPeliculasSa1;
+    public javax.swing.JComboBox<String> comboSalasV;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel labelCantidadTicketsV;
+    private javax.swing.JLabel labelNombreCliente;
+    public javax.swing.JLabel labelPelicula;
+    public javax.swing.JSpinner spinnerTicketsV;
+    private javax.swing.JTable tableClientes;
+    private javax.swing.JTable tablePeli;
+    private javax.swing.JTable tableSalas;
+    public javax.swing.JTextField textFieldClienteV;
+    // End of variables declaration//GEN-END:variables
 }

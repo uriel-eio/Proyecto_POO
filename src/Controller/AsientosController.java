@@ -2,38 +2,43 @@ package Controller;
 
 import Model.Sala;
 import Model.Asiento;
-import Model.Cliente;
-import Model.Funcion;
-import Model.LogicaOrdenes;
 import View.SelecAsientos;
 import javax.swing.JButton;
 import java.awt.*;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import Util.ManejoErrores;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
+/**
+ * Controlador para la gestión de la selección de asientos
+ */
 public class AsientosController {
+    private static final Logger LOGGER = Logger.getLogger(AsientosController.class.getName());
+    
+    // Referencias al modelo y vista
     private final Sala sala;
     private final SelecAsientos vista;
     private final boolean isVip;
-    private ArrayList<Asiento> asientosSeleccionados;
-    private Funcion funcion;
-    private Cliente cliente;
-    private VentasController ventasController;
     
-    public AsientosController(Sala sala, SelecAsientos vista, boolean isVip, 
-                             Funcion funcion, Cliente cliente, 
-                             VentasController ventasController) {
+    // Lista para mantener registro de asientos seleccionados
+    private final ArrayList<Asiento> asientosSeleccionados = new ArrayList<>();
+    
+    // Mapa para relacionar botones con asientos (facilita acceso bidireccional)
+    private final Map<JButton, Asiento> mapaBotonAsiento = new HashMap<>();
+
+    /**
+     * Constructor que inicializa el controlador
+     */
+    public AsientosController(Sala sala, SelecAsientos vista, boolean isVip) {
         this.sala = sala;
         this.vista = vista;
         this.isVip = isVip;
-        this.funcion = funcion;
-        this.cliente = cliente;
-        this.ventasController = ventasController;
-        this.asientosSeleccionados = new ArrayList<>();
-        
         configurarVista();
         generarAsientos();
+        
+        LOGGER.info("Controlador de asientos inicializado para sala: " + sala.getNombre());
     }
 
     /**
@@ -47,188 +52,96 @@ public class AsientosController {
      * Genera los botones de asientos en la vista
      */
     private void generarAsientos() {
-        vista.getPanelAsientos().removeAll(); // Limpia asientos previos
+        vista.getPanelAsientos().removeAll();
+        asientosSeleccionados.clear();
+        mapaBotonAsiento.clear();
         
-        // Configuración para panel de 633x522 px
-        int columnas = 10; // 10 columnas como en el diseño original
-        int filas = (int) Math.ceil((double)sala.getAsientos().size() / columnas);
-        
-        // Cálculo de tamaño de botones
-        int tamaño = calcularTamañoBotones(columnas, filas);
-        
-        // Configura el layout con 10 columnas y espaciado de 5px
+        // Configuración de layout
+        int columnas = 10;
         vista.getPanelAsientos().setLayout(new GridLayout(0, columnas, 5, 5));
 
-        // Crea y añade cada botón de asiento
+        // Crear botones para cada asiento
         for (Asiento asiento : sala.getAsientos()) {
-            JButton btn = crearBotonAsiento(asiento, tamaño);
-            vista.getPanelAsientos().add(btn);
+            // Filtrar según tipo VIP/Estándar
+            if ((isVip && asiento.isVIP()) || (!isVip && !asiento.isVIP())) {
+                JButton btn = crearBotonAsiento(asiento);
+                vista.getPanelAsientos().add(btn);
+                mapaBotonAsiento.put(btn, asiento);
+            }
         }
         
-        // Actualiza la vista
-        actualizarVistaAsientos();
-    }
-    
-    /**
-     * Calcula el tamaño óptimo para los botones de asientos
-     */
-    private int calcularTamañoBotones(int columnas, int filas) {
-        // Dimensiones del panel
-        int anchoPanelAsientos = 633;
-        int altoPanelAsientos = 522;
-        
-        // Cálculo de tamaño de botones (considerando 5px de espacio entre ellos)
-        int anchoBtn = (anchoPanelAsientos - ((columnas - 1) * 5)) / columnas;
-        int altoBtn = (altoPanelAsientos - ((filas - 1) * 5)) / filas;
-        
-        // Mantiene proporción cuadrada
-        return Math.min(anchoBtn, altoBtn);
-    }
-    
-    /**
-     * Actualiza la vista de asientos
-     */
-    private void actualizarVistaAsientos() {
         vista.getPanelAsientos().revalidate();
         vista.getPanelAsientos().repaint();
     }
 
     /**
-     * Crea un botón de asiento con estilo minimalista
-     * @param asiento Modelo del asiento
-     * @param tamaño Tamaño cuadrado del botón
-     * @return JButton configurado
+     * Crea un botón de asiento con su comportamiento
      */
-    private JButton crearBotonAsiento(Asiento asiento, int tamaño) {
+    private JButton crearBotonAsiento(Asiento asiento) {
         JButton btn = new JButton(asiento.obtenerNumero());
         
-        // Estilo visual minimalista
-        configurarEstiloBoton(btn, tamaño);
+        // Estilo visual inicial
+        btn.setForeground(Color.BLACK);
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         
-        // Si el asiento ya está reservado, mostrarlo como deshabilitado
+        // Configurar apariencia según estado
         if (asiento.obtenerEstado()) {
-            marcarAsientoReservado(btn);
+            // Asiento ya reservado
+            btn.setBackground(Color.GRAY);
+            btn.setEnabled(false);
+            btn.setContentAreaFilled(true);
+        } else {
+            // Asiento libre
+            btn.setContentAreaFilled(false);
+            btn.setBorderPainted(true);
+            
+            // Acción al hacer clic
+            btn.addActionListener(e -> manejarSeleccionAsiento(btn, asiento));
         }
-        
-        // Efecto hover y acción de clic
-        configurarInteraccionBoton(btn, asiento);
         
         return btn;
     }
     
     /**
-     * Configura el estilo visual del botón de asiento
+     * Maneja la selección/deselección de un asiento
      */
-    private void configurarEstiloBoton(JButton btn, int tamaño) {
-        btn.setContentAreaFilled(false); // Fondo transparente
-        btn.setBorderPainted(false);    // Sin bordes
-        btn.setForeground(Color.BLACK); // Texto negro
-        btn.setFont(new Font("Segoe UI", Font.PLAIN, 10)); // Fuente pequeña
-        btn.setPreferredSize(new Dimension(tamaño, tamaño)); // Tamaño uniforme
-    }
-    
-    /**
-     * Marca un asiento como reservado en la UI
-     */
-    private void marcarAsientoReservado(JButton btn) {
-        btn.setEnabled(false);
-        btn.setBackground(Color.GRAY);
-        btn.setContentAreaFilled(true);
-    }
-    
-    /**
-     * Configura la interacción del usuario con el botón
-     */
-    private void configurarInteraccionBoton(JButton btn, Asiento asiento) {
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                if (btn.isEnabled() && !btn.getBackground().equals(Color.GREEN)) {
-                    btn.setContentAreaFilled(false);
-                }
-            }
-        });
-
-        btn.addActionListener(e -> manejarClicAsiento(btn, asiento));
-    }
-
-    
-    /**
-     * Maneja el clic en un botón de asiento
-     */
-    private void manejarClicAsiento(JButton btn, Asiento asiento) {
-        if (btn.getBackground().equals(Color.GREEN)) {
+    private void manejarSeleccionAsiento(JButton btn, Asiento asiento) {
+        if (btn.getBackground() == Color.WHITE) {
             // Deseleccionar
-            btn.setBackground(null);
             btn.setContentAreaFilled(false);
             asientosSeleccionados.remove(asiento);
+            asiento.liberar();
+            LOGGER.info("Asiento deseleccionado: " + asiento.obtenerNumero());
         } else {
             // Seleccionar
-            btn.setBackground(Color.GREEN);
             btn.setContentAreaFilled(true);
+            btn.setBackground(Color.WHITE);
             asientosSeleccionados.add(asiento);
+            asiento.reservar();
+            LOGGER.info("Asiento seleccionado: " + asiento.obtenerNumero());
         }
     }
-
     
     /**
-     * Devuelve los asientos seleccionados por el usuario
+     * Obtiene la lista de asientos seleccionados
      */
     public ArrayList<Asiento> getAsientosSeleccionados() {
         return asientosSeleccionados;
     }
     
     /**
-     * Confirma la selección de asientos
+     * Guarda los asientos seleccionados en un archivo
      */
-    public void confirmarSeleccion() {
+    public boolean confirmarSeleccion() {
         if (asientosSeleccionados.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, 
-                "No ha seleccionado ningún asiento", 
-                "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
+            return false;
         }
-
-        try {
-            // Confirmación visual
-            int confirmacion = JOptionPane.showConfirmDialog(vista,
-                    "¿Está seguro de confirmar la selección de "
-                    + asientosSeleccionados.size() + " asientos?",
-                    "Confirmar selección",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (confirmacion != JOptionPane.YES_OPTION) {
-                return;
-            }
-
-            // Reservar asientos
-            for (Asiento asiento : asientosSeleccionados) {
-                asiento.reservar();
-            }
-
-            // Crear la orden a través del controlador de ventas
-            ventasController.crearNuevaOrden(cliente, funcion, asientosSeleccionados);
-
-            JOptionPane.showMessageDialog(vista, 
-                "Se han reservado " + asientosSeleccionados.size() + " asientos", 
-                "Reserva exitosa", JOptionPane.INFORMATION_MESSAGE);
-
-            // Regenerar los botones para que reflejen los nuevos estados
-            generarAsientos();
-            asientosSeleccionados.clear();
-
-        } catch (HeadlessException e) {
-            ManejoErrores.mostrarError("Error al confirmar la selección", e, vista);
-        }
-    }
-
-    
-    /**
-     * Reserva los asientos seleccionados
-     */
-    private void reservarAsientosSeleccionados() {
+        
+        // Marca todos los asientos seleccionados como reservados en el modelo
         for (Asiento asiento : asientosSeleccionados) {
             asiento.reservar();
         }
+        
+        return true;
     }
 }

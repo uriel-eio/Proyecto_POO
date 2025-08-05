@@ -2,37 +2,33 @@ package Model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import Util.*;
 
-// Renombrada desde ISalasRepositorio para reflejar que es una implementación
 public class SalasRepositorio implements ISalasRepositorio {
     private final IPeliculasRepositorio repoPeliculas;
-    public static final String ARCHIVO_SALAS = "lista_salas.txt";
-    //Salas con identificador, nombre y capacidad respectivamente.
     
     public SalasRepositorio(IPeliculasRepositorio repoPeliculas) {
         this.repoPeliculas = repoPeliculas;
     }
     
+    //Esta bastante interactivo, los nombres de por si dicen que hace cada cosa\
+    
     @Override
     public void crearSala() {
-        File archivo = new File(ARCHIVO_SALAS);
-        if (archivo.exists()) return;
+        if (Rutas.existeArchivo(Rutas.RUTA_SALAS)) return;
 
         saveSala(new Sala("s01", "Sala Alpha", 60, false));
         saveSala(new Sala("s02", "Sala Beta", 45, false));
         saveSala(new Sala("s03", "Sala VIP", 25, true));
     }
     
-    //Método para guardar una sala en el archivo "lista_salas.txt"
     @Override
     public void saveSala(Sala sala){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALAS, true))){
-            //Escribe en formato CSV
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Rutas.RUTA_SALAS, true))){
             bw.write(sala.toCSV());
             bw.newLine();
         } catch (IOException e){
@@ -40,12 +36,10 @@ public class SalasRepositorio implements ISalasRepositorio {
         }
     }
     
-    
-    //ArrayList para obtener las salas
     @Override
     public ArrayList<Sala> getSala() {
         ArrayList<Sala> salas = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_SALAS))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Rutas.RUTA_SALAS))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -72,7 +66,6 @@ public class SalasRepositorio implements ISalasRepositorio {
         return salas;
     }
        
-    //Metodo para buscar salas 
     @Override
     public Sala buscarSalaPorId(String id) {
         for (Sala sala : this.getSala()) { 
@@ -80,23 +73,23 @@ public class SalasRepositorio implements ISalasRepositorio {
                 return sala;
             }
         }
-        return null; // No se encontró la sala
+        return null; // por si no hay
     }
 
     @Override
     public void actualizarSala(Sala salaModificada) {
-        //busca la sala por id y le asigna la modificacion que le vamos a dar
+        //busca la sala por id 
         ArrayList<Sala> salas = this.getSala();
         for (int i = 0; i < salas.size(); i++) {
             if (salas.get(i).obtenerId().equals(salaModificada.obtenerId())) {
                 // reemplaza el objeto que ya existia por uno nuevo con los nuevos parametros
-                // TODO: podemos optimizar esto haciendo que solo modifique un campo
                 salas.set(i, salaModificada);
                 break;
             }
         }
-        // re escribe el archivo
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_SALAS))) { // Modo sobre-escritura
+
+        // reescribe el archivo
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Rutas.RUTA_SALAS))) {
             for (Sala s : salas) {
                 bw.write(s.toCSV());
                 bw.newLine();

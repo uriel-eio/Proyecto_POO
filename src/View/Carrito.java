@@ -175,7 +175,7 @@ public class Carrito extends javax.swing.JFrame {
         botonPagar = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
 
-        setUndecorated(true);
+        setUndecorated(false);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));

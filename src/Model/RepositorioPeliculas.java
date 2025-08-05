@@ -1,13 +1,16 @@
 package Model;
 
 import Util.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class PeliculasRepositorio implements IPeliculasRepositorio {
+public class RepositorioPeliculas implements IPeliculasRepositorio {
     
-    //PELICULAS EN CARTELERA:
+    //cartelera 
     Pelicula matrix = new Pelicula("p001", "Matrix", "Ciencia Ficción", 148, RestriccionesEdad.B, "Matrix.jpg");
     Pelicula kimetsu = new Pelicula("p002", "Kimetsu no yaiba", "Animación", 169, RestriccionesEdad.B, "Kimetsu.jpeg");
     Pelicula superman = new Pelicula("p003", "Superman", "Superheroes", 175, RestriccionesEdad.A, "Superman.jpg");
@@ -15,7 +18,13 @@ public class PeliculasRepositorio implements IPeliculasRepositorio {
 
     @Override
     public void guardarPelicula(Pelicula pelicula){
-        LeerEscribir.guardarLinea(Rutas.RUTA_PELICULAS, pelicula.toCSV(), true);
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(Rutas.RUTA_PELICULAS, true))){
+            bw.write(pelicula.toCSV());
+            bw.newLine();
+        } catch(IOException e){
+            System.err.println("Error al guardar la película: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     @Override
@@ -31,7 +40,6 @@ public class PeliculasRepositorio implements IPeliculasRepositorio {
         peliculasPredeterminadas.add(superman);
         peliculasPredeterminadas.add(deadpool);
         
-        // Bucle para que la función guarde todas las películas 1 a 1
         for(Pelicula pelicula: peliculasPredeterminadas){
             this.guardarPelicula(pelicula);
         }
@@ -70,7 +78,7 @@ public class PeliculasRepositorio implements IPeliculasRepositorio {
     public Pelicula buscarPeliculaPorTitulo(String titulo) {
         for (Pelicula p : obtenerCartelera()) {
             System.out.println("Comparando con: '" + p.obtenerTitulo()+ "'");
-            //usamos .trim para asegurarnos de obtener el titulo de la pelicuila sin espacios
+            //trim busca sin espacios
             if (p.obtenerTitulo().equalsIgnoreCase(titulo.trim())) {
                 return p;
             }

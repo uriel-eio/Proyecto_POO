@@ -4,62 +4,46 @@ import Model.*;
 import View.*;
 import Util.*;
 
-/**
- * Controlador principal de la aplicación
- * Responsable de iniciar la aplicación y coordinar entre controladores
- */
+//responsable del inicio de la aplicacion
 public class AppController {
     
-    // Repositorios
     private final IClienteRepositorio repoClientes;
     private final IPeliculasRepositorio repoPeliculas;
     private final ISalasRepositorio repoSalas;
     
-    // Controladores principales
     private AuthController authController;
 
-    /**
-     * Constructor principal que inicializa los repositorios básicos
-     */
     public AppController() {
-        // Inicializar repositorios
-        this.repoPeliculas = new PeliculasRepositorio();
+        this.repoPeliculas = new RepositorioPeliculas();
         this.repoSalas = new SalasRepositorio(repoPeliculas);
         this.repoClientes = new RepositorioClientes();
         
-        // Inicializar datos
         inicializarDatos();
     }
     
-    /**
-     * Inicializa los datos predeterminados en los repositorios
-     */
+    // datos predeterminados
     private void inicializarDatos() {
         try {
-            // Primero crear carpeta de datos si no existe
+
             Rutas.inicializarCarpetas();
 
-            // Luego crear archivos si no existen
             repoPeliculas.creacionPeliculasPredeterminadas();
             repoSalas.crearSala();
             ((RepositorioClientes)repoClientes).crearCliente();
 
-            // Ahora explícitamente cargar los datos existentes
-            System.out.println("Cargando datos existentes...");
+            System.out.println("Cargando, por facor espere");
             repoPeliculas.obtenerCartelera();
             repoSalas.getSala();
             repoClientes.obtenerCliente();
         } catch (Exception e) {
-            ManejoErrores.mostrarError("Error al inicializar datos", e);
+            ManejoErrores.mostrarError("ERROR", e);
         }
     }
     
-    /**
-     * Inicia la aplicación mostrando la pantalla de login
-     */
+    //el login
     public void iniciarAplicacion() {
         try {
-            // Crear y mostrar la vista de inicio de sesión
+            // vista de inicio de sesión
             Inicio vistaInicio = new Inicio(null);
             authController = new AuthController(this, vistaInicio);
             vistaInicio.setControlador(authController);
@@ -69,22 +53,19 @@ public class AppController {
         }
     }
     
-    /**
-     * Muestra la ventana principal de la aplicación
-     * Llamado por AuthController después de login exitoso
-     */
+    // proceso despues de logearse
     public void mostrarVentanaPrincipal() {
         try {
-            // Crear vista principal
+            // crea vista principal
             Principal principal = new Principal();
             
-            // Crear controladores específicos
+            // controladores
             ClienteController controladorCliente = crearClienteController(principal);
             PeliculasController controladorPeliculas = crearPeliculasController(principal);
             SalasController controladorSalas = crearSalasController(principal);
             VentasController controladorVentas = new VentasController(principal, (SalasRepositorio) repoSalas);
             
-            // Configurar vista con controladores
+            // configuracion de la vista, se le pueden hacer mejoras
             principal.setControllers(
                 this, 
                 controladorCliente, 
@@ -93,7 +74,6 @@ public class AppController {
                 controladorVentas
             );
             
-            // Cargar datos iniciales en la vista
             inicializarVistaPrincipal(
                 principal, 
                 controladorCliente, 
@@ -107,32 +87,24 @@ public class AppController {
         }
     }
     
-    /**
-     * Crea el controlador de clientes
-     */
+    //controldor clientes
     private ClienteController crearClienteController(Principal vista) {
         ClienteController controlador = new ClienteController(repoClientes);
         controlador.setVista(vista);
         return controlador;
     }
     
-    /**
-     * Crea el controlador de películas
-     */
+    //controlador peliculas
     private PeliculasController crearPeliculasController(Principal vista) {
         return new PeliculasController(repoPeliculas, vista);
     }
     
-    /**
-     * Crea el controlador de salas
-     */
+    // controlador de salas
     private SalasController crearSalasController(Principal vista) {
         return new SalasController(repoSalas, repoPeliculas, vista);
     }
     
-    /**
-     * Inicializa los datos en la vista principal
-     */
+    // son los datos
     private void inicializarVistaPrincipal(
             Principal vista, 
             ClienteController controladorCliente, 

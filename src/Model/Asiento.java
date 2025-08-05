@@ -2,7 +2,6 @@ package Model;
 
 import javax.swing.JOptionPane;
 
-
     public abstract class Asiento implements IAsiento {
         private String numero;
         private boolean estado; // false = libre, true = reservado
@@ -24,11 +23,6 @@ import javax.swing.JOptionPane;
             return this.estado;
         }
 
-        /**
-        * Método para reservar el asiento.
-        * - Si está libre, lo marca como reservado y muestra confirmación.
-        * - Si ya está reservado, muestra un mensaje de error.
-        */
        @Override
        public void reservar() {
            if (!this.estado) {
@@ -49,11 +43,6 @@ import javax.swing.JOptionPane;
            }
        }
 
-       /**
-        * Método para liberar el asiento.
-        * - Si estaba reservado, lo marca como libre y muestra confirmación.
-        * - Si ya estaba libre, muestra un mensaje informativo.
-        */
        @Override
        public void liberar() {
            if (this.estado) {
@@ -74,7 +63,6 @@ import javax.swing.JOptionPane;
            }
        }
        
-        //@TODO: debemos marcar un precio base y programarlo
         @Override
         public abstract double obtenerPrecio(double precioBase);
 

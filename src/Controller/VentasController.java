@@ -18,7 +18,7 @@ public class VentasController {
         this.repoSalas = repoSalas;
         
         this.vista.botonAsignarAsientos.addActionListener(e -> {
-            manejarSeleccionAsientos(this.vista.tableSalas);
+            manejarSeleccionAsientos(this.vista.getTableSalas());
         });
     }
     
