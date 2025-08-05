@@ -4,3 +4,4 @@ p003,Superman,Superheroes,175,A,Superman.jpg
 p004,Deadpool,acción,120,C,Deadpool.png
 p005,ASDasd,asdasdas,213123,C,EquisBlanca.png
 p006,dfsdsd,sdfsd,123,A,Captura de pantalla 2024-04-05 213930.png
+p007,Ola,Ola,123,B,Captura de pantalla 2025-08-01 154500.png
