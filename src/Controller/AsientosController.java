@@ -57,7 +57,9 @@ public class AsientosController {
         mapaBotonAsiento.clear();
         
         // Configuración de layout
-        int columnas = 10;
+        //int columnas = 10;
+        int capacidad = sala.getCapacidad();
+        int columnas = calcularColumnas(capacidad);
         vista.getPanelAsientos().setLayout(new GridLayout(0, columnas, 5, 5));
 
         // Crear botones para cada asiento
@@ -72,6 +74,21 @@ public class AsientosController {
         
         vista.getPanelAsientos().revalidate();
         vista.getPanelAsientos().repaint();
+    }
+    
+    //Método para que aparezcan los asientos según la capacidad de la sala
+    private int calcularColumnas(int capacidad) {
+        
+        if (capacidad <= 10) {
+            return 5;       // 5 columnas para salas pequeñas
+        }
+        if (capacidad == 20) {
+            return 5;       // 5x4 para 20 asientos
+        }
+        if (capacidad == 25) {
+            return 5;       // 5x5 para 25 asientos
+        }
+        return 10;                           // Default: 10 columnas
     }
 
     /**

@@ -1,2 +1,3 @@
 Numero,Estado,VIP
-E-001,Reservado,false
+VIP-001,Reservado,true
+VIP-002,Reservado,true

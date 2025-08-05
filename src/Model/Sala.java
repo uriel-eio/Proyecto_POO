@@ -25,6 +25,7 @@ public class Sala implements ISala {
     }
     
     private void generarAsientos() {
+        /*
         for (int i = 1; i <= capacidad; i++) {
             String numero = String.format("%03d", i);
             if (i % 10 == 0) {
@@ -33,6 +34,19 @@ public class Sala implements ISala {
                 asientos.add(new AsientoEstandar("E-" + numero));
             }
         }
+        */
+        asientos.clear(); // Limpiar lista existente
+    
+        for (int i = 1; i <= capacidad; i++) {
+            String numero = String.format("%03d", i);
+
+            // Si la sala es VIP, todos los asientos son VIP
+            if (this.isVIP || i % 10 == 0) {
+                asientos.add(new AsientoVIP("VIP-" + numero, true, true));
+            } else {
+                asientos.add(new AsientoEstandar("E-" + numero));
+            }
+        }  
     }
     
     public String getMarcaVIP() {
