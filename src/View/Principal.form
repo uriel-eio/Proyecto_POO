@@ -267,7 +267,6 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-<<<<<<< HEAD
                               <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                               <Component id="jTextArea1" min="-2" pref="20" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -282,35 +281,6 @@
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="botonAsignarAsientos" min="-2" pref="40" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-=======
-                              <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
-                              <Component id="comboClientesV" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="304" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Component id="jTextArea1" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jPanel2" min="-2" pref="90" max="-2" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                          <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
-                                  <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="50" pref="50" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                          <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="30" pref="30" max="-2" attributes="0"/>
-                                          <Component id="botonAsignarAsientos" min="-2" max="-2" attributes="0"/>
-                                      </Group>
->>>>>>> 40e773e310595abc4370d4771f363e9b78807f89
                                       <Component id="botonAgregarCarritoV" min="-2" pref="40" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
@@ -768,19 +738,11 @@
                                       <Component id="botonAgregarPeliculaP" min="-2" pref="130" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-<<<<<<< HEAD
                                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                       <Component id="jScrollPane2" min="-2" pref="639" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace pref="44" max="32767" attributes="0"/>
-=======
-                                      <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane2" min="-2" pref="518" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace pref="133" max="32767" attributes="0"/>
->>>>>>> 40e773e310595abc4370d4771f363e9b78807f89
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -812,10 +774,6 @@
                                 <Column editable="true" title="Genero" type="java.lang.Object"/>
                                 <Column editable="true" title="Restriccion" type="java.lang.Object"/>
                                 <Column editable="true" title="Imagen" type="java.lang.Object"/>
-<<<<<<< HEAD
-=======
-                                <Column editable="true" title="Portada" type="java.lang.Object"/>
->>>>>>> 40e773e310595abc4370d4771f363e9b78807f89
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -835,7 +793,7 @@
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
+                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                                   <Title/>
                                   <Editor/>
                                   <Renderer/>
