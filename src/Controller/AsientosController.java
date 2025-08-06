@@ -32,7 +32,7 @@ public class AsientosController {
     private final Sala sala;
     private final SelecAsientos vista;
     private final boolean isVip;
-    private final VentasController ventasController; // <-- AÑADE ESTA LÍNEA
+    private final VentasController ventasController; 
 
     
     // Lista para mantener registro de asientos seleccionados
