@@ -11,12 +11,13 @@ public class VentasController {
     private Principal vista;
     private LogicaOrdenes logicaOrdenes;
     private final SalasRepositorio repoSalas;
-    
+    public Principal getVista() {
+        return this.vista;
+    }
     public VentasController(Principal vista, SalasRepositorio repoSalas) {
         this.vista = vista;
         this.logicaOrdenes = new LogicaOrdenes();
         this.repoSalas = repoSalas;
-        
         this.vista.botonAsignarAsientos.addActionListener(e -> {
             manejarSeleccionAsientos(this.vista.getTableSalas());
         });
@@ -135,14 +136,16 @@ public class VentasController {
         abrirSeleccionAsientos(salaSeleccionada);
     }
      
+// En VentasController.java
     public void abrirSeleccionAsientos(Sala salaSeleccionada) {
         if (salaSeleccionada == null) {
             JOptionPane.showMessageDialog(vista, "Sala inválida o no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        boolean esVip = salaSeleccionada.isVip();
-        SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, esVip);
+        // Creamos la vista de asientos, pasándole el propio VentasController (`this`)
+        SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this);
         vistaAsientos.setVisible(true);
     }
+
 }

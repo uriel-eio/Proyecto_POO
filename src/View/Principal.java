@@ -35,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
         
         // Configuración visual básica
         UIManager.put("TabbedPane.selected", new Color(57, 62, 70));
-        jTabbedPane2.setForeground(Color.WHITE);
+        jTabbedPane2.setForeground(Color.BLACK);
         try {
             setIconImage(new ImageIcon(getClass().getResource("/images/icono.png")).getImage());
         } catch (Exception e) {
@@ -179,9 +179,10 @@ public class Principal extends javax.swing.JFrame {
             ManejoErrores.mostrarError("Error al modificar cliente", ex, this);
         }
     }
+    // si esto funciona soy dios
     
     private void seleccionarSala() {
-        try {
+       /* try {
             if (comboSalasV.getSelectedIndex() <= 0) {
                 return;
             }
@@ -226,7 +227,7 @@ public class Principal extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             ManejoErrores.mostrarError("Error al seleccionar sala", ex, this);
-        }
+        }*/
     }
     
     private void configurarEventos() {
@@ -339,6 +340,8 @@ public class Principal extends javax.swing.JFrame {
         botonCarritoC = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane2.setForeground(new java.awt.Color(0, 0, 0));
 
         tableSalas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -715,6 +718,9 @@ public class Principal extends javax.swing.JFrame {
             }
         ));
         jScrollPane2.setViewportView(tablePeli);
+        if (tablePeli.getColumnModel().getColumnCount() > 0) {
+            tablePeli.getColumnModel().getColumn(3).setPreferredWidth(200);
+        }
 
         botonAgregarPeliculaP.setBackground(new java.awt.Color(14, 66, 134));
         botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -955,46 +961,6 @@ public class Principal extends javax.swing.JFrame {
         controladorCliente.buscarClienteVentas(this);
     }//GEN-LAST:event_botonBuscarClienteVActionPerformed
 
-    private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
-
-    }//GEN-LAST:event_comboSalasVItemStateChanged
-
-    private void comboSalasVMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseDragged
-
-    }//GEN-LAST:event_comboSalasVMouseDragged
-
-    private void comboSalasVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_comboSalasVFocusLost
-
-    }//GEN-LAST:event_comboSalasVFocusLost
-
-    private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
-
-    }//GEN-LAST:event_comboSalasVMouseClicked
-
-    private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
-        this.spinnerTicketsV.setValue(0);
-
-        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
-
-        // Obtener la sala seleccionada desde la tabla
-        int filaSeleccionada = tableSalas.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
-            return;
-        }
-
-        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-        // Usar el controlador para acceder al repositorio
-        Sala sala = controladorSalas.buscarSalaPorId(idSala);
-
-        if (sala != null) {
-            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
-            ventanaAsientos.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudo encontrar la sala seleccionada.");
-        }
-    }//GEN-LAST:event_comboSalasVActionPerformed
-
     private void spinnerTicketsVStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerTicketsVStateChanged
         //controlador.calcularPrecioVentas(this);
     }//GEN-LAST:event_spinnerTicketsVStateChanged
@@ -1076,6 +1042,46 @@ public class Principal extends javax.swing.JFrame {
             labelNombreCliente.setText("Cliente no encontrado");
         }
     }//GEN-LAST:event_comboClientesVActionPerformed
+
+    private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
+       /* this.spinnerTicketsV.setValue(0);
+
+        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
+
+        // Obtener la sala seleccionada desde la tabla
+        int filaSeleccionada = tableSalas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
+            return;
+        }
+
+        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
+        // Usar el controlador para acceder al repositorio
+        Sala sala = controladorSalas.buscarSalaPorId(idSala);
+
+        if (sala != null) {
+            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
+            ventanaAsientos.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo encontrar la sala seleccionada.");
+        }*/
+    }//GEN-LAST:event_comboSalasVActionPerformed
+
+    private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
+
+    }//GEN-LAST:event_comboSalasVMouseClicked
+
+    private void comboSalasVFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_comboSalasVFocusLost
+
+    }//GEN-LAST:event_comboSalasVFocusLost
+
+    private void comboSalasVMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseDragged
+
+    }//GEN-LAST:event_comboSalasVMouseDragged
+
+    private void comboSalasVItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSalasVItemStateChanged
+
+    }//GEN-LAST:event_comboSalasVItemStateChanged
 
     public JButton getBotonAgregarCarritoV() {
         return botonAgregarCarritoV;
@@ -1312,7 +1318,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton botonRegistrarC1;
     public javax.swing.JComboBox<String> comboClientesV;
     public javax.swing.JComboBox<String> comboPeliculasSa1;
-    public javax.swing.JComboBox<String> comboSalasV;
+    private javax.swing.JComboBox<String> comboSalasV;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;

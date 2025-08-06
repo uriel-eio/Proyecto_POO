@@ -1,11 +1,13 @@
 package View;
 
 import Controller.AsientosController;
+import Controller.VentasController;
 import Model.Asiento;
 import Model.Sala;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -24,19 +26,19 @@ public class SelecAsientos extends javax.swing.JFrame {
     
     /**
      * Constructor de la ventana de selección de asientos
-     */
-    public SelecAsientos(Sala sala, boolean isVip) {
-        this.sala = sala;
-        this.isVip = isVip;
-        
-        initComponents();
-        setLocationRelativeTo(null);
-        
-        // Inicializar controlador
-        this.controlador = new AsientosController(sala, this, isVip);
-        
-        logger.info("Vista de selección de asientos inicializada para sala: " + sala.getNombre());
-    }
+        */
+   public SelecAsientos(Sala sala, boolean isVip, VentasController ventasController) {
+       this.sala = sala;
+       this.isVip = isVip;
+
+       initComponents();
+       setLocationRelativeTo(null);
+
+       // Aquí le pasamos el VentasController al AsientosController cuando lo creamos
+       this.controlador = new AsientosController(sala, this, isVip, ventasController);
+
+       logger.info("Vista de selección de asientos inicializada para sala: " + sala.getNombre());
+   }
     
     /**
      * Proporciona acceso al panel de asientos
@@ -175,8 +177,11 @@ public class SelecAsientos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    
+    // Devuelve la lista de asientos que el controlador ha gestionado
+    public ArrayList<Asiento> getAsientosConfirmados() {
+        
+        return this.controlador.getAsientosSeleccionados();
+    }
     //método del botón volver para cerrar únicamente la ventana y que no se cierre todo el programa.
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // Confirmar solo si hay asientos seleccionados
@@ -197,41 +202,21 @@ public class SelecAsientos extends javax.swing.JFrame {
     
     
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // Verificar si hay asientos seleccionados
-        if (controlador.getAsientosSeleccionados().isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "No ha seleccionado ningún asiento", 
-                "Aviso", 
-                JOptionPane.WARNING_MESSAGE);
-            return;
+        boolean exito = controlador.confirmarSeleccion(); 
+
+        if (exito) {
+            controlador.finalizarYCrearOrden(); 
+            this.dispose(); 
+        } else {
+            JOptionPane.showMessageDialog(this, "No ha seleccionado ningún asiento.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
-        
-        // Confirmar selección
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de confirmar la selección de " + 
-            controlador.getAsientosSeleccionados().size() + " asientos?", 
-            "Confirmar selección", 
-            JOptionPane.YES_NO_OPTION);
-            
-        if (confirmacion != JOptionPane.YES_OPTION) {
-            return;
-        }
-        
-        // Marcar asientos como reservados en el modelo
-        controlador.confirmarSeleccion();
-        
-        // Guardar en archivo
-        guardarAsientosEnArchivo();
-        
-        JOptionPane.showMessageDialog(this, "Asientos guardados correctamente.");
-        dispose();
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void guardarAsientosEnArchivo() {
+  /*  private void guardarAsientosEnArchivo() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("confirmarAsientos.csv"))) {
             // Escribir encabezado
             bw.write("Numero,Estado,VIP\n");
@@ -252,7 +237,7 @@ public class SelecAsientos extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+    */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnVolver;

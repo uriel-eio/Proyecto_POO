@@ -28,37 +28,54 @@ public class FuncionesRepositorio implements IFuncionesRepositorio {
     private void crearFuncionesPredeterminadas() {
         File archivo = new File(ARCHIVO_FUNCIONES);
         if (archivo.exists()) {
-            return;
+            return; 
         }
-        
-        // Crear algunas funciones predeterminadas si hay películas y salas disponibles
-        List<Pelicula> peliculas = repoPeliculas.obtenerCartelera();
-        List<Sala> salas = repoSalas.getSala();
-        
-        if (!peliculas.isEmpty() && !salas.isEmpty()) {
-            // Primera función: primera película en primera sala
-            LocalDateTime fecha1 = LocalDateTime.now().plusDays(1).withHour(15).withMinute(0);
-            agregarFuncion(peliculas.get(0), salas.get(0), fecha1);
-            
-            // Segunda función: segunda película (si existe) en segunda sala (si existe)
-            if (peliculas.size() > 1 && salas.size() > 1) {
-                LocalDateTime fecha2 = LocalDateTime.now().plusDays(1).withHour(18).withMinute(30);
-                agregarFuncion(peliculas.get(1), salas.get(1), fecha2);
+
+        // Método encargado de crear funciones.txt
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_FUNCIONES))) {
+            List<Pelicula> peliculas = repoPeliculas.obtenerCartelera();
+            List<Sala> salas = repoSalas.getSala();
+            int contadorFunciones = 0;
+
+            if (!peliculas.isEmpty() && !salas.isEmpty()) {
+                contadorFunciones++;
+                LocalDateTime fecha1 = LocalDateTime.now().plusDays(1).withHour(15).withMinute(0);
+                Funcion funcion1 = new Funcion("f" + contadorFunciones, peliculas.get(0), salas.get(0), fecha1);
+                bw.write(funcionToCSV(funcion1));
+                bw.newLine();
+
+                if (peliculas.size() > 1 && salas.size() > 1) {
+                    contadorFunciones++;
+                    LocalDateTime fecha2 = LocalDateTime.now().plusDays(1).withHour(18).withMinute(30);
+                    Funcion funcion2 = new Funcion("f" + contadorFunciones, peliculas.get(1), salas.get(1), fecha2);
+                    bw.write(funcionToCSV(funcion2));
+                    bw.newLine();
+                }
+
+                if (peliculas.size() > 2) {
+                    contadorFunciones++;
+                    LocalDateTime fecha3 = LocalDateTime.now().plusDays(2).withHour(20).withMinute(15);
+                    Funcion funcion3 = new Funcion("f" + contadorFunciones, peliculas.get(2), salas.get(0), fecha3);
+                    bw.write(funcionToCSV(funcion3));
+                    bw.newLine();
+                }
             }
-            
-            // Tercera función: tercera película (si existe) en primera sala
-            if (peliculas.size() > 2) {
-                LocalDateTime fecha3 = LocalDateTime.now().plusDays(2).withHour(20).withMinute(15);
-                agregarFuncion(peliculas.get(2), salas.get(0), fecha3);
-            }
+        } catch (IOException e) {
+            ManejoErrores.mostrarError("Error al crear el archivo de funciones predeterminadas", e);
         }
     }
     
     @Override
     public List<Funcion> obtenerFunciones() {
         List<Funcion> funciones = new ArrayList<>();
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_FUNCIONES))) {
+        File archivo = new File(ARCHIVO_FUNCIONES); 
+
+       
+        if (!archivo.exists()) {
+            return funciones; // se devuelve una lista vacia en caso de noexistir
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -67,10 +84,10 @@ public class FuncionesRepositorio implements IFuncionesRepositorio {
                     String idPelicula = datos[1];
                     String idSala = datos[2];
                     LocalDateTime fechaHora = LocalDateTime.parse(datos[3], FORMATTER);
-                    
+
                     Pelicula pelicula = buscarPeliculaPorId(idPelicula);
                     Sala sala = repoSalas.buscarSalaPorId(idSala);
-                    
+
                     if (pelicula != null && sala != null) {
                         funciones.add(new Funcion(id, pelicula, sala, fechaHora));
                     }
@@ -79,7 +96,7 @@ public class FuncionesRepositorio implements IFuncionesRepositorio {
         } catch (IOException e) {
             ManejoErrores.mostrarError("Error al leer el archivo de funciones", e);
         }
-        
+
         return funciones;
     }
     
