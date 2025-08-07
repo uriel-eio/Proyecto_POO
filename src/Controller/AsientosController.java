@@ -23,9 +23,6 @@ import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 import java.util.List;
 
-/**
- * Controlador para la gestión de la selección de asientos
- */
 public class AsientosController {
     private static final Logger LOGGER = Logger.getLogger(AsientosController.class.getName());
     
@@ -45,9 +42,6 @@ public class AsientosController {
     // Mapa para relacionar botones con asientos (facilita acceso bidireccional)
     private final Map<JButton, Asiento> mapaBotonAsiento = new HashMap<>();
 
-    /**
-     * Constructor que inicializa el controlador
-     */
     public AsientosController(Sala sala, SelecAsientos vista, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes, int limiteAsientos) {
         this.sala = sala;
         this.vista = vista;
@@ -62,16 +56,12 @@ public class AsientosController {
         LOGGER.info("Controlador de asientos inicializado para sala: " + sala.getNombre());
     }
 
-    /**
-     * Configuración inicial de la vista
-     */
+    // conf inicial
     private void configurarVista() {
         vista.setTitle("Selección de Asientos - " + sala.getNombre());
     }
 
-    /**
-     * Genera los botones de asientos en la vista
-     */
+    //botones asientos
     private void generarAsientos() {
         vista.getPanelAsientos().removeAll();
         asientosSeleccionados.clear();
@@ -112,17 +102,14 @@ public class AsientosController {
         return 10;                           // Default: 10 columnas
     }
 
-    /**
-     * Crea un botón de asiento con su comportamiento
-     */
+
     private JButton crearBotonAsiento(Asiento asiento) {
         JButton btn = new JButton(asiento.obtenerNumero());
         
-        // Estilo visual inicial
+        // Emas estilo
         btn.setForeground(Color.BLACK);
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         
-        // Configurar apariencia según estado
         if (asiento.obtenerEstado()) {
             // Asiento ya reservado
             btn.setBackground(Color.GRAY);
@@ -140,9 +127,7 @@ public class AsientosController {
         return btn;
     }
     
-    /**
-     * Maneja la selección/deselección de un asiento
-     */
+    //procesos de seleccion de asientos
     private void manejarSeleccionAsiento(JButton btn, Asiento asientoClickeado) {
         Asiento asientoEncontrado = null;
         int indiceAsientoEncontrado = -1;
@@ -184,16 +169,12 @@ public class AsientosController {
         }
     }
     
-    /**
-     * Obtiene la lista de asientos seleccionados
-     */
+    //lista asientos
     public ArrayList<Asiento> getAsientosSeleccionados() {
         return asientosSeleccionados;
     }
     
-    /**
-     * Guarda los asientos seleccionados en un archivo
-     */
+    // save de asientos
     public boolean confirmarSeleccion() {
         if (asientosSeleccionados.isEmpty()) {
             return false;

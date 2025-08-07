@@ -26,10 +26,7 @@ public class FuncionesController {
         this.vistaPrincipal = vistaPrincipal;
     }
     
-    /**
-     * Carga las funciones disponibles en un ComboBox
-     * @param comboBox El ComboBox donde se cargarán las funciones
-     */
+    // carga al combox
     public void cargarFuncionesEnComboBox(JComboBox<String> comboBox) {
         comboBox.removeAllItems();
         comboBox.addItem("Seleccione una función");
@@ -44,9 +41,7 @@ public class FuncionesController {
         }
     }
     
-    /**
-     * Crea una nueva función con los datos proporcionados
-     */
+    // new funcion
     public void crearNuevaFuncion() {
         try {
             // Obtener película
@@ -69,9 +64,7 @@ public class FuncionesController {
         }
     }
     
-    /**
-     * Muestra diálogo para seleccionar una película
-     */
+    // solo es el mensaje
     private Pelicula seleccionarPelicula() {
         List<Pelicula> peliculas = repoPeliculas.obtenerCartelera();
         if (peliculas.isEmpty()) {
@@ -92,9 +85,7 @@ public class FuncionesController {
         );
     }
     
-    /**
-     * Muestra diálogo para seleccionar una sala
-     */
+    // lo mismo de arriba pero para salas
     private Sala seleccionarSala() {
         List<Sala> salas = repoSalas.getSala();
         if (salas.isEmpty()) {
@@ -115,9 +106,7 @@ public class FuncionesController {
         );
     }
     
-    /**
-     * Muestra diálogos para obtener fecha y hora
-     */
+    // lo mismo para fecha hora
     private LocalDateTime obtenerFechaHora() {
         String fechaStr = JOptionPane.showInputDialog(
             vistaPrincipal,
@@ -144,9 +133,7 @@ public class FuncionesController {
         );
     }
     
-    /**
-     * Crea una función con los datos proporcionados
-     */
+    // crea funciones
     private void crearFuncion(Pelicula pelicula, Sala sala, LocalDateTime fechaHora) {
         repoFunciones.agregarFuncion(pelicula, sala, fechaHora);
         
@@ -158,9 +145,7 @@ public class FuncionesController {
         cargarFuncionesEnComboBox(vistaPrincipal.getComboSalasV());
     }
     
-    /**
-     * Muestra mensaje de error al crear función
-     */
+    // manejo de errores
     private void mostrarErrorCreacionFuncion(Exception e) {
         JOptionPane.showMessageDialog(vistaPrincipal, 
             "Error al crear la función: " + e.getMessage(), 
@@ -168,11 +153,7 @@ public class FuncionesController {
         e.printStackTrace();
     }
     
-    /**
-     * Obtiene una función a partir de su selección en un ComboBox
-     * @param comboBox El ComboBox con las funciones
-     * @return La función seleccionada o null si no hay selección válida
-     */
+    // seleccion del combox con manejo de errores
     public Funcion obtenerFuncionSeleccionada(JComboBox<String> comboBox) {
         int selectedIndex = comboBox.getSelectedIndex();
         if (selectedIndex <= 0) {

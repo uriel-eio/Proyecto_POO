@@ -83,7 +83,7 @@ En esta sección se describe cómo usar las principales funcionalidades del prog
 
 - **Descripción:**
 
-Al momento de ejecutar el programa, se despliega la siguiente ventana la cual contiene dos casillas que deben ser rellenadas para que se pueda accerder a las opciones principales, es decir, iniciar sesión. A continuación el usuario y contraseña que debes ingresar:
+Al momento de ejecutar el programa, se despliega la siguiente ventana la cual contiene dos casillas que deben ser rellenadas para que se pueda acceder a las opciones principales, es decir, iniciar sesión. A continuación el usuario y contraseña que debes ingresar:
 
 Usuario: admin
 
@@ -102,7 +102,7 @@ En este apartado del programa, se permite visualizar los atributos de 3 salas pr
 ![Salas paso 1](src/capturas_manual/salas1.jpg)
   2. En la parte izquierda inferior de la ventana, existe un recuadro donde se encuentran las películas disponibles al momento en el cine, seleccionar cualquiera de su preferencia.
 ![Salas paso 2](src/capturas_manual/salas2.jpg)
-  3. A continuación, hacer click en alguna de las 3 salas predeterminadas y presionar el boton "Cambiar", que se ubica en la parte inferior derecho de la Ventana.
+  3. A continuación, hacer click en alguna de las 3 salas predeterminadas y presionar el botón "Cambiar", que se ubica en la parte inferior derecho de la Ventana.
 ![Salas paso 3](src/capturas_manual/salas3.jpg)
 
 ¡Felicidades!, ha asignado con éxito una película a una sala predeterminada.
@@ -113,17 +113,17 @@ En este apartado del programa, se permite visualizar los atributos de 3 salas pr
 El usuario será presentado con una Ventana donde podrá seleccionar los asientos que desee para su compra en función de una sala.
   
 - **Pasos:**
-  1. Dirigirse a la pestaña Salas, ubicada a la izquierda superior de la Ventana, una vez ahi, hacer click en cualquiera de las 3 salas disponibles.
+  1. Dirigirse a la pestaña Salas, ubicada a la izquierda superior de la Ventana, una vez ahí, hacer click en cualquiera de las 3 salas disponibles.
 ![Ventas paso 1](src/capturas_manual/ventas1.jpg)
   2. Una vez realizado el paso anterior, dirigirse a la pestaña Ventas, donde se podrá encontrar un botón "Buscar asientos".
 ![Ventas paso 2](src/capturas_manual/ventasAsientos.jpg)
   3. A continuación, se desplegará una Ventana donde aparecerán los asientos disponibles dependiendo de la capacidad de la sala, aquí escoger los asientos que desee.
 ![Ventas paso 3](src/capturas_manual/ventas2.jpg)
-  4. Para confirmer la selección de los asientos, haga click en el botón "Confirmar Asientos", se desplegará un mensaje de confirmación y será enviado a la Ventana anterior.
+  4. Para confirmar la selección de los asientos, haga click en el botón "Confirmar Asientos", se desplegará un mensaje de confirmación y será enviado a la Ventana anterior.
 ![Ventas paso 4](src/capturas_manual/ventas3.jpg)
   5. En caso de haber hecho click en el botón "Buscar asientos" sin querer, hacer click en el botón "Volver", este cerrará la Ventana donde se escogen los asientos y volverá a la Ventana anterior.
 ![Ventas paso 5](src/capturas_manual/ventas4.jpg)
-  6. Si deseas visualizar el estado de tu transacción después de haber confirmado los asientos, por favor selecciona el boton Mostrar Ventas.
+  6. Si deseas visualizar el estado de tu transacción después de haber confirmado los asientos, por favor selecciona el botón Mostrar Ventas.
 ![Ventas paso 6](src/capturas_manual/ventas5.jpg)
 
 ### Gestión de Películas
@@ -134,11 +134,11 @@ Se permite visualizar las películas en cartelera y sus características, tales 
   
 - **Pasos para su uso:**
   1. Acceder al menú de Películas, en él se desplegarán los largometrajes que están en cartelera.
-![Peliculas paso 1](src/capturas_manual/peliculas1.jpg)
+![Películas paso 1](src/capturas_manual/peliculas1.jpg)
   2. En caso de querer agregar una nueva película, debes seleccionar el botón Agregar Película, en el introducirás los siguientes datos: nombre de la película, género, tiempo de duración en minutos, restricción de edad.
-![Peliculas paso 2](src/capturas_manual/peliculas2.jpg)
+![Películas paso 2](src/capturas_manual/peliculas2.jpg)
   3. Para finalizar la tarea de agregar una película, debes seleccionar una imagen para que sea la portada de la película; el programa te llevará directamente al explorador de archivos en donde deberás escoger una buena portada para tu película.
-![Peliculas paso 3](src/capturas_manual/peliculas3.jpg)
+![Películas paso 3](src/capturas_manual/peliculas3.jpg)
 
 ### Gestión de Clientes
 

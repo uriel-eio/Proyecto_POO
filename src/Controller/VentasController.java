@@ -177,9 +177,7 @@ public class VentasController {
                }
        }
 
-    /**
-     * Método de ayuda para limpiar el estado después de una venta.
-     */
+        // literalmente limpia el metodo
         private void limpiarSeleccionVenta() {
             this.clienteParaVenta = null;
             this.asientosParaVenta = null;

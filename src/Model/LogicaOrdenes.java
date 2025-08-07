@@ -8,13 +8,7 @@ import Util.ManejoErrores;
  */
 public class LogicaOrdenes {
     
-    /**
-     * Crea una nueva orden de compra
-     * @param funcion La función para la que se compran entradas
-     * @param asientos Los asientos seleccionados
-     * @param cliente El cliente que realiza la compra
-     * @return La orden creada
-     */
+
     public OrdenCompra crearOrden(Funcion funcion, ArrayList<Asiento> asientos, Cliente cliente) {
         try {
             // Verificar que haya un carrito
@@ -63,12 +57,7 @@ public class LogicaOrdenes {
         }
     }
     
-    /**
-     * Realiza el pago de una orden
-     * @param numOrden Número de la orden a pagar
-     * @param cliente Cliente que realiza el pago
-     * @return true si el pago fue exitoso
-     */
+
     public boolean pagarOrden(int numOrden, Cliente cliente) {
         try {
             // Verificar que el cliente tenga un carrito
@@ -96,11 +85,7 @@ public class LogicaOrdenes {
         }
     }
     
-    /**
-     * Obtiene todas las órdenes de un cliente
-     * @param cliente El cliente
-     * @return Lista de órdenes o lista vacía si no hay
-     */
+
     public ArrayList<OrdenCompra> obtenerOrdenesCliente(Cliente cliente) {
         if (cliente != null && cliente.getCarritoModel() != null) {
             return cliente.getCarritoModel().getOrdenesEnCarrito();

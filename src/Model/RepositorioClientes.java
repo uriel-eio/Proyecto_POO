@@ -22,7 +22,7 @@ public class RepositorioClientes implements IClienteRepositorio {
             e.printStackTrace();
         }
     }
-        // la mayoria de cosas dic el nombre que hace
+        
         public void crearCliente(){
         if (Rutas.existeArchivo(Rutas.RUTA_CLIENTES)){
             return;

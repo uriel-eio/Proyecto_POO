@@ -100,7 +100,7 @@ public class Sala implements ISala {
     public String toCSV() {
         StringBuilder estadosAsientos = new StringBuilder();
         for (Asiento asiento : this.asientos) {
-            //String builder me sirve para ir concatenando strings y esto sirve 
+            //String builder nos sirve para ir concatenando strings y esto sirve 
             //es como un "if" resumido, si esta reservado es 1, si no 0
             estadosAsientos.append(asiento.obtenerEstado() ? '1' : '0');
         }

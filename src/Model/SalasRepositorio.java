@@ -15,7 +15,7 @@ public class SalasRepositorio implements ISalasRepositorio {
         this.repoPeliculas = repoPeliculas;
     }
     
-    //Esta bastante interactivo, los nombres de por si dicen que hace cada cosa\
+    //Esta bastante interactivo, los nombres de por si dicen que hace cada cosa
     
     @Override
     public void crearSala() {
@@ -62,7 +62,7 @@ public class SalasRepositorio implements ISalasRepositorio {
                     String estadosAsientosStr = datos[5];
                     ArrayList<Asiento> asientosDeLaSala = sala.getAsientos();
                     for (int i = 0; i < estadosAsientosStr.length(); i++) {
-                        // Esto asegura que no tesalgas del rango de asientos
+                        // Esto asegura que no te salgas del rango de asientos
                         if (i < asientosDeLaSala.size()) {
                             char estadoChar = estadosAsientosStr.charAt(i);
                             if (estadoChar == '1') {

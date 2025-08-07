@@ -35,7 +35,6 @@ public class Funcion {
     }
     
     public ArrayList<Asiento> getAsientosDisponibles() {
-        // Returns only available seats (not reserved)
         ArrayList<Asiento> disponibles = new ArrayList<>();
         for (Asiento asiento : asientosDisponibles) {
             if (!asiento.obtenerEstado()) {

@@ -26,16 +26,10 @@ public class PeliculasController {
         this.vista = vista;
     }
 
-    /**
-     * Devuelve la lista de películas en cartelera.
-     */
     public ArrayList<Pelicula> obtenerCartelera() {
         return repoPeliculas.obtenerCartelera();
     }
     
-    /**
-     * Carga las películas en la vista principal
-     */
     public void cargarPeliculasEnVista() {
         if (vista == null) return;
         
@@ -62,10 +56,7 @@ public class PeliculasController {
         }
     }
     
-    /**
-     * Permite al usuario seleccionar y copiar una imagen de portada
-     * @return Nombre del archivo copiado o null si se canceló
-     */
+    // seleccion de imagenes
     public String seleccionarYCopiarPortada() {
         if (vista == null) return null;
         
@@ -99,9 +90,7 @@ public class PeliculasController {
         return null;
     }
     
-    /**
-     * Añade una nueva película solicitando datos al usuario
-     */
+    // aniadir imagen, profe deme ese punto
     public void agregarNuevaPelicula() {
         if (vista == null) return;
         

@@ -8,7 +8,6 @@ public class AsientoEstandar extends Asiento {
 
     @Override
     public double obtenerPrecio(double precioBase) {
-        // @TODO: Falta el precio y como determinarlo
         return precioBase;
     }
 

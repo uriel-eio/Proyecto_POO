@@ -72,7 +72,7 @@ public class FuncionesRepositorio implements IFuncionesRepositorio {
 
        
         if (!archivo.exists()) {
-            return funciones; // se devuelve una lista vacia en caso de noexistir
+            return funciones; // se devuelve una lista vacia en caso de no existir
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {

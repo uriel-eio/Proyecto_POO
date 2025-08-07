@@ -21,28 +21,19 @@ public class CarritoController {
         ArrayList<OrdenCompra> todasLasVentas = RegistroVentasModelo.obtenerTodasLasVentas();
         vista.actualizarTabla(todasLasVentas);
     }
-    /**
-     * Inicializa la vista con los datos del cliente y carrito
-     */
+    
+    //fue un buen soldado
     private void inicializarVista() {
-        // Mostrar datos del cliente en la vista
         vista.mostrarDatosCliente(cliente);
-        
-        // Cargar órdenes del carrito en la tabla
         actualizarVistaCarrito();
     }
     
-    /**
-     * Actualiza la vista del carrito con las órdenes actuales
-     */
+    //actializa
     private void actualizarVistaCarrito() {
         ArrayList<OrdenCompra> ordenes = logicaOrdenes.obtenerOrdenesCliente(cliente);
         vista.actualizarTabla(ordenes);
     }
     
-    /**
-     * Procesa el pago de una orden
-     */
     public void pagarOrden(int numOrden) {
         boolean resultado = logicaOrdenes.pagarOrden(numOrden, cliente);
         
@@ -56,9 +47,7 @@ public class CarritoController {
         actualizarVistaCarrito();
     }
     
-    /**
-     * Muestra mensaje de pago exitoso
-     */
+    //es el mensaje de !EXITO!
     private void mostrarMensajePagoExitoso(int numOrden) {
         OrdenCompra orden = cliente.getCarritoModel().buscarOrden(numOrden);
         JOptionPane.showMessageDialog(vista, 
@@ -67,9 +56,7 @@ public class CarritoController {
             "Pago Exitoso", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    /**
-     * Muestra mensaje de error en el pago
-     */
+    //manejo de errores
     private void mostrarMensajeErrorPago(int numOrden) {
         OrdenCompra orden = cliente.getCarritoModel().buscarOrden(numOrden);
         
@@ -88,9 +75,7 @@ public class CarritoController {
         }
     }
     
-    /**
-     * Agrega una nueva orden al carrito
-     */
+    //nueva orden al carrito
     public void agregarOrden(Funcion funcion, ArrayList<Asiento> asientosSeleccionados) {
         try {
             OrdenCompra nuevaOrden = logicaOrdenes.crearOrden(funcion, asientosSeleccionados, cliente);
@@ -104,9 +89,7 @@ public class CarritoController {
         }
     }
     
-    /**
-     * Muestra confirmación cuando se agrega una orden
-     */
+    // confirm pelada
     private void mostrarConfirmacionOrdenAgregada(Funcion funcion, ArrayList<Asiento> asientosSeleccionados, OrdenCompra nuevaOrden) {
         JOptionPane.showMessageDialog(vista, 
             "Se ha agregado una nueva orden al carrito.\n" +
