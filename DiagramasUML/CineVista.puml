@@ -1,0 +1,63 @@
+@startuml
+' --- Título del Diagrama ---
+title Diagrama UML Simplificado de la Capa VISTA
+
+' --- Clases Principales de la Vista ---
+' Se representan las ventanas y componentes visuales del paquete View
+
+class Inicio {
+  .. Componentes Clave ..
+  - campoUsuario: JTextField
+  - campoClave: JPasswordField
+  .. Propósito Principal ..
+  + AutenticarUsuario()
+}
+
+class Principal {
+  .. Componentes Clave ..
+  - Pestañas (JTabbedPane)
+  - tablaSalas: JTable
+  - tablaPeliculas: JTable
+  - tablaClientes: JTable
+  .. Propósito Principal ..
+  + NavegarEntrePestañas()
+  + LanzarVentanaCarrito()
+  + LanzarVentanaAsientos()
+}
+
+class Carrito {
+  .. Componentes Clave ..
+  - tablaCarrito: JTable
+  .. Propósito Principal ..
+  + MostrarOrdenesDelCliente()
+  + ProcesarPago()
+}
+
+class SelecAsientos {
+  .. Componentes Clave ..
+  - panelDeAsientos: JPanel
+  .. Propósito Principal ..
+  + MostrarMapaDeAsientos()
+  + ConfirmarSeleccion()
+}
+
+class RenderizadorImagenes {
+  .. Propósito Principal ..
+  + DibujarImagenEnCeldaDeTabla()
+  + AjustarImagenEnLabel()
+}
+
+' --- Relaciones entre las Vistas ---
+
+note "El flujo de la aplicación comienza aquí" as N1
+N1 .. Inicio
+
+Principal "1" o-- "0..*" Carrito : "lanza"
+Principal "1" o-- "0..*" SelecAsientos : "lanza"
+
+Principal ..> RenderizadorImagenes : "usa"
+Inicio ..> RenderizadorImagenes : "usa"
+
+
+
+@enduml

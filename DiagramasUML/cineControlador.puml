@@ -1,0 +1,84 @@
+@startuml
+' --- Título del Diagrama ---
+title Diagrama UML Simplificado de la Capa CONTROLADOR
+
+' --- Paquetes para organizar las capas ---
+package "VISTA (View)" {
+    class Principal
+    class Inicio
+    class SelecAsientos
+}
+
+package "MODELO (Model)" {
+    class Sala
+    class Asiento
+    class Cliente
+    class OrdenCompra
+    class LogicaOrdenes
+    class IClienteRepositorio
+    class IPeliculasRepositorio
+    class ISalasRepositorio
+    class IFuncionesRepositorio
+}
+
+package "CONTROLADOR (Controller)" {
+    class AppController {
+        + iniciarAplicacion()
+        + mostrarVentanaPrincipal()
+    }
+    class AuthController {
+        + intentarLogin()
+    }
+    class ClienteController {
+        + crearCliente()
+        + buscarClientePorCedula()
+    }
+    class PeliculasController {
+        + agregarNuevaPelicula()
+    }
+    class SalasController {
+        + asignarPeliculaASala()
+    }
+    class VentasController {
+        + abrirSeleccionAsientos()
+        + crearNuevaOrden()
+    }
+    class AsientosController {
+        + generarAsientos()
+        + finalizarYCrearOrden()
+    }
+}
+
+' --- Relaciones de Orquestación (El AppController crea a los demás) ---
+AppController ..> AuthController : "crea y usa"
+AppController ..> ClienteController : "crea y usa"
+AppController ..> PeliculasController : "crea y usa"
+AppController ..> SalasController : "crea y usa"
+AppController ..> VentasController : "crea y usa"
+
+' --- Relaciones Controlador -> Vista (El controlador gestiona una vista) ---
+AuthController --> Inicio
+ClienteController --> Principal
+PeliculasController --> Principal
+SalasController --> Principal
+VentasController --> Principal
+VentasController --> OrdenCompra
+AsientosController --> SelecAsientos
+VentasController ..> SelecAsientos : "lanza"
+
+
+
+' --- Relaciones Controlador -> Modelo (El controlador usa el modelo) ---
+ClienteController ..> IClienteRepositorio
+ClienteController ..> Cliente
+PeliculasController ..> IPeliculasRepositorio
+SalasController ..> ISalasRepositorio
+VentasController ..> LogicaOrdenes
+' --- NUEVAS CONEXIONES AÑADIDAS ---
+VentasController ..> IClienteRepositorio : "identifica al comprador"
+VentasController ..> IFuncionesRepositorio : "gestiona el horario"
+AsientosController ..> Sala
+AsientosController ..> Asiento
+
+
+@enduml

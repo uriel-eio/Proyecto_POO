@@ -1,0 +1,81 @@
+@startuml
+' --- Título del Diagrama ---
+title Diagrama UML Detallado (Simplificado) de la Capa MODELO
+
+' --- Paquetes para organizar ---
+package "Entidades de Datos y Contratos" {
+    interface IAsiento
+    interface IPelicula
+    interface ISala
+
+    class Pelicula implements IPelicula
+    class Sala implements ISala
+    abstract class Asiento implements IAsiento {
+        + reservar()
+        + liberar()
+        + {abstract} obtenerPrecio(base: double) : double
+    }
+
+    class AsientoVIP {
+        + obtenerPrecio(base: double) : double
+    }
+
+    class AsientoEstandar {
+        + obtenerPrecio(base: double) : double
+    }
+
+    class Cliente
+    class Funcion
+    enum RestriccionesEdad
+}
+
+package "Lógica de Compra" {
+    class VentasFinales {
+        - recibos : List<OrdenCompra>
+        + agregarOrden(orden: OrdenCompra)
+    }
+
+    class OrdenCompra {
+        - funcion : Funcion
+        - asientos : List<Asiento>
+        - precioTotal : double
+        - calcularPrecioTotal()
+    }
+
+    class LogicaOrdenes {
+        + crearOrden(...) : OrdenCompra
+        + pagarOrden(...) : boolean
+    }
+}
+
+' --- Herencia e Implementación ---
+Asiento <|-- AsientoVIP
+Asiento <|-- AsientoEstandar
+
+' --- Relaciones de Composición (una parte no puede existir sin el todo) ---
+Sala "1" *-- "1..*" Asiento : contiene
+Cliente "1" --* "1" VentasFinales : tiene
+VentasFinales "1" *-- "0..*" OrdenCompra : contiene
+
+' --- Relaciones de Agregación y Asociación ---
+Funcion "1" -- "1" Pelicula : es de
+Funcion "1" -- "1" Sala : ocurre en
+OrdenCompra "1" -- "1" Funcion : es para
+OrdenCompra "1" -- "1..*" Asiento : incluye
+Pelicula --> RestriccionesEdad : tiene una
+
+' --- Dependencias (usa...) ---
+LogicaOrdenes ..> OrdenCompra : crea y gestiona
+LogicaOrdenes ..> VentasFinales : manipula
+
+' --- Notas para Claridad ---
+
+
+note right of LogicaOrdenes
+  Esta clase contiene
+  la lógica de negocio
+  principal para crear
+  y pagar órdenes.
+end note
+
+@enduml
