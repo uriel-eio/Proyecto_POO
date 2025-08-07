@@ -136,12 +136,19 @@ Esta sección del programa permite registrar nuevos clientes, actualizar su info
 ## Preguntas Frecuentes (FAQ)
 
 - ¿Qué hacer si olvidé mi contraseña?
+
 Actualmente, el sistema no cuenta con recuperación automática de contraseñas. Si eres administrador, puedes restablecer la contraseña desde la base de datos o contactando al desarrollador para soporte.
+
 - ¿Cómo agregar una nueva película?
+
 Ingresa al programa, dirígete a la sección “Gestión de Películas” y haz clic en “Agregar Película”. Completa los campos requeridos y selecciona la portada desde tu computador. Guarda la información para que la película se agregue a la cartelera.
+
 - ¿Cómo consultar ventas realizadas?
+
 Accede a la sección de “Gestión de Ventas” donde puedes visualizar el historial de ventas realizadas, filtrando por fechas, películas o clientes según tus necesidades.
+
 - ¿El programa funciona en macOS/Linux?
+
 Sí, el programa está desarrollado en Java, por lo que es compatible con macOS, Linux y Windows, siempre que tengas instalado Java 11 o superior.
 
 ## Contacto y Soporte
