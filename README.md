@@ -7,10 +7,10 @@
 3. [Instalación y Ejecución](#instalación-y-ejecución)
 4. [Opciones Principales](#opciones-principales)
    - [1. Inicio de sesión (Login)](#inicio-de-sesión-login)
-   - [2. Gestión de Películas](#gestión-de-películas)
-   - [3. Gestión de Clientes](#gestión-de-clientes)
-   - [4. Gestión de Salas](#gestión-de-salas)
-   - [5. Ventas](#ventas)
+   - [2. Gestión de Salas](#gestión-de-salas)
+   - [3. Gestión de Ventas](#gestión-de-ventas)
+   - [4. Gestión de Películas](#gestión-de-películas)
+   - [5. Gestión de Clientes](#gestión-de-clientes)
 5. [Preguntas Frecuentes (FAQ)](#preguntas-frecuentes-faq)
 6. [Contacto y Soporte](#contacto-y-soporte)
 
@@ -18,7 +18,7 @@
 
 ## Introducción
 
-Se presenta el Cine Poorfis, creado a partir del lenguaje Java utilizando el entorno NetBeans. Se construye un sistema el cual emula a la página web de un cine en general, teniendo como características principales la implementación de gestión de películas, gestión de clientes, gestión de salas, ventas e inicio de sesión, usando distintas herramientas para el desarrollo del GUI correspondiente y su parte lógica o codificación, todo desde una interfaz sencilla e intuitiva.
+Se presenta el Cine, creado a partir del lenguaje Java utilizando el entorno NetBeans. Se construye un sistema el cual emula a la página web de un cine en general, teniendo como características principales la implementación de gestión de películas, gestión de clientes, gestión de salas, ventas e inicio de sesión, usando distintas herramientas para el desarrollo del GUI correspondiente y su parte lógica o codificación, todo desde una interfaz sencilla e intuitiva.
 
 ## Requisitos del Sistema
 
@@ -37,7 +37,7 @@ Se presenta el Cine Poorfis, creado a partir del lenguaje Java utilizando el ent
 
 ## Instalación y Ejecución
 
-Para poder instalar y utilizar el Banco Poorfis, se recomienda seguir los siguientes pasos:
+Para poder instalar y utilizar el Cine, se recomienda seguir los siguientes pasos:
 
 ### 1. Clonar el repositorio de GitHub
 
@@ -136,12 +136,19 @@ Esta sección del programa permite registrar nuevos clientes, actualizar su info
 ## Preguntas Frecuentes (FAQ)
 
 - ¿Qué hacer si olvidé mi contraseña?
+
 Actualmente, el sistema no cuenta con recuperación automática de contraseñas. Si eres administrador, puedes restablecer la contraseña desde la base de datos o contactando al desarrollador para soporte.
+
 - ¿Cómo agregar una nueva película?
+
 Ingresa al programa, dirígete a la sección “Gestión de Películas” y haz clic en “Agregar Película”. Completa los campos requeridos y selecciona la portada desde tu computador. Guarda la información para que la película se agregue a la cartelera.
+
 - ¿Cómo consultar ventas realizadas?
+
 Accede a la sección de “Gestión de Ventas” donde puedes visualizar el historial de ventas realizadas, filtrando por fechas, películas o clientes según tus necesidades.
+
 - ¿El programa funciona en macOS/Linux?
+
 Sí, el programa está desarrollado en Java, por lo que es compatible con macOS, Linux y Windows, siempre que tengas instalado Java 11 o superior.
 
 ## Contacto y Soporte
