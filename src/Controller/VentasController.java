@@ -34,9 +34,7 @@ public class VentasController {
 
     }
     
-    /**
-     * Procesa el pago de una orden
-     */
+
     public void pagarOrden(int numOrden, Cliente cliente) {
         try {
             boolean resultado = logicaOrdenes.pagarOrden(numOrden, cliente);
@@ -57,35 +55,8 @@ public class VentasController {
         }
     }
     
-    /**
-     * Abre la ventana del carrito para un cliente
-     */
-    /*public void abrirCarrito(Cliente cliente) {
-        if (cliente == null) {
-            JOptionPane.showMessageDialog(vista, 
-                "Debe seleccionar un cliente primero", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        try {
-            Carrito vistaCarrito = new Carrito(this, vista);
-            CarritoController carritoController = new CarritoController(vistaCarrito, cliente);
-            
-            vistaCarrito.setVisible(true);
-            vista.setVisible(false);
-        } catch (Exception e) {
-            ManejoErrores.mostrarError("Error al abrir el carrito", e, vista);
-        }
-    }*/
     
-    /**
-     * Crea una nueva orden para un cliente
-     * @param cliente
-     * @param funcion
-     * @param asientos
-     */
+
     public void crearNuevaOrden(Cliente cliente, Funcion funcion, ArrayList<Asiento> asientos, Sala salaModificada) {
         if (cliente == null) {
             JOptionPane.showMessageDialog(vista, 
@@ -176,23 +147,6 @@ public class VentasController {
                 if (!cedulaStr.isEmpty() && !cedulaStr.equals("Ingrese Cédula")) {
                     this.clienteParaVenta = this.repoClientes.buscarClientePorCedula(Long.parseLong(cedulaStr));
                 }
-
-                // 4. Obtenemos la función (esta lógica puede estar en AsientosController, la replicamos aquí para asegurar)
-                // En una futura versión, esto debería ser un método de ayuda.
-                /*this.funcionParaVenta = this.repoFunciones.obtenerFunciones().stream()
-                    .filter(f -> f.getSala().obtenerId().equals(salaSeleccionada.obtenerId()))
-                    .findFirst()
-                    .orElse(null);
-
-                // 5. Calculamos y mostramos el precio.
-                double precioBase = 10.0;
-                double precioTotal = 0.0;
-                if (this.asientosParaVenta != null) {
-                    for (Asiento asiento : this.asientosParaVenta) {
-                        precioTotal += asiento.obtenerPrecio(precioBase);
-                    }
-                }
-                vista.mostrarPrecioFinalVenta(precioTotal);*/
             }
             public void registrarVenta() {
                //Validamos que haya una selección pendiente

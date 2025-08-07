@@ -82,29 +82,7 @@ public class Principal extends javax.swing.JFrame {
         tableClientes.setRowHeight(20);
     }
     
-   /* private void abrirCarrito() {
-        try {
-            if (tableClientes.getSelectedRow() != -1) {
-                long cedula = Long.parseLong(String.valueOf(
-                    ((DefaultTableModel)tableClientes.getModel()).getValueAt(
-                        tableClientes.getSelectedRow(), 1
-                    )
-                ));
-
-                Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
-                if (cliente != null) {
-                    controladorVentas.abrirCarrito(cliente);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, 
-                    "Seleccione un cliente primero", 
-                    "Aviso", 
-                    JOptionPane.WARNING_MESSAGE);
-            }
-        } catch (Exception ex) {
-            ManejoErrores.mostrarError("Error al abrir carrito", ex, this);
-        }
-    }*/
+   
     
     private void buscarCliente() {
         try {
@@ -184,63 +162,12 @@ public class Principal extends javax.swing.JFrame {
     // si esto funciona soy dios
     
     private void seleccionarSala() {
-       /* try {
-            if (comboSalasV.getSelectedIndex() <= 0) {
-                return;
-            }
-
-            this.spinnerTicketsV.setValue(0);
-
-            boolean isVip = comboSalasV.getSelectedItem().equals("VIP");
-
-            // Verificar cliente
-            String cedulaStr = textFieldClienteV.getText().trim();
-            if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
-                JOptionPane.showMessageDialog(this, 
-                    "Por favor, busque un cliente primero", 
-                    "Cliente no seleccionado", 
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Obtener la sala seleccionada desde la tabla
-            int filaSeleccionada = tableSalas.getSelectedRow();
-            if (filaSeleccionada == -1) {
-                JOptionPane.showMessageDialog(this, 
-                    "Seleccione una sala primero", 
-                    "Aviso", 
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Obtener datos de la sala seleccionada
-            String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-
-            // Usar controladorSalas para buscar la sala
-            Sala sala = controladorSalas.buscarSalaPorId(idSala);
-            if (sala != null) {
-                SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip);
-                ventanaAsientos.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, 
-                    "Error al obtener información de la sala", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            ManejoErrores.mostrarError("Error al seleccionar sala", ex, this);
-        }*/
+     
     }
     
     private void configurarEventos() {
         // Eventos de la pestaña películas
-       /* botonAgregarPeliculaP.addActionListener(e -> {
-            try {
-                controladorPeliculas.agregarNuevaPelicula();
-            } catch (Exception ex) {
-                ManejoErrores.mostrarError("Error al agregar película", ex, this);
-            }
-        });*/
+
             tableSalas.getSelectionModel().addListSelectionListener(e -> {
         // La condición !e.getValueIsAdjusting() asegura que el codigo se ejecute
         // solo una vez por clic (cuando se suelta el mouse), y no dos veces.
@@ -254,14 +181,7 @@ public class Principal extends javax.swing.JFrame {
         botonRegistrarC1.addActionListener(e -> registrarCliente());
         botonModificar.addActionListener(e -> modificarCliente());
         
-        // Eventos de la pestaña salas
-        /*botonCambiarPeliculaSa1.addActionListener(e -> {
-            try {
-                controladorSalas.asignarPeliculaASala();
-            } catch (Exception ex) {
-                ManejoErrores.mostrarError("Error al asignar película a sala", ex, this);
-            }
-        });*/
+   
         
         // Eventos de la pestaña ventas
         comboSalasV.addActionListener(e -> seleccionarSala());
@@ -997,27 +917,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_comboClientesVActionPerformed
 
     private void comboSalasVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSalasVActionPerformed
-       /* this.spinnerTicketsV.setValue(0);
-
-        boolean isVip = comboSalasV.getSelectedItem().equals("VIP"); // "VIP" o "Estándar"
-
-        // Obtener la sala seleccionada desde la tabla
-        int filaSeleccionada = tableSalas.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una sala primero.");
-            return;
-        }
-
-        String idSala = (String) tableSalas.getValueAt(filaSeleccionada, 0);
-        // Usar el controlador para acceder al repositorio
-        Sala sala = controladorSalas.buscarSalaPorId(idSala);
-
-        if (sala != null) {
-            SelecAsientos ventanaAsientos = new SelecAsientos(sala, isVip); // Pasar isVip
-            ventanaAsientos.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudo encontrar la sala seleccionada.");
-        }*/
+      
     }//GEN-LAST:event_comboSalasVActionPerformed
 
     private void comboSalasVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboSalasVMouseClicked
