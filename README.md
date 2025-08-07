@@ -1,6 +1,6 @@
 # Manual de Usuario — Proyecto POO
 
-##Integrantes:
+## Integrantes:
 
 - Aidan Carrasco
 - Uriel Dueñas
