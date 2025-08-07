@@ -24,45 +24,20 @@ import javax.swing.JOptionPane;
         }
 
        @Override
-       public void reservar() {
-           if (!this.estado) {
-               this.estado = true; // Cambia el estado a "reservado"
-               JOptionPane.showMessageDialog(
-                   null, // Sin ventana padre (centrado en pantalla)
-                   "Asiento " + this.numero + " reservado correctamente.",
-                   "Reserva exitosa",  // Título del diálogo
-                   JOptionPane.INFORMATION_MESSAGE // Icono de información
-               );
-           } else {
-               JOptionPane.showMessageDialog(
-                   null,
-                   "Error: El asiento " + this.numero + " ya está reservado.",
-                   "Error en reserva",
-                   JOptionPane.WARNING_MESSAGE // Icono de advertencia
-               );
-           }
-       }
+        public void reservar() {
+            if (!this.estado) {
+                this.estado = true;
+            }
+        }
 
        @Override
        public void liberar() {
-           if (this.estado) {
-               this.estado = false; // Cambia el estado a "libre"
-               JOptionPane.showMessageDialog(
-                   null,
-                   "Asiento " + this.numero + " liberado correctamente.",
-                   "Liberación exitosa",
-                   JOptionPane.INFORMATION_MESSAGE
-               );
-           } else {
-               JOptionPane.showMessageDialog(
-                   null,
-                   "Info: El asiento " + this.numero + " ya estaba libre.",
-                   " Información",
-                   JOptionPane.INFORMATION_MESSAGE
-               );
-           }
+            // Simplemente cambia el estado si el asiento estaba reservado.
+            if (this.estado) {
+                this.estado = false;
+            }
        }
-       
+
        public void forzarReserva() {
             this.estado = true;
        }

@@ -29,14 +29,14 @@ public class SelecAsientos extends javax.swing.JFrame {
     /**
      * Constructor de la ventana de selección de asientos
         */
-    public SelecAsientos(Sala sala, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes) {
+    public SelecAsientos(Sala sala, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes, int limiteAsientos) {
         this.sala = sala;
         this.isVip = isVip;
 
         initComponents();
         setLocationRelativeTo(null);
 
-        this.controlador = new AsientosController(sala, this, isVip, ventasController, repoFunciones, repoClientes);
+        this.controlador = new AsientosController(sala, this, isVip, ventasController, repoFunciones, repoClientes, limiteAsientos);
 
         logger.info("Vista de selección de asientos inicializada para sala: " + sala.getNombre());
     }

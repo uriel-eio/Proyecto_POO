@@ -630,8 +630,8 @@ public class Principal extends javax.swing.JFrame {
         labelCantidadTicketsV.setText("Cantidad");
 
         spinnerTicketsV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        spinnerTicketsV.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
-        spinnerTicketsV.setEnabled(false);
+        spinnerTicketsV.setModel(new javax.swing.SpinnerNumberModel(1, 1, 5, 1));
+        spinnerTicketsV.setEnabled(true);
         spinnerTicketsV.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spinnerTicketsVStateChanged(evt);

@@ -117,6 +117,13 @@ public class VentasController {
     
     //parte que se agregara
     public void manejarSeleccionAsientos(javax.swing.JTable tablaSalas) {
+        int cantidadTickets = (int) vista.getSpinnerTicketsV().getValue();
+
+        //Validamos que la cantidad de asientos sea valida
+        if (cantidadTickets <= 0) {
+            JOptionPane.showMessageDialog(vista, "Debe seleccionar al menos 1 ticket.", "Cantidad inválida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         int filaSeleccionada = tablaSalas.getSelectedRow();
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(vista, "Debes seleccionar una sala primero.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -140,20 +147,20 @@ public class VentasController {
             return;
         }
 
-        abrirSeleccionAsientos(salaSeleccionada);
+        abrirSeleccionAsientos(salaSeleccionada, cantidadTickets);
     }
      
-// En VentasController.java
-    public void abrirSeleccionAsientos(Sala salaSeleccionada) {
-        if (salaSeleccionada == null) {
-            JOptionPane.showMessageDialog(vista, "Sala inválida o no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+
+    public void abrirSeleccionAsientos(Sala salaSeleccionada, int cantidadTickets) {
+            if (salaSeleccionada == null) {
+                JOptionPane.showMessageDialog(vista, "Sala inválida o no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Creamos la vista de asientos, pasándole el propio VentasController
+            SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this, this.repoFunciones, this.repoClientes, cantidadTickets);
+            vistaAsientos.setVisible(true);
+
         }
 
-        // Creamos la vista de asientos, pasándole el propio VentasController (`this`)
-        SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this, this.repoFunciones, this.repoClientes);
-        vistaAsientos.setVisible(true);
-
     }
-
-}

@@ -33,6 +33,7 @@ public class AsientosController {
     private final Sala sala;
     private final SelecAsientos vista;
     private final boolean isVip;
+    private final int limiteAsientos;
     private final VentasController ventasController; 
     private final IFuncionesRepositorio repoFunciones; 
     private final IClienteRepositorio repoClientes;   
@@ -47,13 +48,14 @@ public class AsientosController {
     /**
      * Constructor que inicializa el controlador
      */
-    public AsientosController(Sala sala, SelecAsientos vista, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes) {
+    public AsientosController(Sala sala, SelecAsientos vista, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes, int limiteAsientos) {
         this.sala = sala;
         this.vista = vista;
         this.isVip = isVip;
         this.ventasController = ventasController;
         this.repoFunciones = repoFunciones; 
-        this.repoClientes = repoClientes;   
+        this.repoClientes = repoClientes;  
+        this.limiteAsientos = limiteAsientos;
         configurarVista();
         generarAsientos();
         
@@ -141,19 +143,44 @@ public class AsientosController {
     /**
      * Maneja la selección/deselección de un asiento
      */
-    private void manejarSeleccionAsiento(JButton btn, Asiento asiento) {
-        // Revisa si el asiento ya está en la lista de selección temporal
-        if (asientosSeleccionados.contains(asiento)) {
-            // Si está, lo quitamos (Deseleccionar)
+    private void manejarSeleccionAsiento(JButton btn, Asiento asientoClickeado) {
+        Asiento asientoEncontrado = null;
+        int indiceAsientoEncontrado = -1;
+
+        // se busca manualmente si el asiento ya está en la lista.
+        for (int i = 0; i < asientosSeleccionados.size(); i++) {
+            Asiento asientoEnLista = asientosSeleccionados.get(i);
+            // Comparamos los asientos por su número
+            if (asientoEnLista.obtenerNumero().equals(asientoClickeado.obtenerNumero())) {
+                asientoEncontrado = asientoEnLista;
+                indiceAsientoEncontrado = i;
+                break; 
+            }
+        }
+
+        // Seleccionamos o deseleccionamos
+        if (asientoEncontrado != null) {
+            // si encontramos uno significa que queremos quitarlo
             btn.setContentAreaFilled(false);
-            asientosSeleccionados.remove(asiento);
-            LOGGER.info("Asiento deseleccionado: " + asiento.obtenerNumero());
+            asientosSeleccionados.remove(indiceAsientoEncontrado); // Lo quitamos de la lista
+            LOGGER.info("Asiento deseleccionado: " + asientoClickeado.obtenerNumero());
         } else {
-            // Si no está, lo añadimos (Seleccionar)
+            // Si no lo encontramos, significa que se va a seleccionar
+
+            // verificamos el limite
+            if (asientosSeleccionados.size() >= limiteAsientos) {
+                JOptionPane.showMessageDialog(vista, 
+                    "Ya ha alcanzado el límite de " + limiteAsientos + " asientos seleccionados.", 
+                    "Límite alcanzado", 
+                    JOptionPane.WARNING_MESSAGE);
+                return; 
+            }
+
+            // Si hay espacio, lo seleccionamos.
             btn.setContentAreaFilled(true);
             btn.setBackground(Color.WHITE);
-            asientosSeleccionados.add(asiento);
-            LOGGER.info("Asiento seleccionado: " + asiento.obtenerNumero());
+            asientosSeleccionados.add(asientoClickeado);
+            LOGGER.info("Asiento seleccionado: " + asientoClickeado.obtenerNumero());
         }
     }
     
@@ -191,56 +218,65 @@ public class AsientosController {
             }
         }
     // Accedemos a la vista principal a través del ventasController
-    this.ventasController.getVista().mostrarPrecioFinalVenta(precioTotal);
-        String cedulaStr = this.ventasController.getVista().getTextFieldClienteV().getText().trim();
-        if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
-            JOptionPane.showMessageDialog(this.vista, "Error: no se pudo identificar al cliente.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        Cliente cliente = this.repoClientes.buscarClientePorCedula(Long.parseLong(cedulaStr)); 
-        if (cliente == null) {
-            JOptionPane.showMessageDialog(this.vista, "Error: cliente no encontrado.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        List<Funcion> todasLasFunciones = repoFunciones.obtenerFunciones();
-        Funcion funcionEncontrada = null; // Variable para guardar el resultado
-
-        for (Funcion funcion : todasLasFunciones) {
-            // Comparamos el ID de la sala de la función actual 
-            if (funcion.getSala().obtenerId().equals(this.sala.obtenerId())) {
-                funcionEncontrada = funcion; 
-                break; 
+        this.ventasController.getVista().mostrarPrecioFinalVenta(precioTotal);
+            String cedulaStr = this.ventasController.getVista().getTextFieldClienteV().getText().trim();
+            if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
+                JOptionPane.showMessageDialog(this.vista, "Error: no se pudo identificar al cliente.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }
-
-        if (funcionEncontrada == null) {
-            Pelicula peliculaDeLaSala = this.sala.getPelicula();
-
-            if (peliculaDeLaSala == null) {
-                JOptionPane.showMessageDialog(this.vista, "Error: La sala seleccionada no tiene una película asignada.", "Error de Película", JOptionPane.ERROR_MESSAGE);
+            Cliente cliente = this.repoClientes.buscarClientePorCedula(Long.parseLong(cedulaStr)); 
+            if (cliente == null) {
+                JOptionPane.showMessageDialog(this.vista, "Error: cliente no encontrado.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            LocalDateTime fechaHoraActual = LocalDateTime.now();
-            this.repoFunciones.agregarFuncion(peliculaDeLaSala, this.sala, fechaHoraActual);
+            List<Funcion> todasLasFunciones = repoFunciones.obtenerFunciones();
+            Funcion funcionEncontrada = null; // Variable para guardar el resultado
 
-            // Volvemos a buscarla para asegurarnos de tener el objeto completo con su ID.
-            todasLasFunciones = repoFunciones.obtenerFunciones();
             for (Funcion funcion : todasLasFunciones) {
-                if (funcion.getSala().obtenerId().equals(this.sala.obtenerId()) && funcion.getPelicula().getId().equals(peliculaDeLaSala.getId())) {
-                    funcionEncontrada = funcion;
-                    break;
+                // Comparamos el ID de la sala de la función actual 
+                if (funcion.getSala().obtenerId().equals(this.sala.obtenerId())) {
+                    funcionEncontrada = funcion; 
+                    break; 
                 }
             }
 
             if (funcionEncontrada == null) {
-                JOptionPane.showMessageDialog(this.vista, "Error crítico: No se pudo crear ni encontrar la función para la sala.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+                Pelicula peliculaDeLaSala = this.sala.getPelicula();
 
-        //Con la "funcionEncontrada" se llama al controlador.
-        this.ventasController.crearNuevaOrden(cliente, funcionEncontrada, asientosConfirmados, this.sala);
-    }
+                if (peliculaDeLaSala == null) {
+                    JOptionPane.showMessageDialog(this.vista, "Error: La sala seleccionada no tiene una película asignada.", "Error de Película", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                LocalDateTime fechaHoraActual = LocalDateTime.now();
+                this.repoFunciones.agregarFuncion(peliculaDeLaSala, this.sala, fechaHoraActual);
+
+                // Volvemos a buscarla para asegurarnos de tener el objeto completo con su ID.
+                todasLasFunciones = repoFunciones.obtenerFunciones();
+                for (Funcion funcion : todasLasFunciones) {
+                    if (funcion.getSala().obtenerId().equals(this.sala.obtenerId()) && funcion.getPelicula().getId().equals(peliculaDeLaSala.getId())) {
+                        funcionEncontrada = funcion;
+                        break;
+                    }
+                }
+
+                if (funcionEncontrada == null) {
+                    JOptionPane.showMessageDialog(this.vista, "Error crítico: No se pudo crear ni encontrar la función para la sala.", "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+                // Verificamos que la cantidad de asientos seleccionados coincida con el límite del spinner.
+                if (asientosConfirmados.size() != this.limiteAsientos) {
+                    JOptionPane.showMessageDialog(vista, 
+                        "La cantidad de asientos seleccionados (" + asientosConfirmados.size() + ") " +
+                        "no coincide con la cantidad de tickets solicitados (" + this.limiteAsientos + ").", 
+                        "Error de Selección", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return; // Detenemos el proceso para que el usuario corrija su selección.
+                }
+
+            //Con la "funcionEncontrada" se llama al controlador.
+            this.ventasController.crearNuevaOrden(cliente, funcionEncontrada, asientosConfirmados, this.sala);
+        }
 }
