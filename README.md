@@ -90,19 +90,25 @@ Contraseña: admin
 
 - **Descripción:**
 
-Se permite administrar las salas del Cine, además de su capacidad y disponibilidad.
+En este apartado del programa, se permite visualizar los atributos de 3 salas predeterminadas del cine, junto a su capacidad, nombre, identificación y la película que está asignada a cada una de estas.
   
 - **Pasos:**
-  1. Por defecto, el programa después de iniciar sesión te llevará a la ventana de Salas.
-  2. (Aqui van las funcionalidades de la ventana Salas)
+  1. Dirigirse al apartado Salas a la izquierda superior de la Ventana, a continuación aparecerán las salas predeterminadas.
+  2. En la parte izquierda inferior de la ventana, existe un recuadro donde se encuentran las películas disponibles al momento en el cine, seleccionar cualquiera de su preferencia.
+  3. A continuación, hacer click en alguna de las 3 salas predeterminadas y presionar el boton "Cambiar", que se ubica en la parte inferior derecho de la Ventana.
+  4. ¡Felicidades!, ha asignado con éxito una película a una sala predeterminada.
 
-### Ventas
+### Gestión de Ventas
 
-- **Descripción:** Proceso de venta de boletos.
+- **Descripción:**
+El usuario será presentado con una Ventana donde podrá seleccionar los asientos que desee para su compra en función de una sala.
+  
 - **Pasos:**
-  1. Seleccionar película, sala y horario.
-  2. Seleccionar cliente.
-  3. Confirmar y registrar la venta.
+  1. Dirigirse a la pestaña Salas, ubicada a la izquierda superior de la Ventana, una vez ahi, hacer click en cualquiera de las 3 salas disponibles.
+  2. Una vez realizado el paso anterior, dirigirse a la pestaña Ventas, donde se podrá encontrar un botón "Buscar asientos".
+  3. A continuación, se desplegará una Ventana donde aparecerán los asientos disponibles dependiendo de la capacidad de la sala, aquí escoger los asientos que desee.
+  4. Para confirmer la selección de los asientos, haga click en el botón "Confirmar Asientos", se desplegará un mensaje de confirmación y será enviado a la Ventana anterior.
+  5. En caso de haber hecho click en el botón "Buscar asientos" sin querer, hacer click en el botón "Volver", este cerrará la Ventana donde se escogen los asientos y volverá a la Ventana anterior.
 
 ### Gestión de Películas
 
