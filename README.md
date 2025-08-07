@@ -123,6 +123,8 @@ El usuario será presentado con una Ventana donde podrá seleccionar los asiento
 ![Ventas paso 4](src/capturas_manual/ventas3.jpg)
   5. En caso de haber hecho click en el botón "Buscar asientos" sin querer, hacer click en el botón "Volver", este cerrará la Ventana donde se escogen los asientos y volverá a la Ventana anterior.
 ![Ventas paso 5](src/capturas_manual/ventas4.jpg)
+  6. Si deseas visualizar el estado de tu transacción después de haber confirmado los asientos, por favor selecciona el boton Mostrar Ventas.
+![Ventas paso 6](src/capturas_manual/ventas5.jpg)
 
 ### Gestión de Películas
 
