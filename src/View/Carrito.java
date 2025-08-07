@@ -77,7 +77,6 @@ public class Carrito extends javax.swing.JFrame {
 
         for (OrdenCompra orden : ordenes) {
             Object[] fila = new Object[]{
-                orden.getNumOrden(),
                 orden.getNombreCliente(), 
                 orden.getCantidadAsientos(),
                 orden.getFuncion().getSala().getNombre(),
@@ -198,14 +197,14 @@ public class Carrito extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Orden N°", "Cantidad", "Sala", "Tipo", "Película", "Fecha", "Precio", "¿Pagada?"
+                "Cantidad", "Sala", "Tipo", "Película", "Fecha", "Precio", "¿Pagada?"
             }
         ));
         tableCarrito.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tableCarrito.setFocusable(false);
         jScrollPane1.setViewportView(tableCarrito);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 610, 190));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 540, 190));
 
         labelNombre.setFont(new java.awt.Font("Liberation Sans", 0, 30)); // NOI18N
         labelNombre.setForeground(new java.awt.Color(0, 0, 0));
@@ -243,9 +242,9 @@ public class Carrito extends javax.swing.JFrame {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(78, Short.MAX_VALUE)
+                .addContainerGap(66, Short.MAX_VALUE)
                 .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
@@ -253,9 +252,9 @@ public class Carrito extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonPagar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonRegresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
