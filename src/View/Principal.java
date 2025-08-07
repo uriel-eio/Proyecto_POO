@@ -315,12 +315,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableSalas = new javax.swing.JTable();
-        comboPeliculasSa1 = new javax.swing.JComboBox<>();
-        botonCambiarPeliculaSa1 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -334,12 +328,17 @@ public class Principal extends javax.swing.JFrame {
         comboSalasV = new javax.swing.JComboBox<>();
         labelPelicula = new javax.swing.JLabel();
         comboClientesV = new javax.swing.JComboBox<>();
-        jTextArea1 = new javax.swing.JTextArea();
         jPanel13 = new javax.swing.JPanel();
         labelCantidadTicketsV = new javax.swing.JLabel();
         spinnerTicketsV = new javax.swing.JSpinner();
         botonAgregarCarritoV = new javax.swing.JButton();
         botonAsignarAsientos = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableSalas = new javax.swing.JTable();
+        comboPeliculasSa1 = new javax.swing.JComboBox<>();
+        botonCambiarPeliculaSa1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -357,81 +356,11 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane2.setForeground(new java.awt.Color(0, 0, 0));
 
-        tableSalas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Nombre", "Capacidad", "VIP", "Pelicula"
-            }
-        ));
-        jScrollPane1.setViewportView(tableSalas);
-
-        comboPeliculasSa1.setBackground(new java.awt.Color(14, 66, 134));
-        comboPeliculasSa1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        comboPeliculasSa1.setForeground(new java.awt.Color(255, 255, 255));
-        comboPeliculasSa1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Películas" }));
-
-        botonCambiarPeliculaSa1.setBackground(new java.awt.Color(14, 66, 134));
-        botonCambiarPeliculaSa1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        botonCambiarPeliculaSa1.setForeground(new java.awt.Color(255, 255, 255));
-        botonCambiarPeliculaSa1.setText("Cambiar ");
-        botonCambiarPeliculaSa1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonCambiarPeliculaSa1.setFocusPainted(false);
-        botonCambiarPeliculaSa1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCambiarPeliculaSa1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(185, 185, 185))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(115, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(86, 86, 86))
-        );
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Salas", jPanel4);
-
-        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         textFieldClienteV.setBackground(new java.awt.Color(102, 102, 102));
-        textFieldClienteV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        textFieldClienteV.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         textFieldClienteV.setForeground(new java.awt.Color(255, 255, 255));
         textFieldClienteV.setText("Ingrese Cédula");
         textFieldClienteV.setBorder(null);
@@ -454,13 +383,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        labelNombreCliente.setFont(new java.awt.Font("Calibri Light", 3, 13)); // NOI18N
+        labelNombreCliente.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         labelNombreCliente.setForeground(new java.awt.Color(255, 255, 255));
         labelNombreCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelNombreCliente.setText("Nombre Cliente");
 
         botonBuscarClienteV.setBackground(new java.awt.Color(153, 153, 153));
-        botonBuscarClienteV.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonBuscarClienteV.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonBuscarClienteV.setForeground(new java.awt.Color(255, 255, 255));
         botonBuscarClienteV.setText("Buscar");
         botonBuscarClienteV.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -471,7 +400,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        labelTotalPagar.setFont(new java.awt.Font("Calibri Light", 2, 16)); // NOI18N
+        labelTotalPagar.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         labelTotalPagar.setForeground(new java.awt.Color(255, 255, 255));
         labelTotalPagar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTotalPagar.setText("Total a pagar:");
@@ -481,7 +410,7 @@ public class Principal extends javax.swing.JFrame {
         labelPrecioFinal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         botonAgregarCarritoV1.setBackground(new java.awt.Color(153, 153, 153));
-        botonAgregarCarritoV1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarCarritoV1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         botonAgregarCarritoV1.setForeground(new java.awt.Color(255, 255, 255));
         botonAgregarCarritoV1.setText("Marcar como pagado");
         botonAgregarCarritoV1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -499,20 +428,22 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addComponent(labelPrecioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
                         .addComponent(labelNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(labelPrecioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(botonAgregarCarritoV1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -532,11 +463,11 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel3.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         comboSalasV.setBackground(new java.awt.Color(153, 153, 153));
-        comboSalasV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        comboSalasV.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         comboSalasV.setForeground(new java.awt.Color(255, 255, 255));
         comboSalasV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sala", "VIP", "Estandar" }));
         comboSalasV.setFocusable(false);
@@ -572,7 +503,7 @@ public class Principal extends javax.swing.JFrame {
         labelPelicula.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Película", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri Light", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
         comboClientesV.setBackground(new java.awt.Color(153, 153, 153));
-        comboClientesV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        comboClientesV.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         comboClientesV.setForeground(new java.awt.Color(255, 255, 255));
         comboClientesV.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clientes" }));
         comboClientesV.setFocusable(false);
@@ -609,27 +540,15 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Calibri Light", 0, 11)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Seleccione un cliente");
-        jTextArea1.setAlignmentX(1.0F);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextArea1.setFocusable(false);
-        jTextArea1.setMargin(new java.awt.Insets(22, 2, 2, 2));
-
-        jPanel13.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel13.setBackground(new java.awt.Color(51, 51, 51));
         jPanel13.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
-        labelCantidadTicketsV.setFont(new java.awt.Font("Calibri Light", 2, 16)); // NOI18N
+        labelCantidadTicketsV.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         labelCantidadTicketsV.setForeground(new java.awt.Color(255, 255, 255));
         labelCantidadTicketsV.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelCantidadTicketsV.setText("Cantidad");
 
-        spinnerTicketsV.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        spinnerTicketsV.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         spinnerTicketsV.setModel(new javax.swing.SpinnerNumberModel(1, 1, 5, 1));
         spinnerTicketsV.setEnabled(true);
         spinnerTicketsV.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -658,8 +577,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(0, 7, Short.MAX_VALUE))
         );
 
-        botonAgregarCarritoV.setBackground(new java.awt.Color(153, 153, 153));
-        botonAgregarCarritoV.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarCarritoV.setBackground(new java.awt.Color(51, 51, 51));
+        botonAgregarCarritoV.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         botonAgregarCarritoV.setForeground(new java.awt.Color(255, 255, 255));
         botonAgregarCarritoV.setText("Mostrar Ventas");
         botonAgregarCarritoV.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -670,8 +589,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        botonAsignarAsientos.setBackground(new java.awt.Color(153, 153, 153));
-        botonAsignarAsientos.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAsignarAsientos.setBackground(new java.awt.Color(51, 51, 51));
+        botonAsignarAsientos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         botonAsignarAsientos.setForeground(new java.awt.Color(255, 255, 255));
         botonAsignarAsientos.setText("Buscar Asientos");
         botonAsignarAsientos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -696,18 +615,13 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonAsignarAsientos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonAgregarCarritoV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(170, 170, 170)
-                        .addComponent(jTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(77, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jTextArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(77, 77, 77)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
@@ -720,7 +634,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -735,6 +649,77 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Ventas", jPanel6);
+
+        tableSalas.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        tableSalas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Capacidad", "VIP", "Pelicula"
+            }
+        ));
+        jScrollPane1.setViewportView(tableSalas);
+
+        comboPeliculasSa1.setBackground(new java.awt.Color(102, 102, 102));
+        comboPeliculasSa1.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        comboPeliculasSa1.setForeground(new java.awt.Color(255, 255, 255));
+        comboPeliculasSa1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Películas" }));
+
+        botonCambiarPeliculaSa1.setBackground(new java.awt.Color(102, 102, 102));
+        botonCambiarPeliculaSa1.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        botonCambiarPeliculaSa1.setForeground(new java.awt.Color(255, 255, 255));
+        botonCambiarPeliculaSa1.setText("Cambiar ");
+        botonCambiarPeliculaSa1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCambiarPeliculaSa1.setFocusPainted(false);
+        botonCambiarPeliculaSa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCambiarPeliculaSa1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(145, 145, 145)
+                .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(185, 185, 185))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(120, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboPeliculasSa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonCambiarPeliculaSa1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(86, 86, 86))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Salas", jPanel4);
 
         tablePeli.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -752,8 +737,8 @@ public class Principal extends javax.swing.JFrame {
             tablePeli.getColumnModel().getColumn(3).setPreferredWidth(200);
         }
 
-        botonAgregarPeliculaP.setBackground(new java.awt.Color(14, 66, 134));
-        botonAgregarPeliculaP.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarPeliculaP.setBackground(new java.awt.Color(102, 102, 102));
+        botonAgregarPeliculaP.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonAgregarPeliculaP.setForeground(new java.awt.Color(255, 255, 255));
         botonAgregarPeliculaP.setText("Agregar Película");
         botonAgregarPeliculaP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -768,24 +753,23 @@ public class Principal extends javax.swing.JFrame {
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonAgregarPeliculaP, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(274, 274, 274))
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(296, 296, 296)
-                        .addComponent(botonAgregarPeliculaP, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(botonAgregarPeliculaP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGap(42, 42, 42))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -814,8 +798,8 @@ public class Principal extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tableClientes);
 
-        botonModificar.setBackground(new java.awt.Color(14, 66, 134));
-        botonModificar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonModificar.setBackground(new java.awt.Color(102, 102, 102));
+        botonModificar.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonModificar.setForeground(new java.awt.Color(255, 255, 255));
         botonModificar.setText("Modificar");
         botonModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -826,8 +810,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        botonRegistrarC1.setBackground(new java.awt.Color(14, 66, 134));
-        botonRegistrarC1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonRegistrarC1.setBackground(new java.awt.Color(102, 102, 102));
+        botonRegistrarC1.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonRegistrarC1.setForeground(new java.awt.Color(255, 255, 255));
         botonRegistrarC1.setText("Registrar");
         botonRegistrarC1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -838,8 +822,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        botonCarritoC.setBackground(new java.awt.Color(14, 66, 134));
-        botonCarritoC.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonCarritoC.setBackground(new java.awt.Color(102, 102, 102));
+        botonCarritoC.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
         botonCarritoC.setText("Carrito");
         botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -870,7 +854,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1265,14 +1249,6 @@ public class Principal extends javax.swing.JFrame {
         this.jTabbedPane2 = jTabbedPane2;
     }
 
-    public JTextArea getjTextArea1() {
-        return jTextArea1;
-    }
-
-    public void setjTextArea1(JTextArea jTextArea1) {
-        this.jTextArea1 = jTextArea1;
-    }
-
     public JLabel getLabelCantidadTicketsV() {
         return labelCantidadTicketsV;
     }
@@ -1372,7 +1348,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelCantidadTicketsV;
     private javax.swing.JLabel labelNombreCliente;
     public javax.swing.JLabel labelPelicula;

@@ -170,15 +170,15 @@ public class Carrito extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCarrito = new javax.swing.JTable();
-        botonRegresar = new javax.swing.JButton();
         labelNombre = new javax.swing.JLabel();
-        botonPagar = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
+        botonPagar = new javax.swing.JButton();
+        botonRegresar = new javax.swing.JButton();
 
-        setUndecorated(false);
+        setUndecorated(true);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tableCarrito = new javax.swing.JTable(){
@@ -187,7 +187,7 @@ public class Carrito extends javax.swing.JFrame {
             }
         };
         tableCarrito.setBackground(new java.awt.Color(204, 204, 204));
-        tableCarrito.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        tableCarrito.setFont(new java.awt.Font("Liberation Sans", 0, 30)); // NOI18N
         tableCarrito.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -202,26 +202,16 @@ public class Carrito extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 610, 190));
 
-        botonRegresar.setBackground(new java.awt.Color(153, 153, 153));
-        botonRegresar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        botonRegresar.setForeground(new java.awt.Color(255, 255, 255));
-        botonRegresar.setText("Regresar");
-        botonRegresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonRegresar.setFocusPainted(false);
-        botonRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRegresarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(botonRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 90, 30));
+        labelNombre.setFont(new java.awt.Font("Liberation Sans", 0, 30)); // NOI18N
+        labelNombre.setForeground(new java.awt.Color(0, 0, 0));
+        labelNombre.setText("Registro Ventas");
+        jPanel1.add(labelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 260, -1));
 
-        labelNombre.setFont(new java.awt.Font("Roboto Light", 1, 30)); // NOI18N
-        labelNombre.setForeground(new java.awt.Color(255, 255, 255));
-        labelNombre.setText("Carrito");
-        jPanel1.add(labelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 220, -1));
+        jPanel7.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         botonPagar.setBackground(new java.awt.Color(153, 153, 153));
-        botonPagar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonPagar.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonPagar.setForeground(new java.awt.Color(255, 255, 255));
         botonPagar.setText("Pagar Orden");
         botonPagar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -231,23 +221,41 @@ public class Carrito extends javax.swing.JFrame {
                 botonPagarActionPerformed(evt);
             }
         });
-        jPanel1.add(botonPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 110, 30));
 
-        jPanel7.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        botonRegresar.setBackground(new java.awt.Color(153, 153, 153));
+        botonRegresar.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        botonRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        botonRegresar.setText("Regresar");
+        botonRegresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonRegresar.setFocusPainted(false);
+        botonRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 234, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(10, Short.MAX_VALUE)
+                .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 44, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 240, 50));
+        jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 240, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
