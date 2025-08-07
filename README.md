@@ -142,8 +142,6 @@ Esta sección del programa permite registrar nuevos clientes, actualizar su info
 ![Clientes paso 2](src/capturas_manual/clientes2.jpg)
   3. En caso de requerir editar la información del cliente que registraste, debes seleccionar el botón modificar.
 ![Clientes paso 3](src/capturas_manual/clientes3.jpg)
-  4. Para poder acceder a las transacciones que realizó el cliente registrado, por favor pulsa el botón carrito.
-![Clientes paso 4](src/capturas_manual/clientes4.jpg)
 
 ## Preguntas Frecuentes (FAQ)
 
