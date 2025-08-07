@@ -3,6 +3,8 @@ package View;
 import Controller.AsientosController;
 import Controller.VentasController;
 import Model.Asiento;
+import Model.IClienteRepositorio;
+import Model.IFuncionesRepositorio;
 import Model.Sala;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -27,18 +29,17 @@ public class SelecAsientos extends javax.swing.JFrame {
     /**
      * Constructor de la ventana de selección de asientos
         */
-   public SelecAsientos(Sala sala, boolean isVip, VentasController ventasController) {
-       this.sala = sala;
-       this.isVip = isVip;
+    public SelecAsientos(Sala sala, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes) {
+        this.sala = sala;
+        this.isVip = isVip;
 
-       initComponents();
-       setLocationRelativeTo(null);
+        initComponents();
+        setLocationRelativeTo(null);
 
-       // Aquí le pasamos el VentasController al AsientosController cuando lo creamos
-       this.controlador = new AsientosController(sala, this, isVip, ventasController);
+        this.controlador = new AsientosController(sala, this, isVip, ventasController, repoFunciones, repoClientes);
 
-       logger.info("Vista de selección de asientos inicializada para sala: " + sala.getNombre());
-   }
+        logger.info("Vista de selección de asientos inicializada para sala: " + sala.getNombre());
+    }
     
     /**
      * Proporciona acceso al panel de asientos

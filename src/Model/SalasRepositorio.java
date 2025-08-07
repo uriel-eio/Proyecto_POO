@@ -44,8 +44,8 @@ public class SalasRepositorio implements ISalasRepositorio {
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
                 String nombrePelicula = datos[4]; 
-
-                if (datos.length == 5) {
+                // si completa los datos...
+                if (datos.length == 6) { 
                     boolean esVip = Boolean.parseBoolean(datos[3]); 
                     Sala sala = new Sala(datos[0], 
                             datos[1], 
@@ -57,6 +57,20 @@ public class SalasRepositorio implements ISalasRepositorio {
                             sala.setPelicula(peliculaAsignada);
                         }
                     }
+
+                    // se lee la cadena creada por el string builder
+                    String estadosAsientosStr = datos[5];
+                    ArrayList<Asiento> asientosDeLaSala = sala.getAsientos();
+                    for (int i = 0; i < estadosAsientosStr.length(); i++) {
+                        // Esto asegura que no tesalgas del rango de asientos
+                        if (i < asientosDeLaSala.size()) {
+                            char estadoChar = estadosAsientosStr.charAt(i);
+                            if (estadoChar == '1') {
+                                asientosDeLaSala.get(i).forzarReserva();
+                            }
+                        }
+                    }
+
                     salas.add(sala);
                 }
             }

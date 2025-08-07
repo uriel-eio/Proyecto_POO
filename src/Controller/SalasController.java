@@ -60,8 +60,26 @@ public class SalasController {
             JOptionPane.showMessageDialog(vista, "Error: No se encontró la sala o la película en los repositorios.", "Error de Datos", JOptionPane.ERROR_MESSAGE);
         }
     }
+    public void salaSeleccionada() {
+        // Determina si hay una fila seleccionada
+        int filaSeleccionada = vista.getTableSalas().getSelectedRow();
+        String nombrePelicula = "Sin Asignar"; 
+
+        //Si hay una fila seleccionada, buscamos la información
+        if (filaSeleccionada != -1) { // -1 significa que no hay ninguna fila seleccionada
+            // Obtenemos el ID de la sala de la celda 
+            String idSala = (String) vista.getTableSalas().getValueAt(filaSeleccionada, 0);
+
+            Sala sala = repoSalas.buscarSalaPorId(idSala);
+            if (sala != null && sala.getPelicula() != null) {
+                nombrePelicula = sala.getPelicula().obtenerTitulo();
+            }
+        }
+        vista.mostrarPeliculaEnLabel(nombrePelicula);
+    }
     
     public Sala buscarSalaPorId(String idSala) {
-    return repoSalas.buscarSalaPorId(idSala);
-}
+        return repoSalas.buscarSalaPorId(idSala);
+    }
+
 }

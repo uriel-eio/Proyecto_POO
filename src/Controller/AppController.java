@@ -63,7 +63,7 @@ public class AppController {
             ClienteController controladorCliente = crearClienteController(principal);
             PeliculasController controladorPeliculas = crearPeliculasController(principal);
             SalasController controladorSalas = crearSalasController(principal);
-            VentasController controladorVentas = new VentasController(principal, (SalasRepositorio) repoSalas);
+            VentasController controladorVentas = new VentasController(principal, (SalasRepositorio) repoSalas, new FuncionesRepositorio(repoPeliculas, repoSalas), repoClientes);
             
             // configuracion de la vista, se le pueden hacer mejoras
             principal.setControllers(
@@ -113,6 +113,7 @@ public class AppController {
         
         controladorCliente.iniciarTablaClientes(vista);
         controladorCliente.cargarClientesEnVista();
+        controladorCliente.cargarClientesEnComboBox(vista.getComboClientesV());
         controladorPeliculas.cargarPeliculasEnVista();
         controladorSalas.iniciarDatosDeSalaEnVista();
     }

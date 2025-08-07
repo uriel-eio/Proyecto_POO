@@ -11,13 +11,17 @@ public class VentasController {
     private Principal vista;
     private LogicaOrdenes logicaOrdenes;
     private final SalasRepositorio repoSalas;
+    private final IFuncionesRepositorio repoFunciones;
+    private final IClienteRepositorio repoClientes;
     public Principal getVista() {
         return this.vista;
     }
-    public VentasController(Principal vista, SalasRepositorio repoSalas) {
+    public VentasController(Principal vista, SalasRepositorio repoSalas, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes) {
         this.vista = vista;
         this.logicaOrdenes = new LogicaOrdenes();
         this.repoSalas = repoSalas;
+        this.repoFunciones = repoFunciones;
+        this.repoClientes = repoClientes;
         this.vista.botonAsignarAsientos.addActionListener(e -> {
             manejarSeleccionAsientos(this.vista.getTableSalas());
         });
@@ -75,7 +79,7 @@ public class VentasController {
      * @param funcion
      * @param asientos
      */
-    public void crearNuevaOrden(Cliente cliente, Funcion funcion, ArrayList<Asiento> asientos) {
+    public void crearNuevaOrden(Cliente cliente, Funcion funcion, ArrayList<Asiento> asientos, Sala salaModificada) {
         if (cliente == null) {
             JOptionPane.showMessageDialog(vista, 
                 "Debe seleccionar un cliente primero", 
@@ -83,10 +87,10 @@ public class VentasController {
                 JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         try {
             OrdenCompra nuevaOrden = logicaOrdenes.crearOrden(funcion, asientos, cliente);
-            
+
             if (nuevaOrden != null) {
                 JOptionPane.showMessageDialog(vista, 
                     "Orden creada exitosamente para la película " + 
@@ -95,6 +99,9 @@ public class VentasController {
                     "Total: $" + nuevaOrden.getPrecioTotal(), 
                     "Orden Creada", 
                     JOptionPane.INFORMATION_MESSAGE);
+
+                this.repoSalas.actualizarSala(salaModificada);
+
             }
         } catch (HeadlessException e) {
             ManejoErrores.mostrarError("Error al crear la orden", e, vista);
@@ -144,7 +151,7 @@ public class VentasController {
         }
 
         // Creamos la vista de asientos, pasándole el propio VentasController (`this`)
-        SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this);
+        SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this, this.repoFunciones, this.repoClientes);
         vistaAsientos.setVisible(true);
     }
 

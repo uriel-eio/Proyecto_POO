@@ -63,6 +63,10 @@ import javax.swing.JOptionPane;
            }
        }
        
+       public void forzarReserva() {
+            this.estado = true;
+       }
+       
         @Override
         public abstract double obtenerPrecio(double precioBase);
 

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import Model.Cliente;
 import Model.Funcion;
 import Model.FuncionesRepositorio;
+import Model.IClienteRepositorio;
 import Model.IFuncionesRepositorio;
 import Model.Pelicula;
 import Model.RepositorioClientes;
@@ -33,6 +34,8 @@ public class AsientosController {
     private final SelecAsientos vista;
     private final boolean isVip;
     private final VentasController ventasController; 
+    private final IFuncionesRepositorio repoFunciones; 
+    private final IClienteRepositorio repoClientes;   
 
     
     // Lista para mantener registro de asientos seleccionados
@@ -44,11 +47,13 @@ public class AsientosController {
     /**
      * Constructor que inicializa el controlador
      */
-    public AsientosController(Sala sala, SelecAsientos vista, boolean isVip, VentasController ventasController) {
+    public AsientosController(Sala sala, SelecAsientos vista, boolean isVip, VentasController ventasController, IFuncionesRepositorio repoFunciones, IClienteRepositorio repoClientes) {
         this.sala = sala;
         this.vista = vista;
         this.isVip = isVip;
-        this.ventasController = ventasController; 
+        this.ventasController = ventasController;
+        this.repoFunciones = repoFunciones; 
+        this.repoClientes = repoClientes;   
         configurarVista();
         generarAsientos();
         
@@ -182,14 +187,11 @@ public class AsientosController {
             JOptionPane.showMessageDialog(this.vista, "Error: no se pudo identificar al cliente.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Cliente cliente = new RepositorioClientes().buscarClientePorCedula(Long.parseLong(cedulaStr));
+        Cliente cliente = this.repoClientes.buscarClientePorCedula(Long.parseLong(cedulaStr)); 
         if (cliente == null) {
             JOptionPane.showMessageDialog(this.vista, "Error: cliente no encontrado.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        
-        IFuncionesRepositorio repoFunciones = new FuncionesRepositorio(new RepositorioPeliculas(), new SalasRepositorio(new RepositorioPeliculas()));
 
         List<Funcion> todasLasFunciones = repoFunciones.obtenerFunciones();
         Funcion funcionEncontrada = null; // Variable para guardar el resultado
@@ -211,7 +213,7 @@ public class AsientosController {
             }
 
             LocalDateTime fechaHoraActual = LocalDateTime.now();
-            repoFunciones.agregarFuncion(peliculaDeLaSala, this.sala, fechaHoraActual);
+            this.repoFunciones.agregarFuncion(peliculaDeLaSala, this.sala, fechaHoraActual);
 
             // Volvemos a buscarla para asegurarnos de tener el objeto completo con su ID.
             todasLasFunciones = repoFunciones.obtenerFunciones();
@@ -228,7 +230,7 @@ public class AsientosController {
             }
         }
 
-        // 4. Con la 'funcionEncontrada' garantizada, llamamos al VentasController.
-        this.ventasController.crearNuevaOrden(cliente, funcionEncontrada, asientosConfirmados);
+        //Con la "funcionEncontrada" se llama al controlador.
+        this.ventasController.crearNuevaOrden(cliente, funcionEncontrada, asientosConfirmados, this.sala);
     }
 }

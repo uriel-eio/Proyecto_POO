@@ -4,6 +4,7 @@ import Model.Cliente;
 import Model.IClienteRepositorio;
 import View.Principal;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -83,6 +84,10 @@ public class ClienteController {
             String cedulaStr = JOptionPane.showInputDialog(vista, "Ingrese la cédula del cliente:");
             if (cedulaStr == null || cedulaStr.trim().isEmpty()) return;
             long cedula = Long.parseLong(cedulaStr);
+            if (cedulaStr.length() != 10) {
+                JOptionPane.showMessageDialog(vista, "La cédula debe tener exactamente 10 dígitos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                return; 
+            }
             
             String telefono = JOptionPane.showInputDialog(vista, "Ingrese el teléfono del cliente:");
             if (telefono == null || telefono.trim().isEmpty()) return;
@@ -97,4 +102,16 @@ public class ClienteController {
             JOptionPane.showMessageDialog(vista, "Error al registrar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+            public void cargarClientesEnComboBox(JComboBox<String> comboBox) {
+
+            comboBox.removeAllItems();
+
+            comboBox.addItem("Seleccione un cliente");
+
+            ArrayList<Cliente> clientes = repoClientes.obtenerCliente();
+
+            for (Cliente cliente : clientes) {
+                comboBox.addItem(cliente.getNombre() + " - " + cliente.getCedula());
+            }
+        }
 }
