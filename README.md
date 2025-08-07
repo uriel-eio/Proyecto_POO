@@ -75,7 +75,9 @@ En esta sección se describe cómo usar las principales funcionalidades del prog
 - **Descripción:**
 
 Al momento de ejecutar el programa, se despliega la siguiente ventana la cual contiene dos casillas que deben ser rellenadas para que se pueda accerder a las opciones principales, es decir, iniciar sesión. A continuación el usuario y contraseña que debes ingresar:
+
 Usuario: admin
+
 Contraseña: admin
 
 ![Login](src/capturas_manual/login.jpg)
