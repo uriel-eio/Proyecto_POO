@@ -255,13 +255,13 @@ public class Principal extends javax.swing.JFrame {
         botonModificar.addActionListener(e -> modificarCliente());
         
         // Eventos de la pestaña salas
-        botonCambiarPeliculaSa1.addActionListener(e -> {
+        /*botonCambiarPeliculaSa1.addActionListener(e -> {
             try {
                 controladorSalas.asignarPeliculaASala();
             } catch (Exception ex) {
                 ManejoErrores.mostrarError("Error al asignar película a sala", ex, this);
             }
-        });
+        });*/
         
         // Eventos de la pestaña ventas
         comboSalasV.addActionListener(e -> seleccionarSala());
