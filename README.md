@@ -1,5 +1,14 @@
 # Manual de Usuario — Proyecto POO
 
+##Integrantes:
+
+- Aidan Carrasco
+- Uriel Dueñas
+- Zenán Fernández
+- Andrés Merino
+- Josué Palma
+- Mathew Verdezoto
+
 ## Índice
 
 1. [Introducción](#introducción)
