@@ -60,9 +60,7 @@ En caso de no tenerlo instalado, puedes descargarlo desde el siguiente enlace:
 ### 3. Abre tu IDE favorito y selecciona 'Open Project'
 
 Para poder hacer uso del programa, dirígete a esta ruta en tu computador: C:\Users\[tu_usuario]\Proyecto_POO
-En ella se encontrará el proyecto de la aplicación. Por ejemplo, puede mostrarse de esta manera:
-
-(Ingresar captura)
+En ella se encontrará el proyecto de la aplicación.
 
 ### 4. Ejecutar el proyecto
 
@@ -77,14 +75,12 @@ En esta sección se describe cómo usar las principales funcionalidades del prog
 - **Descripción:**
 
 Al momento de ejecutar el programa, se despliega la siguiente ventana la cual contiene dos casillas que deben ser rellenadas para que se pueda accerder a las opciones principales, es decir, iniciar sesión. A continuación el usuario y contraseña que debes ingresar:
+
 Usuario: admin
+
 Contraseña: admin
 
-![login](login.jpg)
-
-- **Pasos:**  
-  1. Ingresar usuario y contraseña.
-  2. Acceso según rol (administrador, cliente, etc.).
+![Login](src/capturas_manual/login.jpg)
 
 ### Gestión de Salas
 
@@ -94,9 +90,13 @@ En este apartado del programa, se permite visualizar los atributos de 3 salas pr
   
 - **Pasos:**
   1. Dirigirse al apartado Salas a la izquierda superior de la Ventana, a continuación aparecerán las salas predeterminadas.
+![Salas paso 1](src/capturas_manual/salas1.jpg)
   2. En la parte izquierda inferior de la ventana, existe un recuadro donde se encuentran las películas disponibles al momento en el cine, seleccionar cualquiera de su preferencia.
+![Salas paso 2](src/capturas_manual/salas2.jpg)
   3. A continuación, hacer click en alguna de las 3 salas predeterminadas y presionar el boton "Cambiar", que se ubica en la parte inferior derecho de la Ventana.
-  4. ¡Felicidades!, ha asignado con éxito una película a una sala predeterminada.
+![Salas paso 3](src/capturas_manual/salas3.jpg)
+
+¡Felicidades!, ha asignado con éxito una película a una sala predeterminada.
 
 ### Gestión de Ventas
 
@@ -105,10 +105,15 @@ El usuario será presentado con una Ventana donde podrá seleccionar los asiento
   
 - **Pasos:**
   1. Dirigirse a la pestaña Salas, ubicada a la izquierda superior de la Ventana, una vez ahi, hacer click en cualquiera de las 3 salas disponibles.
+![Ventas paso 1](src/capturas_manual/ventas1.jpg)
   2. Una vez realizado el paso anterior, dirigirse a la pestaña Ventas, donde se podrá encontrar un botón "Buscar asientos".
+![Ventas paso 2](src/capturas_manual/ventasAsientos.jpg)
   3. A continuación, se desplegará una Ventana donde aparecerán los asientos disponibles dependiendo de la capacidad de la sala, aquí escoger los asientos que desee.
+![Ventas paso 3](src/capturas_manual/ventas2.jpg)
   4. Para confirmer la selección de los asientos, haga click en el botón "Confirmar Asientos", se desplegará un mensaje de confirmación y será enviado a la Ventana anterior.
+![Ventas paso 4](src/capturas_manual/ventas3.jpg)
   5. En caso de haber hecho click en el botón "Buscar asientos" sin querer, hacer click en el botón "Volver", este cerrará la Ventana donde se escogen los asientos y volverá a la Ventana anterior.
+![Ventas paso 5](src/capturas_manual/ventas4.jpg)
 
 ### Gestión de Películas
 
@@ -118,8 +123,11 @@ Se permite visualizar las películas en cartelera y sus características, tales 
   
 - **Pasos para su uso:**
   1. Acceder al menú de Películas, en él se desplegarán los largometrajes que están en cartelera.
+![Peliculas paso 1](src/capturas_manual/peliculas1.jpg)
   2. En caso de querer agregar una nueva película, debes seleccionar el botón Agregar Película, en el introducirás los siguientes datos: nombre de la película, género, tiempo de duración en minutos, restricción de edad.
+![Peliculas paso 2](src/capturas_manual/peliculas2.jpg)
   3. Para finalizar la tarea de agregar una película, debes seleccionar una imagen para que sea la portada de la película; el programa te llevará directamente al explorador de archivos en donde deberás escoger una buena portada para tu película.
+![Peliculas paso 3](src/capturas_manual/peliculas3.jpg)
 
 ### Gestión de Clientes
 
@@ -129,9 +137,13 @@ Esta sección del programa permite registrar nuevos clientes, actualizar su info
   
 - **Pasos para su uso:**
   1. Selecciona la ventana Clientes.
+![Clientes paso 1](src/capturas_manual/clientes1.jpg)
   2. Si deseas registrar un nuevo cliente, selecciona el botón registrar e introduce los datos correspondientes: número de cédula, nombre, número de teléfono.
+![Clientes paso 2](src/capturas_manual/clientes2.jpg)
   3. En caso de requerir editar la información del cliente que registraste, debes seleccionar el botón modificar.
+![Clientes paso 3](src/capturas_manual/clientes3.jpg)
   4. Para poder acceder a las transacciones que realizó el cliente registrado, por favor pulsa el botón carrito.
+![Clientes paso 4](src/capturas_manual/clientes4.jpg)
 
 ## Preguntas Frecuentes (FAQ)
 
@@ -157,5 +169,3 @@ Sí, el programa está desarrollado en Java, por lo que es compatible con macOS,
 - Enlace a issues en GitHub: [Reportar un Issue o solicitar soporte](https://github.com/uriel-eio/Proyecto_POO/issues)
 
 ---
-
-**Consejo:** Puedes acompañar cada paso con capturas de pantalla y ejemplos para mayor claridad.
