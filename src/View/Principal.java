@@ -82,7 +82,7 @@ public class Principal extends javax.swing.JFrame {
         tableClientes.setRowHeight(20);
     }
     
-    private void abrirCarrito() {
+   /* private void abrirCarrito() {
         try {
             if (tableClientes.getSelectedRow() != -1) {
                 long cedula = Long.parseLong(String.valueOf(
@@ -104,7 +104,7 @@ public class Principal extends javax.swing.JFrame {
         } catch (Exception ex) {
             ManejoErrores.mostrarError("Error al abrir carrito", ex, this);
         }
-    }
+    }*/
     
     private void buscarCliente() {
         try {
@@ -250,7 +250,7 @@ public class Principal extends javax.swing.JFrame {
         });
         // Eventos de la pestaña clientes
         botonBuscarClienteV.addActionListener(e -> buscarCliente());
-        botonCarritoC.addActionListener(e -> abrirCarrito());
+//        botonCarritoC.addActionListener(e -> abrirCarrito());
         botonRegistrarC1.addActionListener(e -> registrarCliente());
         botonModificar.addActionListener(e -> modificarCliente());
         
@@ -350,7 +350,6 @@ public class Principal extends javax.swing.JFrame {
         tableClientes = new javax.swing.JTable();
         botonModificar = new javax.swing.JButton();
         botonRegistrarC1 = new javax.swing.JButton();
-        botonCarritoC = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -455,7 +454,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelPrecioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
@@ -822,43 +821,29 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        botonCarritoC.setBackground(new java.awt.Color(102, 102, 102));
-        botonCarritoC.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
-        botonCarritoC.setForeground(new java.awt.Color(255, 255, 255));
-        botonCarritoC.setText("Carrito");
-        botonCarritoC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonCarritoC.setFocusPainted(false);
-        botonCarritoC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCarritoCActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(botonCarritoC, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonRegistrarC1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(177, 177, 177))
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(190, 190, 190)
+                        .addComponent(botonRegistrarC1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap(70, Short.MAX_VALUE)
+                .addContainerGap(74, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonCarritoC, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonRegistrarC1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(81, 81, 81))
@@ -942,10 +927,6 @@ public class Principal extends javax.swing.JFrame {
         controladorCliente.cargarClientesEnVista();
     }//GEN-LAST:event_botonRegistrarC1ActionPerformed
 
-    private void botonCarritoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCarritoCActionPerformed
-        abrirCarrito();
-    }//GEN-LAST:event_botonCarritoCActionPerformed
-
     private void textFieldClienteVFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textFieldClienteVFocusGained
         if(textFieldClienteV.getText().equals("Ingrese Cédula") == true){
             textFieldClienteV.setText("");
@@ -980,60 +961,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_spinnerTicketsVStateChanged
 
     private void botonAgregarCarritoVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarCarritoVActionPerformed
-        try {
-            // Verificar si hay un cliente seleccionado
-            String cedulaStr = textFieldClienteV.getText().trim();
-            if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
-                JOptionPane.showMessageDialog(this,
-                    "Por favor, busque un cliente primero",
-                    "Cliente no seleccionado",
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
 
-            // Buscar el cliente
-            long cedula = Long.parseLong(cedulaStr);
-            Cliente cliente = controladorCliente.buscarClientePorCedula(cedula);
-
-            if (cliente == null) {
-                JOptionPane.showMessageDialog(this,
-                    "No se encontró el cliente con la cédula ingresada",
-                    "Cliente no encontrado",
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Verificar si hay sala seleccionada
-            int filaSeleccionada = tableSalas.getSelectedRow();
-            if (filaSeleccionada == -1) {
-                JOptionPane.showMessageDialog(this,
-                    "Seleccione una sala primero",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Verificar cantidad de tickets
-            int cantidadTickets = (int) spinnerTicketsV.getValue();
-            if (cantidadTickets <= 0) {
-                JOptionPane.showMessageDialog(this,
-                    "Seleccione al menos un ticket",
-                    "Cantidad inválida",
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Llamar al controlador para agregar al carrito
-            controladorVentas.agregarAlCarrito(this, cliente, cantidadTickets);
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                "Error en el formato de la cédula",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            ManejoErrores.mostrarError("Error al agregar al carrito", ex, this);
-        }
     }//GEN-LAST:event_botonAgregarCarritoVActionPerformed
 
     private void botonAsignarAsientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAsignarAsientosActionPerformed
@@ -1144,13 +1072,7 @@ public class Principal extends javax.swing.JFrame {
         this.botonCambiarPeliculaSa1 = botonCambiarPeliculaSa1;
     }
 
-    public JButton getBotonCarritoC() {
-        return botonCarritoC;
-    }
 
-    public void setBotonCarritoC(JButton botonCarritoC) {
-        this.botonCarritoC = botonCarritoC;
-    }
 
     public JButton getBotonModificar() {
         return botonModificar;
@@ -1321,12 +1243,11 @@ public class Principal extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarCarritoV;
-    private javax.swing.JButton botonAgregarCarritoV1;
+    public javax.swing.JButton botonAgregarCarritoV1;
     private javax.swing.JButton botonAgregarPeliculaP;
     public javax.swing.JButton botonAsignarAsientos;
     private javax.swing.JButton botonBuscarClienteV;
     private javax.swing.JButton botonCambiarPeliculaSa1;
-    private javax.swing.JButton botonCarritoC;
     private javax.swing.JButton botonModificar;
     private javax.swing.JButton botonRegistrarC1;
     public javax.swing.JComboBox<String> comboClientesV;

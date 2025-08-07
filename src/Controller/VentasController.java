@@ -10,9 +10,13 @@ import java.awt.HeadlessException;
 public class VentasController {
     private Principal vista;
     private LogicaOrdenes logicaOrdenes;
+    private Cliente clienteParaVenta;
+    private ArrayList<Asiento> asientosParaVenta;
+    private Funcion funcionParaVenta;
     private final SalasRepositorio repoSalas;
     private final IFuncionesRepositorio repoFunciones;
     private final IClienteRepositorio repoClientes;
+    private Sala salaParaVenta;
     public Principal getVista() {
         return this.vista;
     }
@@ -25,6 +29,9 @@ public class VentasController {
         this.vista.botonAsignarAsientos.addActionListener(e -> {
             manejarSeleccionAsientos(this.vista.getTableSalas());
         });
+        this.vista.botonAgregarCarritoV1.addActionListener(e -> registrarVenta());
+        this.vista.getBotonAgregarCarritoV().addActionListener(e -> abrirRegistroVentas());
+
     }
     
     /**
@@ -53,7 +60,7 @@ public class VentasController {
     /**
      * Abre la ventana del carrito para un cliente
      */
-    public void abrirCarrito(Cliente cliente) {
+    /*public void abrirCarrito(Cliente cliente) {
         if (cliente == null) {
             JOptionPane.showMessageDialog(vista, 
                 "Debe seleccionar un cliente primero", 
@@ -71,7 +78,7 @@ public class VentasController {
         } catch (Exception e) {
             ManejoErrores.mostrarError("Error al abrir el carrito", e, vista);
         }
-    }
+    }*/
     
     /**
      * Crea una nueva orden para un cliente
@@ -151,16 +158,104 @@ public class VentasController {
     }
      
 
-    public void abrirSeleccionAsientos(Sala salaSeleccionada, int cantidadTickets) {
-            if (salaSeleccionada == null) {
-                JOptionPane.showMessageDialog(vista, "Sala inválida o no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+        public void abrirSeleccionAsientos(Sala salaSeleccionada, int cantidadTickets) {
+                if (salaSeleccionada == null) {
+                    JOptionPane.showMessageDialog(vista, "Sala inválida o no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                 
+
+                // Creamos la vista de asientos, pasándole el propio VentasController
+                SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this, this.repoFunciones, this.repoClientes, cantidadTickets);
+                vistaAsientos.setVisible(true);
+                    this.salaParaVenta = salaSeleccionada; 
+    
+                // Guardamos los asientos seleccionados.
+                this.asientosParaVenta = vistaAsientos.getAsientosConfirmados();
+                    String cedulaStr = this.vista.getTextFieldClienteV().getText().trim();
+                if (!cedulaStr.isEmpty() && !cedulaStr.equals("Ingrese Cédula")) {
+                    this.clienteParaVenta = this.repoClientes.buscarClientePorCedula(Long.parseLong(cedulaStr));
+                }
+
+                // 4. Obtenemos la función (esta lógica puede estar en AsientosController, la replicamos aquí para asegurar)
+                // En una futura versión, esto debería ser un método de ayuda.
+                /*this.funcionParaVenta = this.repoFunciones.obtenerFunciones().stream()
+                    .filter(f -> f.getSala().obtenerId().equals(salaSeleccionada.obtenerId()))
+                    .findFirst()
+                    .orElse(null);
+
+                // 5. Calculamos y mostramos el precio.
+                double precioBase = 10.0;
+                double precioTotal = 0.0;
+                if (this.asientosParaVenta != null) {
+                    for (Asiento asiento : this.asientosParaVenta) {
+                        precioTotal += asiento.obtenerPrecio(precioBase);
+                    }
+                }
+                vista.mostrarPrecioFinalVenta(precioTotal);*/
             }
+            public void registrarVenta() {
+               //Validamos que haya una selección pendiente
+               if (clienteParaVenta == null || asientosParaVenta == null || asientosParaVenta.isEmpty() || funcionParaVenta == null) {
+                   JOptionPane.showMessageDialog(vista, "Primero debe seleccionar un cliente y asientos.", "Acción no válida", JOptionPane.WARNING_MESSAGE);
+                   return;
+               }
 
-            // Creamos la vista de asientos, pasándole el propio VentasController
-            SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this, this.repoFunciones, this.repoClientes, cantidadTickets);
-            vistaAsientos.setVisible(true);
+               OrdenCompra nuevaOrden = logicaOrdenes.crearOrden(funcionParaVenta, asientosParaVenta, clienteParaVenta);
+               
 
+               if (nuevaOrden != null) {
+                   //La marcamos como pagada
+                   logicaOrdenes.pagarOrden(nuevaOrden.getNumOrden(), clienteParaVenta);
+
+
+                   RegistroVentasModelo.agregarVenta(nuevaOrden);
+                   this.repoSalas.actualizarSala(this.salaParaVenta);
+                   
+
+                   JOptionPane.showMessageDialog(vista, 
+                       "Venta registrada exitosamente para el cliente " + clienteParaVenta.getNombre(), 
+                       "Venta Registrada", 
+                       JOptionPane.INFORMATION_MESSAGE);
+
+                   // Limpiamos la selección para la siguiente venta
+                   limpiarSeleccionVenta();
+               }
+       }
+
+    /**
+     * Método de ayuda para limpiar el estado después de una venta.
+     */
+        private void limpiarSeleccionVenta() {
+            this.clienteParaVenta = null;
+            this.asientosParaVenta = null;
+            this.funcionParaVenta = null;
+            this.salaParaVenta = null;
+            vista.mostrarPrecioFinalVenta(0.0); // Reiniciamos el label de precio
+            vista.getTableSalas().clearSelection(); // Deseleccionamos la fila de la tabla
+        }
+        public void abrirRegistroVentas() {
+            Carrito vistaRegistro = new Carrito(this, vista); 
+            
+            CarritoController registroController = new CarritoController(vistaRegistro); 
+
+            vistaRegistro.setVisible(true);
+            vista.setVisible(false);
+        }
+        public void guardarSeleccionPendiente(Cliente cliente, Funcion funcion, ArrayList<Asiento> asientos) {
+            this.clienteParaVenta = cliente;
+            this.funcionParaVenta = funcion;
+            this.asientosParaVenta = asientos;
+
+            // Calculamos y mostramos el precio para que el usuario lo vea
+            double precioBase = 10.0;
+            double precioTotal = 0.0;
+            if (this.asientosParaVenta != null) {
+                for (Asiento asiento : this.asientosParaVenta) {
+                    precioTotal += asiento.obtenerPrecio(precioBase);
+                }
+            }
+            vista.mostrarPrecioFinalVenta(precioTotal);
         }
 
-    }
+}

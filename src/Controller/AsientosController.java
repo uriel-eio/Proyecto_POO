@@ -277,6 +277,7 @@ public class AsientosController {
                 }
 
             //Con la "funcionEncontrada" se llama al controlador.
-            this.ventasController.crearNuevaOrden(cliente, funcionEncontrada, asientosConfirmados, this.sala);
+            this.ventasController.guardarSeleccionPendiente(cliente, funcionEncontrada, asientosConfirmados);
+
         }
 }

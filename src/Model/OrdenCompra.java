@@ -3,17 +3,19 @@ import java.util.*;
 
 public class OrdenCompra {
     private final int numOrden;
+    private final String nombreCliente;
     private Funcion funcion; // La función para la que se compran los asientos
     private ArrayList<Asiento> asientosReservados;
     private double precioTotal;
     private boolean pagada;
 
 
-    public OrdenCompra(int numOrden, Funcion funcion, ArrayList<Asiento> asientos) {
+    public OrdenCompra(int numOrden, Funcion funcion, ArrayList<Asiento> asientos, String nombreCliente) {
         this.numOrden = numOrden;
         this.funcion = funcion;
         this.asientosReservados = asientos;
-        this.pagada = false; // El estado predeterminado de la orden será no pagada
+        this.nombreCliente = nombreCliente; 
+        this.pagada = false; 
         this.calcularPrecioTotal(); 
     }
 
@@ -38,6 +40,9 @@ public class OrdenCompra {
     
     public int getCantidadAsientos() {
         return this.asientosReservados.size();
+    }
+    public String getNombreCliente() {
+        return nombreCliente;
     }
 
     public ArrayList<Asiento> getAsientosReservados() {

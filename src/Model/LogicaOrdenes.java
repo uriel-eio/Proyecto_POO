@@ -24,7 +24,7 @@ public class LogicaOrdenes {
             int numeroOrden = carrito.getOrdenesEnCarrito().size() + 1;
             
             // Crear la orden
-            OrdenCompra nuevaOrden = new OrdenCompra(numeroOrden, funcion, asientos);
+            OrdenCompra nuevaOrden = new OrdenCompra(numeroOrden, funcion, asientos, cliente.getNombre());
             
             // Agregar al carrito
             carrito.agregarOrden(nuevaOrden);

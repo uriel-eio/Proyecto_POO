@@ -11,14 +11,16 @@ public class CarritoController {
     private final Cliente cliente;
     private final LogicaOrdenes logicaOrdenes;
     
-    public CarritoController(Carrito vista, Cliente cliente) {
+    public CarritoController(Carrito vista) {
         this.vista = vista;
-        this.cliente = cliente;
+        this.cliente = null; // No hay un cliente específico.
         this.logicaOrdenes = new LogicaOrdenes();
-        
-        inicializarVista();
+
+        // Llamamos a los métodos para preparar la vista y llenarla con todas las ventas
+        vista.prepararComoRegistroGlobal();
+        ArrayList<OrdenCompra> todasLasVentas = RegistroVentasModelo.obtenerTodasLasVentas();
+        vista.actualizarTabla(todasLasVentas);
     }
-    
     /**
      * Inicializa la vista con los datos del cliente y carrito
      */

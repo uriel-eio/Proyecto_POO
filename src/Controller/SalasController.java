@@ -81,5 +81,6 @@ public class SalasController {
     public Sala buscarSalaPorId(String idSala) {
         return repoSalas.buscarSalaPorId(idSala);
     }
+    
 
 }

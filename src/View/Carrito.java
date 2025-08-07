@@ -39,8 +39,12 @@ public class Carrito extends javax.swing.JFrame {
         // Configurar título
         setTitle("Carrito de Compras");
     }
-    
-    /**
+    public void prepararComoRegistroGlobal() {
+        this.setTitle("Registro Global de Ventas");
+        this.labelNombre.setText("Todas las Ventas Registradas");
+        this.botonPagar.setVisible(false);
+    }
+        /**
      * Muestra los datos del cliente en la vista
      * @param cliente Cliente cuyo carrito se mostrará
      */
@@ -74,6 +78,7 @@ public class Carrito extends javax.swing.JFrame {
         for (OrdenCompra orden : ordenes) {
             Object[] fila = new Object[]{
                 orden.getNumOrden(),
+                orden.getNombreCliente(), 
                 orden.getCantidadAsientos(),
                 orden.getFuncion().getSala().getNombre(),
                 orden.getFuncion().getPelicula().obtenerTitulo(),
@@ -187,7 +192,7 @@ public class Carrito extends javax.swing.JFrame {
             }
         };
         tableCarrito.setBackground(new java.awt.Color(204, 204, 204));
-        tableCarrito.setFont(new java.awt.Font("Liberation Sans", 0, 30)); // NOI18N
+        tableCarrito.setFont(new java.awt.Font("Tahoma", 0, 14));
         tableCarrito.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -213,7 +218,6 @@ public class Carrito extends javax.swing.JFrame {
         botonPagar.setBackground(new java.awt.Color(153, 153, 153));
         botonPagar.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         botonPagar.setForeground(new java.awt.Color(255, 255, 255));
-        botonPagar.setText("Pagar Orden");
         botonPagar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonPagar.setFocusPainted(false);
         botonPagar.addActionListener(new java.awt.event.ActionListener() {
@@ -239,11 +243,11 @@ public class Carrito extends javax.swing.JFrame {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(78, Short.MAX_VALUE)
                 .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
