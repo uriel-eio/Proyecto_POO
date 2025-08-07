@@ -234,13 +234,13 @@ public class Principal extends javax.swing.JFrame {
     
     private void configurarEventos() {
         // Eventos de la pestaña películas
-        botonAgregarPeliculaP.addActionListener(e -> {
+       /* botonAgregarPeliculaP.addActionListener(e -> {
             try {
                 controladorPeliculas.agregarNuevaPelicula();
             } catch (Exception ex) {
                 ManejoErrores.mostrarError("Error al agregar película", ex, this);
             }
-        });
+        });*/
             tableSalas.getSelectionModel().addListSelectionListener(e -> {
         // La condición !e.getValueIsAdjusting() asegura que el codigo se ejecute
         // solo una vez por clic (cuando se suelta el mouse), y no dos veces.
