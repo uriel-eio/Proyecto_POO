@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
 
        @Override
        public void liberar() {
-            // Simplemente cambia el estado si el asiento estaba reservado.
+          
             if (this.estado) {
                 this.estado = false;
             }
