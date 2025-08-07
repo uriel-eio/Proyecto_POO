@@ -18,7 +18,7 @@
 
 ## Introducción
 
-Se presenta el Cine Poorfis, creado a partir del lenguaje Java utilizando el entorno NetBeans. Se construye un sistema el cual emula a la página web de un cine en general, teniendo como características principales la implementación de gestión de películas, gestión de clientes, gestión de salas, ventas e inicio de sesión, usando distintas herramientas para el desarrollo del GUI correspondiente y su parte lógica o codificación, todo desde una interfaz sencilla e intuitiva.
+Se presenta el Cine, creado a partir del lenguaje Java utilizando el entorno NetBeans. Se construye un sistema el cual emula a la página web de un cine en general, teniendo como características principales la implementación de gestión de películas, gestión de clientes, gestión de salas, ventas e inicio de sesión, usando distintas herramientas para el desarrollo del GUI correspondiente y su parte lógica o codificación, todo desde una interfaz sencilla e intuitiva.
 
 ## Requisitos del Sistema
 
@@ -37,7 +37,7 @@ Se presenta el Cine Poorfis, creado a partir del lenguaje Java utilizando el ent
 
 ## Instalación y Ejecución
 
-Para poder instalar y utilizar el Banco Poorfis, se recomienda seguir los siguientes pasos:
+Para poder instalar y utilizar el Cine, se recomienda seguir los siguientes pasos:
 
 ### 1. Clonar el repositorio de GitHub
 
