@@ -299,6 +299,10 @@ public class Principal extends javax.swing.JFrame {
             comboPeliculasSa1.addItem(pelicula.obtenerTitulo()); // Solo el título
         }
     }
+    public void mostrarPrecioFinalVenta(double precio) {
+        String precioFormateado = String.format("%.2f", precio);
+        labelPrecioFinal.setText("$" + precioFormateado);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -323,6 +327,9 @@ public class Principal extends javax.swing.JFrame {
         textFieldClienteV = new javax.swing.JTextField();
         labelNombreCliente = new javax.swing.JLabel();
         botonBuscarClienteV = new javax.swing.JButton();
+        labelTotalPagar = new javax.swing.JLabel();
+        labelPrecioFinal = new javax.swing.JLabel();
+        botonAgregarCarritoV1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         comboSalasV = new javax.swing.JComboBox<>();
         labelPelicula = new javax.swing.JLabel();
@@ -464,6 +471,27 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        labelTotalPagar.setFont(new java.awt.Font("Calibri Light", 2, 16)); // NOI18N
+        labelTotalPagar.setForeground(new java.awt.Color(255, 255, 255));
+        labelTotalPagar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTotalPagar.setText("Total a pagar:");
+
+        labelPrecioFinal.setFont(new java.awt.Font("Calibri Light", 3, 13)); // NOI18N
+        labelPrecioFinal.setForeground(new java.awt.Color(255, 255, 255));
+        labelPrecioFinal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        botonAgregarCarritoV1.setBackground(new java.awt.Color(153, 153, 153));
+        botonAgregarCarritoV1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        botonAgregarCarritoV1.setForeground(new java.awt.Color(255, 255, 255));
+        botonAgregarCarritoV1.setText("Marcar como pagado");
+        botonAgregarCarritoV1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonAgregarCarritoV1.setFocusPainted(false);
+        botonAgregarCarritoV1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAgregarCarritoV1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -471,21 +499,37 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 165, Short.MAX_VALUE))
-            .addComponent(labelNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(labelNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(labelPrecioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(botonAgregarCarritoV1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(textFieldClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(labelNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonBuscarClienteV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelPrecioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(botonAgregarCarritoV1)
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
@@ -617,7 +661,7 @@ public class Principal extends javax.swing.JFrame {
         botonAgregarCarritoV.setBackground(new java.awt.Color(153, 153, 153));
         botonAgregarCarritoV.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         botonAgregarCarritoV.setForeground(new java.awt.Color(255, 255, 255));
-        botonAgregarCarritoV.setText("Agregar al carrito");
+        botonAgregarCarritoV.setText("Mostrar Ventas");
         botonAgregarCarritoV.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonAgregarCarritoV.setFocusPainted(false);
         botonAgregarCarritoV.addActionListener(new java.awt.event.ActionListener() {
@@ -1080,6 +1124,10 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_comboSalasVItemStateChanged
 
+    private void botonAgregarCarritoV1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarCarritoV1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonAgregarCarritoV1ActionPerformed
+
     public JButton getBotonAgregarCarritoV() {
         return botonAgregarCarritoV;
     }
@@ -1297,6 +1345,7 @@ public class Principal extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarCarritoV;
+    private javax.swing.JButton botonAgregarCarritoV1;
     private javax.swing.JButton botonAgregarPeliculaP;
     public javax.swing.JButton botonAsignarAsientos;
     private javax.swing.JButton botonBuscarClienteV;
@@ -1327,6 +1376,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel labelCantidadTicketsV;
     private javax.swing.JLabel labelNombreCliente;
     public javax.swing.JLabel labelPelicula;
+    private javax.swing.JLabel labelPrecioFinal;
+    private javax.swing.JLabel labelTotalPagar;
     public javax.swing.JSpinner spinnerTicketsV;
     private javax.swing.JTable tableClientes;
     private javax.swing.JTable tablePeli;

@@ -181,7 +181,17 @@ public class AsientosController {
     }
     public void finalizarYCrearOrden() {
         ArrayList<Asiento> asientosConfirmados = getAsientosSeleccionados();
+    // Obtenemos la lista de asientos que el usuario acaba de confirmar.
+        double precioTotal = 0.0;
+        double precioBase = 10.0; 
 
+        if (asientosConfirmados != null) {
+            for (Asiento asiento : asientosConfirmados) {
+                precioTotal += asiento.obtenerPrecio(precioBase);
+            }
+        }
+    // Accedemos a la vista principal a través del ventasController
+    this.ventasController.getVista().mostrarPrecioFinalVenta(precioTotal);
         String cedulaStr = this.ventasController.getVista().getTextFieldClienteV().getText().trim();
         if (cedulaStr.isEmpty() || "Ingrese Cédula".equals(cedulaStr)) {
             JOptionPane.showMessageDialog(this.vista, "Error: no se pudo identificar al cliente.", "Error de Cliente", JOptionPane.ERROR_MESSAGE);

@@ -153,6 +153,7 @@ public class VentasController {
         // Creamos la vista de asientos, pasándole el propio VentasController (`this`)
         SelecAsientos vistaAsientos = new SelecAsientos(salaSeleccionada, salaSeleccionada.isVip(), this, this.repoFunciones, this.repoClientes);
         vistaAsientos.setVisible(true);
+
     }
 
 }
